@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Tilasto {
 	
+	static Comparator<Integer> comp = Comparator.naturalOrder();
 	static int vuoro=0;
 	static int pelaajia=4;
 	
@@ -15,25 +17,44 @@ public class Tilasto {
 	/** Nollan sijoitus. */
 	static ArrayList<Integer> nollansijoitus_l = new ArrayList<Integer>();
 	
+	/** Keskimääräinen käsikoko. */
+	static ArrayList<Integer> käsikoko_l = new ArrayList<Integer>();
+
+	/** Nostojen määrä. */
+	static ArrayList<Integer> nostot_l = new ArrayList<Integer>();
+
+	/** Uunojen määrä. */
+	static ArrayList<Integer> uunot_l = new ArrayList<Integer>();
+	
 	static int pelit=0;
+	
+	static int suurinkäsikoko=0;
 	
     public static void tilastoi(Logi logi) {
     	
     	assert(vuoro>0 || logi.kasikoko==7);
     	
+    	System.out.print(vuoro+"\t");
+		System.out.println(logi);
+    	
     	if(logi.pelaaja.equals("0")) {
     		nollanvuorot++;
-    		if(logi.kasikoko==0) {
-    			nollansijoitus_l.add(5-pelaajia);
-    			nollapelissa_l.add(vuoro);
+    		if(logi.kasikoko==0) {    			
     			nollanvuorot_l.add(nollanvuorot);
+    			nollapelissa_l.add(vuoro);
+    			nollansijoitus_l.add(5-pelaajia);    			
     			nollanvuorot=0;    			
     		}
+    		
+        	if(logi.kasikoko>suurinkäsikoko) {
+        		suurinkäsikoko=logi.kasikoko;
+        	}
     	}
-    	
+		
+
+		
     	if(logi.kasikoko==0) {
-    		System.out.print(vuoro+"\t");
-    		System.out.println(logi);
+
     		pelaajia--;
     		if(pelaajia==0) {    			
     			vuoro=0;
@@ -45,36 +66,18 @@ public class Tilasto {
     	vuoro++;
     	
     }
-    
-    public static double keskiarvo(ArrayList<Integer> al) {
-        double sum = 0.0;
-        double length = al.size();
-
-        for(double num : al) {
-            sum += num;
-        }
-
-        return sum/length;
-    }
-    
-    public static double keskihajonta(ArrayList<Integer> al) {
-        double standardDeviation = 0.0;
-        double length = al.size();
-        double mean = keskiarvo(al);
-
-        for(double num: al) {
-            standardDeviation += Math.pow(num - mean, 2);
-        }
         
-        return Math.sqrt(standardDeviation/length);
+    static String formatvalue(ArrayList<Integer> al) {
+    	return String.valueOf(Tunnusluvut.keskiarvo(al)) 
+    			+ " +-" + String.valueOf(Tunnusluvut.keskihajonta(al))
+    			+ ", Med: " + Tunnusluvut.median(al, comp);
     }
     
-    public static void yhteenveto() {
-    	
+    public static void yhteenveto() {    	
     	System.out.println("Pelien määrä: " + String.valueOf(pelit));
-    	System.out.println("Nollan pelaamien vuorojen määrä: " + String.valueOf(keskiarvo(nollanvuorot_l)) + " +-" + String.valueOf(keskihajonta(nollanvuorot_l)));
-    	System.out.println("Nollan pelissäoloaikana pelattujen vuorojen määrä: " + String.valueOf(keskiarvo(nollapelissa_l)) + " +-" + String.valueOf(keskihajonta(nollapelissa_l)));
-    	System.out.println("Nollan sijoitus: " + String.valueOf(keskiarvo(nollansijoitus_l)) + " +-" + String.valueOf(keskihajonta(nollansijoitus_l)));
-    	
+    	System.out.println("Nollan pelaamien vuorojen määrä: " + formatvalue(nollanvuorot_l));
+    	System.out.println("Nollan pelissäoloaikana pelattujen vuorojen määrä: " +  formatvalue(nollapelissa_l));
+    	System.out.println("Nollan sijoitus: " + formatvalue(nollansijoitus_l));
+    	System.out.println("Suurin käsikoko: " + suurinkäsikoko);
     }
 }

@@ -5,9 +5,9 @@ public class Peli {
 
     // Palauttaa true, jos kortin %lyotava voi laittaa, kun poistopinossa 
     // on %poisto, ja sanottu väri on %vari.
-    public static boolean voiLyoda(final Kortti lyotava, final Kortti poisto, final Vari vari) {
+    public static boolean voiLyoda(final Kortti lyotava, final Kortti poisto, final Vari vari, boolean uuno) {
         if(lyotava.isMusta()){
-            return true;
+            return !uuno;
         }
         if(poisto.isMusta()){
             return lyotava.getVari() == vari;
