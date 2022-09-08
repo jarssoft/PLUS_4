@@ -1,13 +1,14 @@
 import java.util.Vector;
 
 // Ainut osa joka tekee päätöksiä.
-public class Tekoaly {
+public class Viisas implements Tekoäly {
 
     private Vari vari;
     private Kortti poisto;
 
     // Tiedottaa pelaajalle tapahtumasta.
-    public void tapahtuma(Logi logi){
+    @Override
+	public void tapahtuma(Logi logi){
         
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
@@ -16,7 +17,8 @@ public class Tekoaly {
     }
 
     // Pyytää tekoälyä tekemään valinnan.
-    public Vector<Kortti> getKortti(Vector<Kortti> kasi){
+    @Override
+	public Vector<Kortti> getKortti(Vector<Kortti> kasi){
     
         assert(poisto!=null);
         assert(!kasi.isEmpty());
@@ -40,8 +42,9 @@ public class Tekoaly {
     }
     
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen
-    public Vari getVari(){
-        return Vari.KELTAINEN;
+    @Override
+	public Vari getVari(){
+        return Vari.PUNAINEN;
     }
 
 }

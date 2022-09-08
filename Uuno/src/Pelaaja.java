@@ -25,12 +25,17 @@ public class Pelaaja  {
     }
 
     private Vector<Kortti> kasi = new Vector<>();
-    private Tekoaly aly = new Tekoaly();        
+    private Tekoäly aly;
     private int id;
     private static int counter = 0;
 
     public Pelaaja(){
         this.id=(counter++);
+        if(this.id==0) {
+        	aly = new Viisas();        
+        }else {
+        	aly = new Tyhmä();
+        }
     }
 
     public String getNimi(){
