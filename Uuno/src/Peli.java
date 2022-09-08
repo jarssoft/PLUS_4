@@ -12,7 +12,7 @@ public class Peli {
         if(poisto.isMusta()){
             return lyotava.getVari() == vari;
         }
-        return lyotava.getVari()==poisto.getVari() 
+        return lyotava.getVari()==poisto.getVari()  
                 || lyotava.getMerkki()==poisto.getMerkki();
     }
     
@@ -25,9 +25,10 @@ public class Peli {
     }
 
 
-    // Pelisilmukka perustuu linkitetyn listan iteraattoriin
-    // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta
-    public static void pelaa(LinkedList<Pelaaja> pelaajat) {
+
+    // Pelisilmukka perustuu linkitetyn listan iteraattoriin.
+    // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta.
+    public static void peli(LinkedList<Pelaaja> pelaajat) {
 
         KööriIterator<Pelaaja> ki = new KööriIterator<Pelaaja>(pelaajat);
         while(true){
@@ -42,13 +43,13 @@ public class Peli {
                 p.tapahtuma(logi);
             }
 
-            System.out.println(logi);
+            Tilasto.tilastoi(logi);            
 
             // Kortit menettänyt pelaaja poistuu
 
             if(logi.kasikoko==0){
                 ki.remove();
-                if(pelaajat.size()==1){
+                if(pelaajat.size()==0){
                     break;
                 }
             }
@@ -75,14 +76,13 @@ public class Peli {
                     }
                 }
             }
-            //assert(pöytä.size() + kasi.size() == 108);
         }
 
         for(Pelaaja p: pelaajat){
             p.lyoKaikki();
         }
-
-        assert(Pöytä.pöytä.size() == 108);
+        pelaajat.clear();
+        
     }
     
     public static void main(String[] args) {
@@ -93,15 +93,17 @@ public class Peli {
         }
 
         for(int t=0;t<20;t++){
+        	//alustetaan
+        	Pöytä.pöytä.reset();
             for(Pelaaja p: pelaajat){
                 p.nosta(7);
-            }
-            LinkedList<Pelaaja> pelissa = new LinkedList<Pelaaja>();
-            pelissa.addAll(pelaajat);
-            pelaa(pelissa);
-            Pöytä.pöytä.reset();
-            System.out.println("----------------------");
+            }            
+            assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
+            peli(new LinkedList<Pelaaja>(pelaajat));
+            assert(Pöytä.pöytä.size() == 108);
+
         }
+        Tilasto.yhteenveto();
 
     }
 

@@ -8,7 +8,7 @@ enum Merkki {
         N0, N1, N2, N3, N4, N5, N6, N7, N8, N9, 
         OHITUS, SUUNNANVAIHTO, PLUS2;
 }
-
+ 
 /**
 Luokkaa käyttävällä komponentilla on pääsy vain saamaan joukon kaikista korteista,
 ja metodit tutkimaan yksittäisten korttien ominaisuuksia). Joukon järjestyksellä ei ole 

@@ -30,9 +30,6 @@ public class Pelaaja  {
     private static int counter = 0;
 
     public Pelaaja(){
-
-        // Nostetaan pelaajien aloituspakka
-        nosta(7);
         this.id=(counter++);
     }
 
