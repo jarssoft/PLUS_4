@@ -1,7 +1,7 @@
 import java.util.Collections;
 import java.util.Stack;
 
-// Pöydällä oleva korttipino, josta voi ottaa tai laskea kortteja.
+/** Pöydällä oleva korttipino, jossa kortit ovat kuvapuoli alaspäin. */
 public class Pino {
 
     protected Stack<Kortti> stack = new Stack<>();

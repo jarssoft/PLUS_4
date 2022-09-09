@@ -1,6 +1,5 @@
 
-
-// Kuvapuoli ylöspäin oleva pino
+/** Pöydällä oleva korttipino, jossa kortit ovat kuvapuoli ylöspäin. */
 public class PinoYlöspäin extends Pino{
 
     public Kortti peek(){
