@@ -24,7 +24,7 @@ public class Viisas implements Tekoäly {
         assert(!kasi.isEmpty());      
         
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
-        int parashyvyys = 0;
+        int parashyvyys = -1000;
 
         for (Kortti k : kasi) {
         	
@@ -41,15 +41,20 @@ public class Viisas implements Tekoäly {
             }
         	
         	// Pienempi käsi on parempi
-        	ehdokashyvyys+=10-ehdokaslyotava.size();
+        	ehdokashyvyys+=10-ehdokaslyotava.size()*2;
         	
         	// Nollakäsi ei hyvä
         	if(!ehdokaslyotava.isEmpty()) {
-        		ehdokashyvyys+=10;
+        		ehdokashyvyys+=10*2;
         		
-        		// Yritetään käyttää mustat ennen viimeistä korttia
-        		if(ehdokaslyotava.get(0).isMusta() && kasi.size()>1 && kasi.size()<2) {
-        			ehdokashyvyys+=3;
+        		// Musta on pakko käyttää ennen viimeistä korttia
+        		if(ehdokaslyotava.get(0).isMusta()) {
+        			if(kasi.size()==1) {
+        				ehdokashyvyys+=100;
+        			}
+        			if(kasi.size()==2) {
+        				ehdokashyvyys+=5;
+        			}        			
         		}
         		
         		// Säästetään ohittavat kortit loppuun

@@ -57,6 +57,10 @@ public class Kortti {
         assert(kortit[9+14*5].getMerkki() == Merkki.N9);
         assert(kortit[11].getMerkki() == Merkki.SUUNNANVAIHTO);
 
+        assert(testiKortti(Vari.KELTAINEN, Merkki.SUUNNANVAIHTO).getMerkki() == Merkki.SUUNNANVAIHTO); 
+        assert(testiKortti(Vari.SININEN, Merkki.N5).getVari() == Vari.SININEN);
+        assert(testiKorttiPlus4().isPlus4());
+        assert(testiKorttiJokeri().isJokeri());
         return kortit;
 
     }
@@ -79,9 +83,22 @@ public class Kortti {
     private final int korttinro;
 
     private Kortti(final int korttinro) {
+    	assert(korttinro>=0 && korttinro<numberOfCards);
         this.korttinro = korttinro ;
+    } 
+    
+    public static Kortti testiKortti(Vari vari, Merkki merkki) {
+    	return new Kortti(vari.ordinal()*14 + merkki.ordinal());    	
     }
-
+    
+    public static Kortti testiKorttiPlus4() {
+    	return new Kortti(14*4 + 13);    	
+    }
+    
+    public static Kortti testiKorttiJokeri() {
+    	return new Kortti(13);    	
+    }
+    
     private int sarake(){
         return korttinro % 14;
     }
