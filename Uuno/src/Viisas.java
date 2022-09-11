@@ -62,6 +62,37 @@ public class Viisas implements Tekoäly {
 	                }
         		}
         		
+        		// Jätetään viimeiseksi kaksi samanväristä
+        		if(ehdokasjatettava.size()==2) {
+        			if(!ehdokasjatettava.get(0).isMusta() && !ehdokasjatettava.get(1).isMusta()) {
+        				if(ehdokasjatettava.get(0).getVari() == ehdokasjatettava.get(1).getVari()) {
+        					ehdokashyvyys+=3;
+        				}
+        			}
+        		}
+        		
+        		/*
+        		if(ehdokasjatettava.size()>3) {        			
+        			//ratkaistaan yleisin väri
+        			int maarat[] = new int[4];
+	                for (Kortti jk : ehdokasjatettava) {
+	                	if(!jk.isMusta()) {
+		                    maarat[jk.getVari().ordinal()]++;
+	                	}
+	                }
+	                int max = maarat[0];
+	                //Loop through the array  
+	                for (int i = 0; i < maarat.length; i++) {  
+	                    //Compare elements of array with max  
+	                   if(maarat[i] > max) {  
+	                       max = maarat[i];
+	                   }
+	                   
+	                }
+	                ehdokashyvyys+=max;
+        		}
+        		*/
+        		
         		// Musta on pakko käyttää ennen viimeistä korttia
         		if(ehdokaslyotava.get(0).isMusta()) {
         			if(kasi.size()==1) {
@@ -69,7 +100,10 @@ public class Viisas implements Tekoäly {
         			}
         			if(kasi.size()==2) {
         				ehdokashyvyys+=5;
-        			}        			
+        			}      
+        			if(kasi.size()>2) {
+        				ehdokashyvyys-=kasi.size()+2;
+        			}  
         		}
         		
         		// Säästetään ohittavat kortit loppuun

@@ -8,7 +8,7 @@ class ViisasTest {
 
 	@Test
 	void testTapahtuma() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 	@Test
@@ -30,6 +30,18 @@ class ViisasTest {
 			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
 			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
 		}
+		// Säästetään musta loppuun
+		{
+			Vector<Kortti> kasi = new Vector<Kortti>();
+			kasi.add(Kortti.testiKorttiPlus4());
+			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
+			kasi.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N2));
+			kasi.add(Kortti.testiKortti(Vari.KELTAINEN, Merkki.N1));			
+			Vector<Kortti> odotettu = new Vector<Kortti>();
+			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		}
 		// Käytetään musta ennen viimeistä
 		{
 			Vector<Kortti> kasi = new Vector<Kortti>();
@@ -39,7 +51,7 @@ class ViisasTest {
 			odotettu.add(Kortti.testiKorttiPlus4());
 			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
 		}
-		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
+		// Jätetään viimeiseksi kortti, joka sopii käteenjäävään.
 		{
 			Vector<Kortti> kasi = new Vector<Kortti>();
 			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
@@ -50,7 +62,28 @@ class ViisasTest {
 			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
 			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
 		}
-		
+		// Jätetään viimeiseksi kaksi samanväristä
+		{
+			Vector<Kortti> kasi = new Vector<Kortti>();
+			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N2));
+			Vector<Kortti> odotettu = new Vector<Kortti>();
+			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		}
+		// Jos käteen jää yli kolme korttia, yritetään poistaa yleisin väri
+		{
+			Vector<Kortti> kasi = new Vector<Kortti>();
+			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N2));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N1));
+			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.SUUNNANVAIHTO));
+			Vector<Kortti> odotettu = new Vector<Kortti>();
+			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
+			assertNotEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		}
 	}
 
 	@Test
