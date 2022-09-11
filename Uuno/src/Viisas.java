@@ -29,13 +29,16 @@ public class Viisas implements Tekoäly {
         for (Kortti k : kasi) {
         	
         	Vector<Kortti> ehdokaslyotava = new Vector<Kortti>();        	
+        	Vector<Kortti> ehdokasjatettava = new Vector<Kortti>(kasi);
         	int ehdokashyvyys = 0;        
             
         	if(Peli.voiLyoda(k, this.poisto, this.vari, kasi.size()==1)){
         		ehdokaslyotava.add(k);
+        		ehdokasjatettava.remove(k);
                 for (Kortti lk : kasi) {
                     if(k != lk && Peli.voiLyodaLisäksi(lk, k)){
                     	ehdokaslyotava.add(lk);
+                    	ehdokasjatettava.remove(k);
                     }
                 }
             }
@@ -46,6 +49,18 @@ public class Viisas implements Tekoäly {
         	// Nollakäsi ei hyvä
         	if(!ehdokaslyotava.isEmpty()) {
         		ehdokashyvyys+=10*2;
+        		
+        		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
+        		Kortti viimeinen = ehdokaslyotava.lastElement();
+        		if(!viimeinen.isMusta()) {
+	                for (Kortti jk : ehdokasjatettava) {
+	                	if(!jk.isMusta()) {
+		                    if(viimeinen.getVari() == jk.getVari()){
+		                    	ehdokashyvyys+=1;
+		                    }
+	                	}
+	                }
+        		}
         		
         		// Musta on pakko käyttää ennen viimeistä korttia
         		if(ehdokaslyotava.get(0).isMusta()) {
