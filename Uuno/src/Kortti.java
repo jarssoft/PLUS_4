@@ -1,4 +1,4 @@
-import java.util.Stack;
+import java.util.Stack;   
 
 enum Vari {
         PUNAINEN, KELTAINEN, VIHREA, SININEN;
@@ -91,6 +91,10 @@ public class Kortti {
     	return new Kortti(vari.ordinal()*14 + merkki.ordinal());    	
     }
     
+    public static Kortti testiKortti(int korttinro) {
+    	return new Kortti(korttinro);
+    }
+    
     public static Kortti testiKorttiPlus4() {
     	return new Kortti(14*4 + 13);    	
     }
@@ -134,6 +138,11 @@ public class Kortti {
     public Merkki getMerkki(){
         assert(!isMusta() && !isTyhja());
         return Merkki.values()[sarake()];
+    }
+    
+    /** Palauttaa true, jo kortit ovat fyysisesti samoja. */
+    public boolean equalsP(Kortti kortti){
+    	return this.korttinro == kortti.korttinro;
     }
 
     // Palauttaa kuusimerkkisen tunnuksen, joka kuvaa korttia.

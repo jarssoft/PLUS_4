@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Vector;
 
 // Ainut osa joka tekee päätöksiä.
@@ -12,8 +13,14 @@ public class Viisas implements Tekoäly {
         
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
-            this.poisto=logi.lyonti.get(logi.lyonti.size()-1);
+            this.poisto=logi.lyonti.lastElement();
         }
+    }
+    
+    public Kortti[] getKortti(Kortti[] kasia){
+    	Vector<Kortti> kasi = new Vector<Kortti>(Arrays.asList(kasia));
+    	Vector<Kortti> lyotava = getKortti(kasi);
+    	return lyotava.toArray(new Kortti[lyotava.size()]);
     }
 
     // Pyytää tekoälyä tekemään valinnan.
@@ -33,24 +40,22 @@ public class Viisas implements Tekoäly {
         	int ehdokashyvyys = 0;        
             
         	if(Peli.voiLyoda(k, this.poisto, this.vari, kasi.size()==1)){
+        		
         		ehdokaslyotava.add(k);
         		ehdokasjatettava.remove(k);
                 for (Kortti lk : kasi) {
-                    if(k != lk && Peli.voiLyodaLisäksi(lk, k)){
+                    if(!k.equalsP(lk) && Peli.voiLyodaLisäksi(lk, k)){
                     	ehdokaslyotava.add(lk);
-                    	ehdokasjatettava.remove(k);
+                    	ehdokasjatettava.remove(lk);
                     }
                 }
-            }
-        	
-        	// Pienempi käsi on parempi
-        	ehdokashyvyys+=10-ehdokaslyotava.size()*2;
-        	
-        	// Nollakäsi ei hyvä
-        	if(!ehdokaslyotava.isEmpty()) {
-        		ehdokashyvyys+=10*2;
+	        	
+	        	// Pienempi käsi on parempi
+                
+	        	ehdokashyvyys+=10-ehdokaslyotava.size()*2;
         		
         		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
+	        	
         		Kortti viimeinen = ehdokaslyotava.lastElement();
         		if(!viimeinen.isMusta()) {
 	                for (Kortti jk : ehdokasjatettava) {
@@ -63,18 +68,28 @@ public class Viisas implements Tekoäly {
         		}
         		
         		// Jätetään viimeiseksi kaksi samanväristä
+        		
         		if(ehdokasjatettava.size()==2) {
         			if(!ehdokasjatettava.get(0).isMusta() && !ehdokasjatettava.get(1).isMusta()) {
         				if(ehdokasjatettava.get(0).getVari() == ehdokasjatettava.get(1).getVari()) {
-        					ehdokashyvyys+=3;
+        					ehdokashyvyys+=2;
         				}
         			}
         		}
         		
-        		/*
-        		if(ehdokasjatettava.size()>3) {        			
-        			//ratkaistaan yleisin väri
-        			int maarat[] = new int[4];
+        		// Yritetään aina vaihtaa väriä
+        		
+        		if(!viimeinen.isMusta() && !poisto.isMusta()) {
+	        		if(viimeinen.getVari().toString() != this.poisto.getVari().toString()) {
+	        			ehdokashyvyys+=1;
+	        		}
+        		}
+        		
+        		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri.
+        		
+        		if(ehdokasjatettava.size()>2) {        			
+        			//ratkaistaan yleisimmän värin korttimäärä
+        			int maarat[] = {0,0,0,0};
 	                for (Kortti jk : ehdokasjatettava) {
 	                	if(!jk.isMusta()) {
 		                    maarat[jk.getVari().ordinal()]++;
@@ -82,21 +97,24 @@ public class Viisas implements Tekoäly {
 	                }
 	                int max = maarat[0];
 	                //Loop through the array  
-	                for (int i = 0; i < maarat.length; i++) {  
+	                for (int i = 1; i < maarat.length; i++) {  
 	                    //Compare elements of array with max  
 	                   if(maarat[i] > max) {  
 	                       max = maarat[i];
 	                   }
 	                   
 	                }
-	                ehdokashyvyys+=max;
+	                //rangaistaan määrän mukaisesti
+	                ehdokashyvyys-=max;
         		}
-        		*/
         		
-        		// Musta on pakko käyttää ennen viimeistä korttia
+        		
+        		// Mustia kannattaa säästää, mutta ne on pakko 
+        		// käyttää ennen viimeistä korttia.
+        		
         		if(ehdokaslyotava.get(0).isMusta()) {
         			if(kasi.size()==1) {
-        				ehdokashyvyys+=100;
+        				//ehdokashyvyys+=100;
         			}
         			if(kasi.size()==2) {
         				ehdokashyvyys+=5;
@@ -106,6 +124,19 @@ public class Viisas implements Tekoäly {
         			}  
         		}
         		
+        		// Ei jätetä mustia viimeisiksi
+        		
+        		if(ehdokasjatettava.size()==1 
+        				&& ehdokasjatettava.firstElement().isMusta()) {
+        			ehdokashyvyys-=10;
+        		}
+        		if(ehdokasjatettava.size()==2 
+        				&& ehdokasjatettava.firstElement().isMusta() 
+        				&& ehdokasjatettava.lastElement().isMusta()) {
+        			ehdokashyvyys-=10;
+        		}
+        		
+        		/*
         		// Säästetään ohittavat kortit loppuun
         		if(!ehdokaslyotava.get(0).isMusta() 
         				&& (ehdokaslyotava.get(0).getMerkki() == Merkki.PLUS2
@@ -113,11 +144,13 @@ public class Viisas implements Tekoäly {
         				&& kasi.size()>1 && kasi.size()<2) {
         			ehdokashyvyys+=3;
         		}
-        	}
-        	
-        	if(ehdokashyvyys>parashyvyys) {
-        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-        		parashyvyys=ehdokashyvyys;
+        		*/
+	        	
+	        	
+	        	if(ehdokashyvyys>parashyvyys) {
+	        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
+	        		parashyvyys=ehdokashyvyys;
+	        	}
         	}
         }
         

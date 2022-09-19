@@ -24,8 +24,6 @@ public class Peli {
         return lyotava.getMerkki()==poisto.getMerkki();
     }
 
-
-
     // Pelisilmukka perustuu linkitetyn listan iteraattoriin.
     // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta.
     public static void peli(LinkedList<Pelaaja> pelaajat) {
@@ -93,16 +91,20 @@ public class Peli {
         }
 
         for(int t=0;t<100;t++){
+        	
         	//alustetaan
         	Pöytä.pöytä.reset();
             for(Pelaaja p: pelaajat){
                 p.nosta(7);
             }            
             assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
+            
+            //pelataan
             peli(new LinkedList<Pelaaja>(pelaajat));
             assert(Pöytä.pöytä.size() == 108);
 
         }
+        
         Tilasto.yhteenveto();
 
     }

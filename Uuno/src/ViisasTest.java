@@ -1,95 +1,133 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.Vector;
-
 import org.junit.jupiter.api.Test;
 
 class ViisasTest {
 
+	private final Kortti SIN_N0 = Kortti.testiKortti(Vari.SININEN, Merkki.N0);
+	private final Kortti SIN_N2 = Kortti.testiKortti(Vari.SININEN, Merkki.N2);
+	private final Kortti SIN_N5 = Kortti.testiKortti(Vari.SININEN, Merkki.N5);
+	private final Kortti SIN_N6 = Kortti.testiKortti(Vari.SININEN, Merkki.N6);
+	private final Kortti VIH_N7 = Kortti.testiKortti(Vari.VIHREA, Merkki.N7);
+	private final Kortti VIH_N2 = Kortti.testiKortti(Vari.VIHREA, Merkki.N2);
+	private final Kortti VIH_N5 = Kortti.testiKortti(Vari.VIHREA, Merkki.N5);
+	private final Kortti VIH_N5b = Kortti.testiKortti(14*6+5);
+	private final Kortti KEL_N1 = Kortti.testiKortti(Vari.KELTAINEN, Merkki.N1);
+	private final Kortti PUN_N2 = Kortti.testiKortti(Vari.PUNAINEN, Merkki.N2);
+	private final Kortti PLUS_4 = Kortti.testiKorttiPlus4();
+	private final Kortti JOKERI = Kortti.testiKorttiJokeri();
+	
+	private Viisas viisas = new Viisas();
+	
 	@Test
 	void testTapahtuma() {
 		//fail("Not yet implemented");
 	}
-
+    
 	@Test
 	void testGetKortti() {
-		//Pöytä.pöytä.lyö(Kortti.testiKortti(Vari.SININEN, Merkki.N5));
-		Viisas viisas = new Viisas();
+		assertEquals(true, JOKERI.isJokeri());
+		assertEquals(true, JOKERI.isMusta());
 		
+
 		Vector<Kortti> lyoty = new Vector<Kortti>();
-		lyoty.add(Kortti.testiKortti(Vari.SININEN, Merkki.N5));
+		lyoty.add(SIN_N5);
 		viisas.tapahtuma(new Logi("0", lyoty, null, 0, 5));
 		
-		// Mahdollisimman vähän kortteja kerralla:
+		// Maksimoidaan jääviin kortteihin erilaisten värien määrä.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N2));
-			kasi.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N2));
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		    Kortti[] kasi     =  {VIH_N5, SIN_N2, PUN_N2};
+		    Kortti[] odotettu = {VIH_N5};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {VIH_N5, SIN_N5, SIN_N2};
+		    Kortti[] odotettu = {SIN_N2};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N5b, SIN_N2};
+		    Kortti[] odotettu = {SIN_N2};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
 		}
-		// Säästetään musta loppuun
+		
+		// Yritetään aina vaihtaa väriä.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKorttiPlus4());
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
-			kasi.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N2));
-			kasi.add(Kortti.testiKortti(Vari.KELTAINEN, Merkki.N1));			
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		    Kortti[] kasi     = {SIN_N2, VIH_N5};
+		    Kortti[] odotettu = {VIH_N5};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {SIN_N5, VIH_N5, SIN_N2, VIH_N2};
+		    Kortti[] odotettu = {SIN_N5, VIH_N5};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
 		}
-		// Käytetään musta ennen viimeistä
-		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKorttiPlus4());
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKorttiPlus4());
-			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		
+		// Säästetään musta loppuun.
+		{		
+		    Kortti[] kasi     = {PLUS_4, VIH_N5, SIN_N2, PUN_N2, KEL_N1};
+		    Kortti[] odotettu = {VIH_N5};
+			assertArrayEquals(odotettu, viisas.getKortti(kasi));
+		}{		
+		    Kortti[] kasi     = {SIN_N6, PUN_N2, KEL_N1, JOKERI};
+		    Kortti[] odotettu = {SIN_N6};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
 		}
-		// Jätetään viimeiseksi kortti, joka sopii käteenjäävään.
+		
+		// Käytetään musta ennen viimeistä.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N2));
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKortti(Vari.SININEN, Merkki.N5));
-			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		    Kortti[] kasi     = {VIH_N5, PLUS_4};
+		    Kortti[] odotettu = {PLUS_4};
+			assertArrayEquals(odotettu, viisas.getKortti(kasi));
+		}{
+		    Kortti[] kasi     = {VIH_N5, SIN_N5, JOKERI};
+		    Kortti[] odotettu = {JOKERI};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N5b, JOKERI};
+		    Kortti[] odotettu = {JOKERI};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {PUN_N2, SIN_N2, PLUS_4, JOKERI};
+		    Kortti[] odotettu = {PLUS_4};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
 		}
-		// Jätetään viimeiseksi kaksi samanväristä
+		
+		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N2));
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			assertEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N2};
+		    Kortti[] odotettu = {SIN_N5, VIH_N5};
+			assertArrayEquals(odotettu, viisas.getKortti(kasi));
+		}{
+		    Kortti[] kasi     = {SIN_N2, VIH_N7, VIH_N2}; //vain eri järjestys
+		    Kortti[] odotettu = {SIN_N2, VIH_N2};
+			assertArrayEquals(odotettu, viisas.getKortti(kasi));
 		}
-		// Jos käteen jää yli kolme korttia, yritetään poistaa yleisin väri
+		
+		// Jätetään viimeiseksi kaksi samanväristä.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N2));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N1));
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.SUUNNANVAIHTO));
-			Vector<Kortti> odotettu = new Vector<Kortti>();
-			odotettu.add(Kortti.testiKortti(Vari.VIHREA, Merkki.N5));
-			assertNotEquals(odotettu.toString(), viisas.getKortti(kasi).toString());
+		    Kortti[] kasi     = {VIH_N5, SIN_N6, SIN_N2};
+		    Kortti[] odotettu = {VIH_N5};
+			assertArrayEquals(odotettu, viisas.getKortti(kasi));
+		}{
+		    Kortti[] kasi     = {VIH_N2, SIN_N6, VIH_N5};
+		    Kortti[] odotettu = {SIN_N6};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}
+		
+		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri.
+		{
+		    Kortti[] kasi     = {SIN_N6, VIH_N5, VIH_N7, VIH_N2};
+		    Kortti[] odotettu = {VIH_N5};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
+		}{
+		    Kortti[] kasi     = {SIN_N2, SIN_N0, SIN_N6, VIH_N5};
+		    Kortti[] odotettu = {SIN_N2};
+		    assertEquals(Arrays.toString(odotettu), Arrays.toString(viisas.getKortti(kasi)));
 		}
 	}
 
 	@Test
 	void testGetVari() {
-		
-		Viisas viisas = new Viisas();
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N5));
@@ -98,9 +136,7 @@ class ViisasTest {
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
 		{
-			Vector<Kortti> kasi = new Vector<Kortti>();
-			kasi.add(Kortti.testiKorttiPlus4());
-			kasi.add(Kortti.testiKortti(Vari.SININEN, Merkki.N6));
+		    Kortti[] kasi    = {PLUS_4, SIN_N6};
 			viisas.getKortti(kasi);
 			assertEquals(Vari.SININEN, viisas.getVari());
 		}
