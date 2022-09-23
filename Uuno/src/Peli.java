@@ -90,7 +90,7 @@ public class Peli {
             pelaajat.add(new Pelaaja());
         }
 
-        for(int t=0;t<100;t++){
+        for(int t=0;t<10000;t++){
         	
         	//alustetaan
         	Pöytä.pöytä.reset();
