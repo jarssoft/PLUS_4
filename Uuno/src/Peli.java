@@ -92,14 +92,14 @@ public class Peli {
 
         for(int t=0;t<10000;t++){
         	
-        	//alustetaan
+        	// Alustetaan
         	Pöytä.pöytä.reset();
             for(Pelaaja p: pelaajat){
                 p.nosta(7);
             }            
             assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
             
-            //pelataan
+            // Pelataan
             peli(new LinkedList<Pelaaja>(pelaajat));
             assert(Pöytä.pöytä.size() == 108);
 

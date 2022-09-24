@@ -34,16 +34,6 @@ public class Viisas implements Tekoäly {
             }
 		}
 		
-		// Jätetään viimeiseksi kaksi samanväristä (0, +1) (0, 0)
-		
-		if(jatettava.size()==2) {
-			if(!jatettava.get(0).isMusta() && !jatettava.get(1).isMusta()) {
-				if(jatettava.get(0).getVari() == jatettava.get(1).getVari()) {
-					hyvyys+=3;
-				}
-			}
-		}
-		
 		// Yritetään aina vaihtaa väriä (-0.01, 0), (0, -0.3)
 
 		if(!viimeinen.isMusta() && !poisto.isMusta()) {
@@ -54,10 +44,10 @@ public class Viisas implements Tekoäly {
 		
 		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri. (+0.06, +4), (+0.03, +3)
 		/*
-		if(ehdokasjatettava.size()>2) {        			
+		if(jatettava.size()>2) {        			
 			//ratkaistaan yleisimmän värin korttimäärä
 			int maarat[] = {0,0,0,0};
-            for (Kortti jk : ehdokasjatettava) {
+            for (Kortti jk : jatettava) {
             	if(!jk.isMusta()) {
                     maarat[jk.getVari().ordinal()]++;
             	}
@@ -72,9 +62,21 @@ public class Viisas implements Tekoäly {
                
             }
             //rangaistaan määrän mukaisesti
-            ehdokashyvyys-=max;
-		}*/
-				
+            hyvyys-=max;
+		}
+		
+		
+		// Jätetään viimeiseksi kaksi samanväristä (0, +1) (0, 0)
+		
+		if(jatettava.size()==2) {
+			if(!jatettava.get(0).isMusta() && !jatettava.get(1).isMusta()) {
+				if(jatettava.get(0).getVari() == jatettava.get(1).getVari()) {
+					//hyvyys+=3;
+				}
+			}
+		}
+		*/
+		
 		// Säästetään mustia tosipaikan varalle
 		
 		if(jatettava.size()>=3
@@ -125,12 +127,24 @@ public class Viisas implements Tekoäly {
                     }
                 }
 	        	
-                int ehdokashyvyys = hyvyys(ehdokaslyotava, ehdokasjatettava);
-	        	
-	        	if(ehdokashyvyys>parashyvyys) {
-	        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-	        		parashyvyys=ehdokashyvyys;
-	        	}
+                //kaikki mahdolliset permutaatiot, jotka loppuvat eri korttiin
+                for (int rot = 0; rot < Math.max(1, ehdokaslyotava.size() - 1); rot++) {
+                	
+                	if(rot>0) {
+	                	int alkuperainenkoko=ehdokaslyotava.size();
+	                	Kortti viimeinen = ehdokaslyotava.lastElement();
+	                	ehdokaslyotava.remove(ehdokaslyotava.size()-1);
+	                	ehdokaslyotava.insertElementAt(viimeinen, 1);
+	                	assert(alkuperainenkoko == ehdokaslyotava.size());
+                	}
+                	
+	                int ehdokashyvyys = hyvyys(ehdokaslyotava, ehdokasjatettava);
+		        	
+		        	if(ehdokashyvyys>parashyvyys) {
+		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
+		        		parashyvyys=ehdokashyvyys;
+		        	}
+                }
         	}
         }
         

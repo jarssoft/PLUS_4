@@ -44,8 +44,8 @@ class ViisasTest {
 		testaa( new Kortti[]{VIH_N5, SIN_N2, PUN_N2}, 
 	    		new Kortti[]{VIH_N5});
 		
-		testaa( new Kortti[]{VIH_N5, SIN_N5, SIN_N2}, 
-	    		new Kortti[]{SIN_N2});
+		testaa( new Kortti[]{VIH_N5, SIN_N5, SIN_N2, SIN_N6, SIN_N0}, 
+				Vari.SININEN);
 		
 		testaa( new Kortti[]{VIH_N5, SIN_N5, VIH_N5b, SIN_N2}, 
 	    		new Kortti[]{SIN_N2});
@@ -53,7 +53,10 @@ class ViisasTest {
 		// Yritetään aina vaihtaa väriä.
 		
 		testaa( new Kortti[]{SIN_N2, VIH_N5}, 
-	    		new Kortti[]{VIH_N5});
+	    		Vari.VIHREA);
+		
+		testaa( new Kortti[]{SIN_N2, SIN_N6, KEL_N5, KEL_N8}, 
+	    		Vari.KELTAINEN);
 		
 		// Säästetään musta loppuun.
 		
@@ -85,22 +88,32 @@ class ViisasTest {
 	    
 	    testaa( new Kortti[]{SIN_N2, VIH_N7, VIH_N2}, 
 	    		new Kortti[]{SIN_N2, VIH_N2});
-		
-		// Jätetään viimeiseksi kaksi samanväristä.
-
-		testaa( new Kortti[]{VIH_N5, SIN_N6, SIN_N2}, 
-	    		new Kortti[]{VIH_N5});
 	    
-	    testaa( new Kortti[]{VIH_N2, SIN_N6, VIH_N5}, 
-	    		new Kortti[]{SIN_N6});
-		
-		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri.
+	    testaa( new Kortti[]{SIN_N5, VIH_N5, KEL_N5, KEL_N8}, 
+	    		Vari.KELTAINEN);
+	    
+	    testaa( new Kortti[]{SIN_N5, VIH_N5, KEL_N5, VIH_N7}, 
+	    		Vari.VIHREA);
+				
+		// Jätetään viimeiseksi kaksi samanväristä (Huonontaa tilannetta.)
 
+		//testaa( new Kortti[]{VIH_N5, SIN_N6, SIN_N2}, 
+		//		Vari.VIHREA);
+	    
+	    //testaa( new Kortti[]{VIH_N2, SIN_N6, VIH_N5}, 
+	    //		new Kortti[]{SIN_N6});
+		
+		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri (Huonontaa tilannetta merkittävästi.)
+	    /*
 		testaa( new Kortti[]{SIN_N6, VIH_N5, VIH_N7, VIH_N2}, 
-	    		new Kortti[]{VIH_N5});
+				Vari.VIHREA);
 	    
 	    testaa( new Kortti[]{KEL_N1, KEL_N5, KEL_N8, SIN_N0, SIN_N6}, 
-	    		new Kortti[]{KEL_N5});
+	    		Vari.KELTAINEN);
+	    
+	    testaa( new Kortti[]{KEL_N1, KEL_N5, SIN_N2, SIN_N0, SIN_N6}, 
+	    		Vari.SININEN);
+	    		*/
 
 	}
 
@@ -117,6 +130,19 @@ class ViisasTest {
     		Collections.reverse(kasiV);    	
 	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
 	    	assertEquals(odotettuV.toString(), lyotavaV.toString());
+		}
+		
+	}
+	
+	void testaa(Kortti[] kasi, Vari vari) {		
+				
+		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
+		
+		for(int t=0;t<2;t++)
+		{	    	
+    		Collections.reverse(kasiV);    	
+	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
+	    	assertEquals(vari, lyotavaV.lastElement().getVari());
 		}
 		
 	}

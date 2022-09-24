@@ -42,7 +42,7 @@ public class KööriIterator<T>  implements Iterator<T> {
         final int muutos = (int)Math.pow(-1, m);
         suunta *= muutos;
 
-        //Jos suunta vaihtuu, joudutaan siirtymään askel.
+        // Jos suunta vaihtuu, joudutaan siirtymään askel.
         if(muutos<0){
             next();
         }
@@ -96,7 +96,7 @@ public class KööriIterator<T>  implements Iterator<T> {
         assert(ki.next()==1);
         ki.remove();
 
-        // listassa ei ole muita elementtejä
+        // Listassa ei ole muita elementtejä
         assert(ki.hasNext()==false);
         
     }
