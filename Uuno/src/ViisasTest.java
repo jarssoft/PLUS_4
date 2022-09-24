@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.Vector;
@@ -39,106 +40,107 @@ class ViisasTest {
 		viisas.tapahtuma(new Logi("0", lyoty, null, 0, 5));
 		
 		// Maksimoidaan jääviin kortteihin erilaisten värien määrä.
-		{
-		    Kortti[] kasi     =  {VIH_N5, SIN_N2, PUN_N2};
-		    Kortti[] odotettu = {VIH_N5};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {VIH_N5, SIN_N5, SIN_N2};
-		    Kortti[] odotettu = {SIN_N2};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N5b, SIN_N2};
-		    Kortti[] odotettu = {SIN_N2};
-		    testaa(kasi, odotettu);
-		}
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N2, PUN_N2}, 
+	    		new Kortti[]{VIH_N5});
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N5, SIN_N2}, 
+	    		new Kortti[]{SIN_N2});
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N5, VIH_N5b, SIN_N2}, 
+	    		new Kortti[]{SIN_N2});
 		
 		// Yritetään aina vaihtaa väriä.
-		{
-		    Kortti[] kasi     = {SIN_N2, VIH_N5};
-		    Kortti[] odotettu = {VIH_N5};
-		    testaa(kasi, odotettu);
-		}
+		
+		testaa( new Kortti[]{SIN_N2, VIH_N5}, 
+	    		new Kortti[]{VIH_N5});
 		
 		// Säästetään musta loppuun.
-		{		
-		    Kortti[] kasi     = {PLUS_4, VIH_N5, SIN_N2, PUN_N2, KEL_N1};
-		    Kortti[] odotettu = {VIH_N5};
-		    testaa(kasi, odotettu);
-		}{		
-		    Kortti[] kasi     = {SIN_N6, PUN_N2, KEL_N1, JOKERI};
-		    Kortti[] odotettu = {SIN_N6};
-		    testaa(kasi, odotettu);
-		}
+		
+		testaa( new Kortti[]{PLUS_4, VIH_N5, SIN_N2, PUN_N2, KEL_N1}, 
+	    		new Kortti[]{VIH_N5});
+		
+		testaa( new Kortti[]{SIN_N6, PUN_N2, KEL_N1, JOKERI}, 
+	    		new Kortti[]{SIN_N6});
 		
 		// Käytetään musta ennen viimeistä.
-		{
-		    Kortti[] kasi     = {VIH_N5, PLUS_4};
-		    Kortti[] odotettu = {PLUS_4};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {VIH_N5, SIN_N5, JOKERI};
-		    Kortti[] odotettu = {JOKERI};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N5b, JOKERI};
-		    Kortti[] odotettu = {JOKERI};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {PUN_N2, SIN_N2, PLUS_4, PLUS_4};
-		    Kortti[] odotettu = {PLUS_4};
-		    testaa(kasi, odotettu);
-		}
+
+		testaa( new Kortti[]{VIH_N5, PLUS_4}, 
+	    		new Kortti[]{PLUS_4});
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N5, JOKERI}, 
+	    		new Kortti[]{JOKERI});
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N5, VIH_N5b, JOKERI}, 
+	    		new Kortti[]{JOKERI});
+		
+		testaa( new Kortti[]{PUN_N2, SIN_N2, PLUS_4, JOKERI}, 
+	    		new Kortti[]{PLUS_4},
+	    		new Kortti[]{JOKERI});
 		
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
-		{
-		    Kortti[] kasi     = {VIH_N5, SIN_N5, VIH_N2};
-		    Kortti[] odotettu = {SIN_N5, VIH_N5};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {SIN_N2, VIH_N7, VIH_N2}; //vain eri järjestys
-		    Kortti[] odotettu = {SIN_N2, VIH_N2};
-		    testaa(kasi, odotettu);
-		}
+
+		testaa( new Kortti[]{VIH_N5, SIN_N5, VIH_N2}, 
+	    		new Kortti[]{SIN_N5, VIH_N5});
+	    
+	    testaa( new Kortti[]{SIN_N2, VIH_N7, VIH_N2}, 
+	    		new Kortti[]{SIN_N2, VIH_N2});
 		
 		// Jätetään viimeiseksi kaksi samanväristä.
-		{
-		    Kortti[] kasi     = {VIH_N5, SIN_N6, SIN_N2};
-		    Kortti[] odotettu = {VIH_N5};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {VIH_N2, SIN_N6, VIH_N5};
-		    Kortti[] odotettu = {SIN_N6};
-		    testaa(kasi, odotettu);
-		}
+
+		testaa( new Kortti[]{VIH_N5, SIN_N6, SIN_N2}, 
+	    		new Kortti[]{VIH_N5});
+	    
+	    testaa( new Kortti[]{VIH_N2, SIN_N6, VIH_N5}, 
+	    		new Kortti[]{SIN_N6});
 		
 		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri.
-		{
-		    Kortti[] kasi     = {SIN_N6, VIH_N5, VIH_N7, VIH_N2};
-		    Kortti[] odotettu = {VIH_N5};
-		    testaa(kasi, odotettu);
-		}{
-		    Kortti[] kasi     = {KEL_N1, KEL_N5, KEL_N8, SIN_N0, SIN_N6};
-		    Kortti[] odotettu = {KEL_N5};
-		    testaa(kasi, odotettu);
-		}
+
+		testaa( new Kortti[]{SIN_N6, VIH_N5, VIH_N7, VIH_N2}, 
+	    		new Kortti[]{VIH_N5});
+	    
+	    testaa( new Kortti[]{KEL_N1, KEL_N5, KEL_N8, SIN_N0, SIN_N6}, 
+	    		new Kortti[]{KEL_N5});
+
 	}
 
 	void testaa(Kortti[] kasi, Kortti[] odotettu) {		
-    	
+    			
 		Vector<Kortti> odotettuV = new Vector<Kortti>(Arrays.asList(odotettu));		
 		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
+		for(Kortti o: odotettuV) {
+			assert(kasiV.contains(o));
+		}
 		
-		{
+		for(int t=0;t<2;t++)
+		{	    	
+    		Collections.reverse(kasiV);    	
 	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
 	    	assertEquals(odotettuV.toString(), lyotavaV.toString());
 		}
-    	    	
-    	Collections.reverse(kasiV);
-    	
+		
+	}
+	
+	void testaa(Kortti[] kasi, Kortti[] odotettu1, Kortti[] odotettu2) {		
+		
+		Vector<Kortti> odotettu1V = new Vector<Kortti>(Arrays.asList(odotettu1));		
+		Vector<Kortti> odotettu2V = new Vector<Kortti>(Arrays.asList(odotettu2));
+		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
+		for(Kortti o: odotettu1V) {
+			assert(kasiV.contains(o));
+		}
+		for(Kortti o: odotettu2V) {
+			assert(kasiV.contains(o));
+		}
+		
+		for(int t=0;t<2;t++)
 		{
-	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
-	    	assertEquals(odotettuV.toString(), lyotavaV.toString());
+			Collections.reverse(kasiV);
+			
+	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);   
+	    	//assertEquals(odotettu1V.toString(), lyotavaV.toString());
+	    	assertTrue(lyotavaV.toString().equals(odotettu1V.toString()) 
+	    			|| lyotavaV.toString().equals(odotettu2V.toString()) );
 		}
 		
 	}

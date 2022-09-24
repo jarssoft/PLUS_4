@@ -15,30 +15,31 @@ public class Viisas implements Tekoäly {
         }
     }
 
-    int hyvyys(Vector<Kortti> ehdokaslyotava, Vector<Kortti> ehdokasjatettava) {
+    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) {
     	
     	// Pienempi käsi on parempi (-0.17)
         
-    	int ehdokashyvyys = ehdokaslyotava.size() * -2;
+    	int hyvyys = lyotava.size() * -2;
     	
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään (-0.01, -1)
     	
-		Kortti viimeinen = ehdokaslyotava.lastElement();
+		Kortti viimeinen = lyotava.lastElement();
 		if(!viimeinen.isMusta()) {
-            for (Kortti jk : ehdokasjatettava) {
+            for (Kortti jk : jatettava) {
             	if(!jk.isMusta()) {
                     if(viimeinen.getVari() == jk.getVari()){
-                    	ehdokashyvyys+=1;
+                    	hyvyys+=1;
                     }
             	}
             }
 		}
 		
 		// Jätetään viimeiseksi kaksi samanväristä (0, +1) (0, 0)
-		if(ehdokasjatettava.size()==2) {
-			if(!ehdokasjatettava.get(0).isMusta() && !ehdokasjatettava.get(1).isMusta()) {
-				if(ehdokasjatettava.get(0).getVari() == ehdokasjatettava.get(1).getVari()) {
-					ehdokashyvyys+=3;
+		
+		if(jatettava.size()==2) {
+			if(!jatettava.get(0).isMusta() && !jatettava.get(1).isMusta()) {
+				if(jatettava.get(0).getVari() == jatettava.get(1).getVari()) {
+					hyvyys+=3;
 				}
 			}
 		}
@@ -47,7 +48,7 @@ public class Viisas implements Tekoäly {
 
 		if(!viimeinen.isMusta() && !poisto.isMusta()) {
     		if(viimeinen.getVari().toString() != this.poisto.getVari().toString()) {
-    			ehdokashyvyys+=1;
+    			hyvyys+=1;
     		}
 		}
 		
@@ -73,24 +74,27 @@ public class Viisas implements Tekoäly {
             //rangaistaan määrän mukaisesti
             ehdokashyvyys-=max;
 		}*/
+				
+		// Säästetään mustia tosipaikan varalle
+		
+		if(jatettava.size()>=3
+				&& lyotava.firstElement().isMusta()) {
+			hyvyys-=1;
+		}
 		
 		// Ei jätetä mustia viimeisiksi (-0.02, -0.3)
 		
-		if(ehdokasjatettava.size()==1 
-				&& ehdokasjatettava.firstElement().isMusta()) {
-			ehdokashyvyys-=10;
+		if(jatettava.size()==1 
+				&& jatettava.firstElement().isMusta()) {
+			hyvyys-=10;
 		}
-		if(ehdokasjatettava.size()==2 
-				&& ehdokasjatettava.firstElement().isMusta() 
-				&& ehdokasjatettava.lastElement().isMusta()) {
-			ehdokashyvyys-=10;
-		}
-		if(ehdokasjatettava.size()>=3
-				&& ehdokaslyotava.firstElement().isMusta()) {
-			ehdokashyvyys-=1;
+		if(jatettava.size()==2 
+				&& jatettava.firstElement().isMusta() 
+				&& jatettava.lastElement().isMusta()) {
+			hyvyys-=10;
 		}
 		
-		return ehdokashyvyys;
+		return hyvyys;
     	
     }
     
