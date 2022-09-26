@@ -25,6 +25,7 @@ class ViisasTest {
 	
 	private final Kortti PUN_SV = Kortti.testiKortti(Vari.PUNAINEN, Merkki.SUUNNANVAIHTO);
 	private final Kortti PUN_OH = Kortti.testiKortti(Vari.PUNAINEN, Merkki.OHITUS);
+	private final Kortti PUN_PL = Kortti.testiKortti(Vari.PUNAINEN, Merkki.PLUS2);
 	
 	private Viisas viisas = new Viisas();
 	
@@ -131,6 +132,10 @@ class ViisasTest {
 		ohitus3.add(PUN_OH);
 		ohitus3.add(PUN_OH);
 		ohitus3.add(PUN_OH);
+		Vector<Kortti> plus4 = new Vector<Kortti>();
+		plus4.add(PLUS_4);
+		Vector<Kortti> plus2 = new Vector<Kortti>();
+		plus2.add(PUN_PL);
 		{
 			Viisas tviisas = new Viisas();			
 			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
@@ -139,6 +144,16 @@ class ViisasTest {
 			assertEquals(4, tviisas.getPelaajaIndex());
 			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
 			assertEquals(5, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		{
+			Viisas tviisas = new Viisas();			
+			tviisas.tapahtuma(new Logi("0", plus4, null, 7, 7));
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("2", plus2, null, 0, 6));
+			assertEquals(3, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(4, tviisas.numberOfPlayers());
 			assertEquals(0, tviisas.getPelaajaIndex());
 		}
 		{

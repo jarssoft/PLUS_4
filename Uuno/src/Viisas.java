@@ -6,7 +6,8 @@ public class Viisas implements Tekoäly {
     protected Vari vari;
     protected Kortti poisto;
     protected Vector<String> pelaajat = new Vector<String>();
-    protected int lukittu=0;
+    
+    protected int pelaajamäärä=0;
     protected int suunta=1;
     
     private int pelaajaindex=0;
@@ -26,12 +27,21 @@ public class Viisas implements Tekoäly {
             this.vari=logi.vari;
             this.poisto=logi.lyonti.lastElement();
         	
-            if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
-            	nopeus = logi.lyonti.size()+1;
-            } 
+            if(!this.poisto.isMusta()){
+        		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
+        			nopeus = logi.lyonti.size()+1;
+        		}
+        		if(this.poisto.getMerkki() == Merkki.PLUS2) {        	
+        			nopeus = 2;
+        		}
+            }else {
+            	if(this.poisto.isPlus4()){
+            		nopeus = 2;
+            	}
+            }
         }
         
-        if(lukittu==0) {
+        if(pelaajamäärä==0) {
         	
             if(oikea==null) {
             	
@@ -42,6 +52,8 @@ public class Viisas implements Tekoäly {
             	oikea=logi.pelaaja;
             	vasen=logi.pelaaja;
             	
+            	pelaajaindex+=nopeus-1;
+            	
             }else{
             	
             	pelaajaindex+=suunta*nopeus;
@@ -49,20 +61,20 @@ public class Viisas implements Tekoäly {
 	        	if(suunta>0) {
 			        if(pelaajaindex>0) {
 			        	if(vasen==logi.pelaaja) {			        		
-			        		lukittu=highestindex-lowestindex+1;
+			        		pelaajamäärä=highestindex-lowestindex+1;
 			        		pelaajaindex=0;
 			        	}
 			        }
 	        	}else {
 			        if(pelaajaindex<0) {
 			        	if(oikea==logi.pelaaja) {			        		
-			        		lukittu=highestindex-lowestindex+1;
-			        		pelaajaindex=lukittu-1;
+			        		pelaajamäärä=highestindex-lowestindex+1;
+			        		pelaajaindex=pelaajamäärä-1;
 			        	}
 			        }
 	        	}
 	        	
-	        	if(lukittu==0) {
+	        	if(pelaajamäärä==0) {
 	        		highestindex=Math.max(pelaajaindex, highestindex);
 	        		lowestindex=Math.min(pelaajaindex, lowestindex);
 	        		if(pelaajaindex == highestindex) {
@@ -76,22 +88,33 @@ public class Viisas implements Tekoäly {
         	
         }else {
         	pelaajaindex+=suunta*nopeus;
-        	pelaajaindex=Math.floorMod(pelaajaindex, lukittu);
+        	pelaajaindex=Math.floorMod(pelaajaindex, pelaajamäärä);
         }
         
-        if(this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
+        if(!this.poisto.isMusta() && this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
         	suunta *= (int)Math.pow(-1, logi.lyonti.size());
         }        
         
     }
     
     int numberOfPlayers() {
-    	return lukittu;
+    	return pelaajamäärä;
     }
     
     int getPelaajaIndex() {
     	return pelaajaindex;
     }
+    
+    /*
+    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava, Vastustaja ohitettava, Vastustaja seuraava) {
+    
+    	//ei anneta vuoroa sille, jolla on vähän kortteja
+    	
+    	//pyritään antamaan puuttuva kortti
+    	  
+    	//annetaan plus4, jos vähän kortteja
+    	 
+    }*/
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
