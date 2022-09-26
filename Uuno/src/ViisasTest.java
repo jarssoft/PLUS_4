@@ -23,11 +23,152 @@ class ViisasTest {
 	private final Kortti PLUS_4 = Kortti.testiKorttiPlus4();
 	private final Kortti JOKERI = Kortti.testiKorttiJokeri();
 	
+	private final Kortti PUN_SV = Kortti.testiKortti(Vari.PUNAINEN, Merkki.SUUNNANVAIHTO);
+	private final Kortti PUN_OH = Kortti.testiKortti(Vari.PUNAINEN, Merkki.OHITUS);
+	
 	private Viisas viisas = new Viisas();
 	
 	@Test
 	void testTapahtuma() {
 		//fail("Not yet implemented");
+	}
+	
+	@Test
+	void testNumberOfPlayers() {
+		Vector<Kortti> lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_N2);
+		
+		// Ei erikoiskortteja		
+		{
+			Viisas tviisas = new Viisas();
+			assertEquals(0, tviisas.numberOfPlayers());
+		}
+		{
+			Viisas tviisas = new Viisas();			
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("1", lyoty, null, 0, 6));
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(2, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		{
+			Viisas tviisas = new Viisas();
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			tviisas.tapahtuma(new Logi("1", lyoty, null, 0, 6));
+			tviisas.tapahtuma(new Logi("2", lyoty, null, 0, 6));
+			tviisas.tapahtuma(new Logi("3", lyoty, null, 0, 6));
+			assertEquals(3, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(4, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		
+		// Suunnanvaihto
+		
+		Vector<Kortti> lyotysv = new Vector<Kortti>();
+		lyotysv.add(PUN_SV);
+		Vector<Kortti> lyotysv2 = new Vector<Kortti>();
+		lyotysv2.add(PUN_SV);
+		lyotysv2.add(PUN_SV);		
+		Vector<Kortti> lyotysv3 = new Vector<Kortti>();
+		lyotysv3.add(PUN_SV);
+		lyotysv3.add(PUN_SV);
+		lyotysv3.add(PUN_SV);
+		
+		{
+			Viisas tviisas = new Viisas();			
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			tviisas.tapahtuma(new Logi("1", lyotysv, null, 0, 6));
+			assertEquals(0, tviisas.numberOfPlayers());
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(0, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("2", lyoty, null, 0, 6));
+			assertEquals(0, tviisas.numberOfPlayers());
+			tviisas.tapahtuma(new Logi("1", lyoty, null, 0, 5));
+			assertEquals(3, tviisas.numberOfPlayers());
+			assertEquals(2, tviisas.getPelaajaIndex());
+			
+		}
+		{
+			Viisas tviisas = new Viisas();						
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			tviisas.tapahtuma(new Logi("1", lyotysv, null, 0, 6));
+			tviisas.tapahtuma(new Logi("0", lyotysv, null, 0, 6));
+			tviisas.tapahtuma(new Logi("1", lyoty, null, 0, 6));
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 5));
+			assertEquals(2, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		{
+			Viisas tviisas = new Viisas();						
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			tviisas.tapahtuma(new Logi("1", lyotysv2, null, 0, 6));
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 5));
+			assertEquals(2, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		{
+			Viisas tviisas = new Viisas();
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			tviisas.tapahtuma(new Logi("1", lyotysv, null, 0, 6));
+			tviisas.tapahtuma(new Logi("0", lyotysv3, null, 0, 6));
+			tviisas.tapahtuma(new Logi("1", lyoty, null, 0, 6));
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(2, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		
+		// Ohitus
+		
+		Vector<Kortti> ohitus = new Vector<Kortti>();
+		ohitus.add(PUN_OH);
+		Vector<Kortti> ohitus3 = new Vector<Kortti>();
+		ohitus3.add(PUN_OH);
+		ohitus3.add(PUN_OH);
+		ohitus3.add(PUN_OH);
+		{
+			Viisas tviisas = new Viisas();			
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("1", ohitus3, null, 0, 6));
+			assertEquals(4, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 0, 6));
+			assertEquals(5, tviisas.numberOfPlayers());
+			assertEquals(0, tviisas.getPelaajaIndex());
+		}
+		{
+			Viisas tviisas = new Viisas();			
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("1", ohitus, null, 0, 6));
+			assertEquals(2, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("3", lyotysv, null, 0, 6));
+			assertEquals(3, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("2", ohitus, null, 0, 6));
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("0", lyoty, null, 7, 7));
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("3", lyoty, null, 7, 7));
+			assertEquals(4, tviisas.numberOfPlayers());
+			assertEquals(3, tviisas.getPelaajaIndex());
+			
+			tviisas.tapahtuma(new Logi("2", lyoty, null, 7, 7));
+			assertEquals(2, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("1", ohitus, null, 0, 6));
+			assertEquals(0, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("3", ohitus, null, 0, 6));
+			assertEquals(2, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("1", lyotysv, null, 0, 6));
+			assertEquals(1, tviisas.getPelaajaIndex());
+			tviisas.tapahtuma(new Logi("2", lyotysv, null, 0, 6));
+			assertEquals(2, tviisas.getPelaajaIndex());
+		}
+		
 	}
     
 	@Test
@@ -57,6 +198,12 @@ class ViisasTest {
 		
 		testaa( new Kortti[]{SIN_N2, SIN_N6, KEL_N5, KEL_N8}, 
 	    		Vari.KELTAINEN);
+		
+		testaa( new Kortti[]{VIH_N7, SIN_N5, KEL_N5, PUN_N2}, 
+	    		Vari.KELTAINEN);
+		
+		testaa( new Kortti[]{VIH_N5, SIN_N5, VIH_N5b, PUN_N2, KEL_N8}, 
+				Vari.VIHREA);
 		
 		// Säästetään musta loppuun.
 		
@@ -94,6 +241,9 @@ class ViisasTest {
 	    
 	    testaa( new Kortti[]{SIN_N5, VIH_N5, KEL_N5, VIH_N7}, 
 	    		Vari.VIHREA);
+	    
+	    testaa( new Kortti[]{SIN_N5, VIH_N5, VIH_N5b, KEL_N5, KEL_N8, KEL_N1, PUN_N2}, 
+	    		Vari.KELTAINEN);
 				
 		// Jätetään viimeiseksi kaksi samanväristä (Huonontaa tilannetta.)
 
@@ -126,7 +276,7 @@ class ViisasTest {
 		}
 		
 		for(int t=0;t<2;t++)
-		{	    	
+		{
     		Collections.reverse(kasiV);    	
 	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
 	    	assertEquals(odotettuV.toString(), lyotavaV.toString());
@@ -139,7 +289,7 @@ class ViisasTest {
 		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
 		
 		for(int t=0;t<2;t++)
-		{	    	
+		{
     		Collections.reverse(kasiV);    	
 	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
 	    	assertEquals(vari, lyotavaV.lastElement().getVari());
@@ -185,6 +335,15 @@ class ViisasTest {
 			viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi)));
 			assertEquals(Vari.SININEN, viisas.getVari());
 		}
+		
+		// Valitaan väri, joka on ylinen käsikorttien kanssa
+		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
+		{
+		    Kortti[] kasi    = {PLUS_4, SIN_N6};
+			viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi)));
+			assertEquals(Vari.SININEN, viisas.getVari());
+		}
+		
 	}
 
 }

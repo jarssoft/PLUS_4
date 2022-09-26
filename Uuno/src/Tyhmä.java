@@ -3,16 +3,15 @@ import java.util.Vector;
 // Ainut osa joka tekee päätöksiä.
 public class Tyhmä implements Tekoäly {
 
-    private Vari vari;
-    private Kortti poisto;
+    protected Vari vari;
+    protected Kortti poisto;
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
 	public void tapahtuma(Logi logi){
-        
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
-            this.poisto=logi.lyonti.get(logi.lyonti.size()-1);
+            this.poisto=logi.lyonti.lastElement();
         }
     }
 

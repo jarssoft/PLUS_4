@@ -1,6 +1,7 @@
 import java.lang.Math;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Collections;
 import java.util.Iterator;
 
 // Hoitaa uuno-pelissä pelaajien vuorottelun mukaan lukien
@@ -12,8 +13,9 @@ public class KööriIterator<T>  implements Iterator<T> {
     private int suunta=1;
 
     public KööriIterator(LinkedList<T> pelaajat){
-       this.pelaajat = pelaajat;
-       iterator = this.pelaajat.listIterator(0);
+        assert(pelaajat != null);
+        this.pelaajat = pelaajat;
+        iterator = this.pelaajat.listIterator(0);
     }
 
     public boolean hasNext(){

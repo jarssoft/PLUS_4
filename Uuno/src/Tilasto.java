@@ -51,8 +51,6 @@ public class Tilasto {
         	}
     	}
 		
-
-		
     	if(logi.kasikoko==0) {
 
     		pelaajia--;
@@ -64,7 +62,6 @@ public class Tilasto {
     		}
     	}
     	vuoro++;
-    	
     }
         
     static String formatvalue(ArrayList<Integer> al) {

@@ -51,5 +51,4 @@ public class Logi {
        return("p:" + pelaaja + " l:" + lyonti
                  + " v:" + vari + " n:" + nostot + " k:" + kasikoko);
     }
-
 }

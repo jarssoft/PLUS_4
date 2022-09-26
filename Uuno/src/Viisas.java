@@ -3,18 +3,98 @@ import java.util.Vector;
 // Ainut osa joka tekee päätöksiä.
 public class Viisas implements Tekoäly {
 
-    private Vari vari;
-    private Kortti poisto;
+    protected Vari vari;
+    protected Kortti poisto;
+    protected Vector<String> pelaajat = new Vector<String>();
+    protected int lukittu=0;
+    protected int suunta=1;
+    
+    private int pelaajaindex=0;
+    private int highestindex=0;
+    private int lowestindex=0;
+    
+    String oikea;
+    String vasen;
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
-	public void tapahtuma(Logi logi){
+	public void tapahtuma(Logi logi){    	
+    	
+    	int nopeus=1;
+    	
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
             this.poisto=logi.lyonti.lastElement();
+        	
+            if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
+            	nopeus = logi.lyonti.size()+1;
+            } 
         }
+        
+        if(lukittu==0) {
+        	
+            if(oikea==null) {
+            	
+            	pelaajaindex=0;
+                highestindex=0;
+                lowestindex=0;
+                            	
+            	oikea=logi.pelaaja;
+            	vasen=logi.pelaaja;
+            	
+            }else{
+            	
+            	pelaajaindex+=suunta*nopeus;
+            	
+	        	if(suunta>0) {
+			        if(pelaajaindex>0) {
+			        	if(vasen==logi.pelaaja) {			        		
+			        		lukittu=highestindex-lowestindex+1;
+			        		pelaajaindex=0;
+			        	}
+			        }
+	        	}else {
+			        if(pelaajaindex<0) {
+			        	if(oikea==logi.pelaaja) {			        		
+			        		lukittu=highestindex-lowestindex+1;
+			        		pelaajaindex=lukittu-1;
+			        	}
+			        }
+	        	}
+	        	
+	        	if(lukittu==0) {
+	        		highestindex=Math.max(pelaajaindex, highestindex);
+	        		lowestindex=Math.min(pelaajaindex, lowestindex);
+	        		if(pelaajaindex == highestindex) {
+	        			oikea=logi.pelaaja;
+	        		}
+	        		if(pelaajaindex == lowestindex) {
+	        			vasen=logi.pelaaja;
+	        		}
+	        	}
+            }
+        	
+        }else {
+        	pelaajaindex+=suunta*nopeus;
+        	pelaajaindex=Math.floorMod(pelaajaindex, lukittu);
+        }
+        
+        if(this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
+        	suunta *= (int)Math.pow(-1, logi.lyonti.size());
+        }        
+        
     }
-
+    
+    int numberOfPlayers() {
+    	return lukittu;
+    }
+    
+    int getPelaajaIndex() {
+    	return pelaajaindex;
+    }
+    
+    /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
+     *  kun pelitilanteesta ei tiedetä mitään muuta. */
     int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) {
     	
     	// Pienempi käsi on parempi (-0.17)
@@ -108,7 +188,7 @@ public class Viisas implements Tekoäly {
         assert(!kasi.isEmpty());      
         
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
-        int parashyvyys = -1000;
+        int parashyvyys = Integer.MIN_VALUE;
 
         for (Kortti k : kasi) {
         	            

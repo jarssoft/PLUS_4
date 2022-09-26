@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class Peli {
@@ -28,6 +29,7 @@ public class Peli {
     // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta.
     public static void peli(LinkedList<Pelaaja> pelaajat) {
 
+    	assert(pelaajat != null);
         KööriIterator<Pelaaja> ki = new KööriIterator<Pelaaja>(pelaajat);
         while(true){
 
@@ -98,8 +100,9 @@ public class Peli {
                 p.nosta(7);
             }            
             assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
-            
-            // Pelataan
+                       
+            // Pelaajat vaihtavat paikkoja ennen jokaista peliä
+        	Collections.shuffle(pelaajat);            
             peli(new LinkedList<Pelaaja>(pelaajat));
             assert(Pöytä.pöytä.size() == 108);
 

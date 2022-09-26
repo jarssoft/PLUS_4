@@ -162,5 +162,4 @@ public class Kortti {
                     getMerkki().name().substring(0, 2);
         }
     }
-
 }
