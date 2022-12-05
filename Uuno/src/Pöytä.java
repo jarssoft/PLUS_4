@@ -41,7 +41,7 @@ public class Pöytä {
         return this.poistopakka.peek();
     }
 
-    public boolean aloitettu(){
+    public boolean jaettu(){
         return this.poistopakka.size() > 0;
     }
 

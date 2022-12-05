@@ -48,7 +48,7 @@ public class Pelaaja  {
         Vector<Kortti> lyotava = new Vector<Kortti>();
         Vari vari = null;
         
-        if(!Pöytä.pöytä.aloitettu()){            
+        if(!Pöytä.pöytä.jaettu()){            
             
             // Nostetaan aloituskortti niin kauan kun se ei ole musta
             Kortti k;

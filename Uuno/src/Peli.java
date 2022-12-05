@@ -37,7 +37,7 @@ public class Peli {
 
             final Logi logi = ki.next().teeVuoro();
 
-            // Tiedotetaan kaikille pelaajille
+            // Tiedotetaan
 
             for(Pelaaja p: pelaajat){
                 p.tapahtuma(logi);
@@ -92,7 +92,7 @@ public class Peli {
             pelaajat.add(new Pelaaja());
         }
 
-        for(int t=0;t<10000;t++){
+        for(int t=0;t<1;t++){
         	
         	// Alustetaan
         	Pöytä.pöytä.reset();

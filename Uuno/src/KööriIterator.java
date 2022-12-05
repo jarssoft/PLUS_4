@@ -15,7 +15,7 @@ public class KööriIterator<T>  implements Iterator<T> {
     public KööriIterator(LinkedList<T> pelaajat){
         assert(pelaajat != null);
         this.pelaajat = pelaajat;
-        iterator = this.pelaajat.listIterator(0);
+        iterator = this.pelaajat.listIterator(this.pelaajat.size()-1);
     }
 
     public boolean hasNext(){
