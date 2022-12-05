@@ -1,22 +1,30 @@
-// Pelin kaikille yhteiset tapahtumat.
+// Pelin kaikille yhteiset tapahtumat:
+// Jako, lyönnit ja nostot.
 
-// Jako on kirjattava tapahtuma, jotta aloituskortti tiedetään. 
-// Myös jakaja saadaan tarvittaessa tietoon.
-// Toisaalta pelaaja ei tee tilanteessa (tahallista) valintaa.
-// p:0 l:[PLUS_4, PUN_N5] v:null n:2 k:7
+// Jako on kirjattava tapahtuma, jotta aloituskortti (l) tiedetään. 
+// Myös jakaja (p) ja pelaajien määrä (p+1) saadaan tietoon.
+// Jakaja on aina suurin numero. Seuraava pelaaja on p-1 tai 0.
+// Pelaaja ei tee tilanteessa valintaa.
+// p:3 l:[PLUS_4, PUN_N5] v:null n:2 k:7
+
+// Lyönti on tapahtuma, ja siihen liittyvät nostot kirjataan.
+// Pelaaja tekee mahdollisesti valinnan.
+// Mustan kortin lyödessä pitää ilmoittaa väri (v).
+// Pelaaja poistuu pelistä kun k == 0.
+// p:0 l:[SIN_N5, KEL_N5] v:null n:0 k:5
 
 // Sekin on tieto, että ei voi laittaa mitään.
+// Viimeksi lyödyt on vaikeampi löytää, 
+// koska tämä rikkoo säännön, jossa viimeiseksi laitettu olisi aina päällimmäisenä.
 // Pelaaja ei tee valintaa.
-// Viimeksi lyödyt on vaikeampi löytää
-// p:0 l:null v:null n:3 k:2
+// p:1 l:null v:null n:3 k:2
 
-// Plussakortin aiheuttama nosto on tapahtuma, koska pelaajan tilanne muuttuu.
-// Toisaalta pelaaja ei tee tilanteessa valintaa, eikä uutta tietoa synny.
+// Plussakortin lyömistä seuraava nosto on tapahtuma, koska pelaajan tilanne muuttuu.
 // Myös viimeksi lyödyt on vaikeampi löytää
-// p:0 l:null v:null n:4 k:6
+// Pelaaja ei tee valintaa.
+// p:2 l:null v:null n:4 k:6
 
-// Ohitetuksi tuleminen ei ole tapahtuma, eikä suunnanvaihdon 
-// seurauksena välistä jääneitä voida järkevästi merkitä.
+// Ohitetuksi tuleminen ei ole tapahtuma.
 
 // Pelistä lähteneet eivät aiheuta tapahtumia
 
@@ -29,14 +37,14 @@ import java.util.Vector;
 
 public class Logi {
 
-    final String pelaaja;
+    final int pelaaja;
     final Vector<Kortti> lyonti;
     final Vari vari;
     final int nostot;
     final int kasikoko;
 
     // Tiedottaa pelaajalle tapahtumasta.
-    public Logi(String pelaaja, Vector<Kortti> lyonti, 
+    public Logi(int pelaaja, Vector<Kortti> lyonti, 
             Vari vari, int nostot, int kasikoko){
 
         this.pelaaja=pelaaja;

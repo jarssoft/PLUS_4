@@ -86,7 +86,7 @@ public class Pelaaja  {
         lyo(lyotava);
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
-        return new Logi(getNimi(), lyotava, vari, nosto, kasi.size());
+        return new Logi(id, lyotava, vari, nosto, kasi.size());
     }
 
 }

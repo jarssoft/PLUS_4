@@ -37,7 +37,7 @@ public class Tilasto {
     	System.out.print(vuoro+"\t");
 		System.out.println(logi);
     	
-    	if(logi.pelaaja.equals("0")) {
+    	if(logi.pelaaja == 0) {
     		nollanvuorot++;
     		if(logi.kasikoko==0) {    			
     			nollanvuorot_l.add(nollanvuorot);
