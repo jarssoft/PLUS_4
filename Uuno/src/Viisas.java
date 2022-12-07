@@ -11,14 +11,12 @@ public class Viisas implements Tekoäly {
     protected int nopeus=1;
     
     private int pelaajaindex=0;
-    private int highestindex=0;
-    private int lowestindex=0;
     
     String oikea, vasen;
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
-	public void tapahtuma(Logi logi){    	
+	public void tapahtuma(Tapahtuma logi){    	
     	
     	
     	

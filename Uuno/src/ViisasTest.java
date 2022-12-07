@@ -39,7 +39,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(SIN_N5);
-		viisas.tapahtuma(new Logi(0, lyoty, null, 0, 5));
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0, 5));
 		
 		// Maksimoidaan jääviin kortteihin erilaisten värien määrä.
 		
@@ -187,7 +187,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N5));
-		viisas.tapahtuma(new Logi(0, lyoty, null, 0, 5));
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0, 5));
 		
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.

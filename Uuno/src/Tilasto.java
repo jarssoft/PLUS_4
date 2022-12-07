@@ -30,31 +30,31 @@ public class Tilasto {
 	
 	static int suurinkäsikoko=0;
 	
-    public static void tilastoi(Logi logi) {
+    public static void tilastoi(Pelaaja pelaaja, Tapahtuma logi) {
     	
-    	assert(vuoro>0 || logi.kasikoko==7);
+    	//assert(vuoro>0 || logi.kasikoko==7);
     	
     	System.out.print(vuoro+"\t");
 		System.out.println(logi);
+		//System.out.println(p.getÄly() instanceof Viisas);
     	
-    	if(logi.pelaaja == 0) {
+    	if(pelaaja.getÄly() instanceof Viisas) {
     		nollanvuorot++;
-    		if(logi.kasikoko==0) {    			
+    		if(logi.tapahtuma==Teko.VTO) {    			
     			nollanvuorot_l.add(nollanvuorot);
     			nollapelissa_l.add(vuoro);
     			nollansijoitus_l.add(5-pelaajia);    			
     			nollanvuorot=0;    			
     		}
     		
-        	if(logi.kasikoko>suurinkäsikoko) {
-        		suurinkäsikoko=logi.kasikoko;
-        	}
+        	//if(logi.kasikoko>suurinkäsikoko) {
+        	//	suurinkäsikoko=logi.kasikoko;
+        	//}
     	}
 		
-    	if(logi.kasikoko==0) {
-
+    	if(logi.tapahtuma==Teko.VTO) {
     		pelaajia--;
-    		if(pelaajia==0) {    			
+    		if(pelaajia==1) {    			
     			vuoro=0;
     			pelaajia=4;
     			System.out.println("------------------------------------------");

@@ -17,7 +17,7 @@ public class Peli {
                 || lyotava.getMerkki()==poisto.getMerkki();
     }
     
-    // Palautta true, jos saman pelaajan lyömän kortin %poisto päälle voi laittaa vielä kortin %lyotava.
+    // Palauttaa true, jos saman pelaajan lyömän kortin %poisto päälle voi laittaa vielä kortin %lyotava.
     public static boolean voiLyodaLisäksi(final Kortti lyotava, final Kortti poisto) {
         if(lyotava.isMusta() || poisto.isMusta()){
             return false;
@@ -29,13 +29,26 @@ public class Peli {
     // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta.
     public static void peli(LinkedList<Pelaaja> pelaajat) {
 
+    	// Alustetaan
+    	
+    	Pöytä.pöytä.reset();
+        for(Pelaaja p: pelaajat){
+            p.nosta(7);
+        }            
+        assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
+                   
+        // Pelaajat vaihtavat paikkoja ennen jokaista peliä
+    	//Collections.shuffle(pelaajat);     
+                
     	assert(pelaajat != null);
         KööriIterator<Pelaaja> ki = new KööriIterator<Pelaaja>(pelaajat);
         while(true){
 
+        	Pelaaja pel=ki.next();
+        	
             // Suoritetaan vuoro
 
-            final Logi logi = ki.next().teeVuoro();
+            final Tapahtuma logi = pel.teeVuoro();
 
             // Tiedotetaan
 
@@ -43,13 +56,13 @@ public class Peli {
                 p.tapahtuma(logi);
             }
 
-            Tilasto.tilastoi(logi);            
+            Tilasto.tilastoi(pel, logi);            
 
             // Kortit menettänyt pelaaja poistuu
 
-            if(logi.kasikoko==0){
+            if(logi.tapahtuma==Teko.VTO){
                 ki.remove();
-                if(pelaajat.size()==0){
+                if(pelaajat.size()==1){
                     break;
                 }
             }
@@ -77,35 +90,26 @@ public class Peli {
                 }
             }
         }
-
+        
         for(Pelaaja p: pelaajat){
             p.lyoKaikki();
         }
         pelaajat.clear();
+        
+        assert(Pöytä.pöytä.size() == 108);
         
     }
     
     public static void main(String[] args) {
 
         LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();      
-        for(int p=0;p<4;p++){
-            pelaajat.add(new Pelaaja());
+        pelaajat.add(new Pelaaja(new Viisas()));
+        for(int p=0;p<3;p++){
+            pelaajat.add(new Pelaaja(new Tyhmä()));
         }
 
-        for(int t=0;t<1;t++){
-        	
-        	// Alustetaan
-        	Pöytä.pöytä.reset();
-            for(Pelaaja p: pelaajat){
-                p.nosta(7);
-            }            
-            assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
-                       
-            // Pelaajat vaihtavat paikkoja ennen jokaista peliä
-        	Collections.shuffle(pelaajat);            
+        for(int t=0;t<1000;t++){
             peli(new LinkedList<Pelaaja>(pelaajat));
-            assert(Pöytä.pöytä.size() == 108);
-
         }
         
         Tilasto.yhteenveto();

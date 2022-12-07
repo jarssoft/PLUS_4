@@ -8,7 +8,7 @@ public class Pelaaja  {
         }
     }
 
-    public void tapahtuma(Logi logi){
+    public void tapahtuma(Tapahtuma logi){
         aly.tapahtuma(logi);
     }
 
@@ -29,26 +29,29 @@ public class Pelaaja  {
     private int id;
     private static int counter = 0;
 
-    public Pelaaja(){
+    public Pelaaja(Tekoäly äly){
         this.id=(counter++);
-        if(this.id==0) {
-        	aly = new Viisas();        
-        }else {
-        	aly = new Tyhmä();
-        }
+       	this.aly = äly;        
     }
 
-    public String getNimi(){
+    public String toString(){
         return Integer.toString(id);
     }
+    
+    Tekoäly getÄly() {
+    	return aly;
+    }
 
-    Logi teeVuoro(){
+    Tapahtuma teeVuoro(){
 
         int nosto = 0;
         Vector<Kortti> lyotava = new Vector<Kortti>();
         Vari vari = null;
+        Teko tapahtuma=null;
         
-        if(!Pöytä.pöytä.jaettu()){            
+        if(!Pöytä.pöytä.jaettu()){
+        	
+        	tapahtuma=Teko.JAK;
             
             // Nostetaan aloituskortti niin kauan kun se ei ole musta
             Kortti k;
@@ -56,9 +59,11 @@ public class Pelaaja  {
                 nosto++;
                 k = Pöytä.pöytä.nosta();
                 lyotava.add(k);                
-            } while(k.isMusta());            
+            } while(k.isMusta());     
 
         }else{
+        	
+        	
 
             // Yritetään kolme kertaa, ja nostetaan toisesta kerrasta lähtien.
             for(;; nosto++){  
@@ -74,9 +79,18 @@ public class Pelaaja  {
                     if(lyotava.get(0).isMusta()){
                         vari = aly.getVari();
                     }
+                    if(kasi.size()==1) {
+                    	tapahtuma=Teko.UNO;
+                    }else if(kasi.size()==0){
+                    	tapahtuma=Teko.VTO;
+                    }else {
+                    	tapahtuma=Teko.LÖI;
+                    }
+                    	
                     break;
                 }
                 if(nosto==3){
+                	tapahtuma=Teko.OHI;
                     break;
                 }
 
@@ -86,7 +100,7 @@ public class Pelaaja  {
         lyo(lyotava);
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
-        return new Logi(id, lyotava, vari, nosto, kasi.size());
+        return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto, kasi.size());
     }
 
 }

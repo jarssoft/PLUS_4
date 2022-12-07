@@ -8,7 +8,7 @@ public class Tyhmä implements Tekoäly {
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
-	public void tapahtuma(Logi logi){
+	public void tapahtuma(Tapahtuma logi){
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
             this.poisto=logi.lyonti.lastElement();
