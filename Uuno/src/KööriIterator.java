@@ -16,7 +16,7 @@ public class KööriIterator<T>  implements Iterator<T> {
         this.pelaajat = pelaajat;
         iterator = this.pelaajat.listIterator(this.pelaajat.size()-1);
         
-        System.out.println(pelaajat);
+        //System.out.println(pelaajat);
     }
 
     public boolean hasNext(){

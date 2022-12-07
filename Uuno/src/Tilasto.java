@@ -5,7 +5,8 @@ public class Tilasto {
 	
 	static Comparator<Integer> comp = Comparator.naturalOrder();
 	static int vuoro=0;
-	static int pelaajia=4;
+	static int pelaajia=0;
+	static int pelaajiaYht=0;
 	
 	/** Nollan pelaamien vuorojen määrä. */	
 	static ArrayList<Integer> nollanvuorot_l = new ArrayList<Integer>();
@@ -33,17 +34,25 @@ public class Tilasto {
     public static void tilastoi(Pelaaja pelaaja, Tapahtuma logi) {
     	
     	//assert(vuoro>0 || logi.kasikoko==7);
-    	
+
+		if(logi.tapahtuma==Teko.JAK) {
+			vuoro=0;
+			pelaajiaYht=pelaajia=logi.pelaaja+1;
+			System.out.println("------------------------------------------");
+			pelit++;
+		}
+		
     	System.out.print(vuoro+"\t");
 		System.out.println(logi);
 		//System.out.println(p.getÄly() instanceof Viisas);
-    	
+		
+		
     	if(pelaaja.getÄly() instanceof Viisas) {
     		nollanvuorot++;
     		if(logi.tapahtuma==Teko.VTO) {    			
     			nollanvuorot_l.add(nollanvuorot);
     			nollapelissa_l.add(vuoro);
-    			nollansijoitus_l.add(5-pelaajia);    			
+    			nollansijoitus_l.add(pelaajiaYht-pelaajia+1);    			
     			nollanvuorot=0;    			
     		}
     		
@@ -53,13 +62,7 @@ public class Tilasto {
     	}
 		
     	if(logi.tapahtuma==Teko.VTO) {
-    		pelaajia--;
-    		if(pelaajia==1) {    			
-    			vuoro=0;
-    			pelaajia=4;
-    			System.out.println("------------------------------------------");
-    			pelit++;
-    		}
+    		pelaajia--;			
     	}
     	vuoro++;
     }
@@ -75,6 +78,6 @@ public class Tilasto {
     	System.out.println("Nollan pelaamien vuorojen määrä: " + formatvalue(nollanvuorot_l));
     	System.out.println("Nollan pelissäoloaikana pelattujen vuorojen määrä: " +  formatvalue(nollapelissa_l));
     	System.out.println("Nollan sijoitus: " + formatvalue(nollansijoitus_l));
-    	System.out.println("Suurin käsikoko: " + suurinkäsikoko);
+    	//System.out.println("Suurin käsikoko: " + suurinkäsikoko);
     }
 }

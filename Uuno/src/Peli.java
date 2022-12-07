@@ -38,7 +38,11 @@ public class Peli {
         assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
                    
         // Pelaajat vaihtavat paikkoja ennen jokaista peliä
-    	//Collections.shuffle(pelaajat);     
+    	Collections.shuffle(pelaajat);
+    	int id=0;
+        for(Pelaaja p: pelaajat){
+            p.setId(id++);
+        }   
                 
     	assert(pelaajat != null);
         KööriIterator<Pelaaja> ki = new KööriIterator<Pelaaja>(pelaajat);
@@ -62,7 +66,7 @@ public class Peli {
 
             if(logi.tapahtuma==Teko.VTO){
                 ki.remove();
-                if(pelaajat.size()==1){
+                if(pelaajat.size()==0){
                     break;
                 }
             }
@@ -104,11 +108,11 @@ public class Peli {
 
         LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();      
         pelaajat.add(new Pelaaja(new Viisas()));
-        for(int p=0;p<3;p++){
+        for(int p=0;p<4;p++){
             pelaajat.add(new Pelaaja(new Tyhmä()));
         }
 
-        for(int t=0;t<1000;t++){
+        for(int t=0;t<10000;t++){
             peli(new LinkedList<Pelaaja>(pelaajat));
         }
         

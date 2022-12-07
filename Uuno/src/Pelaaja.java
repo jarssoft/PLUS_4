@@ -38,6 +38,11 @@ public class Pelaaja  {
         return Integer.toString(id);
     }
     
+    void setId(int id) {
+    	this.id=id;
+    }
+
+    
     Tekoäly getÄly() {
     	return aly;
     }
