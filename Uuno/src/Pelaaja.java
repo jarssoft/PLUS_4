@@ -105,7 +105,7 @@ public class Pelaaja  {
         lyo(lyotava);
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
-        return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto, kasi.size());
+        return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto);
     }
 
 }

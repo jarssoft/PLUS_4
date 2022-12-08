@@ -39,7 +39,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(SIN_N5);
-		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0, 5));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 0, lyoty, null, 0));
 		
 		// Maksimoidaan jääviin kortteihin erilaisten värien määrä.
 		
@@ -187,7 +187,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N5));
-		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0, 5));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 0, lyoty, null, 0));
 		
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
@@ -205,6 +205,68 @@ class ViisasTest {
 			assertEquals(Vari.SININEN, viisas.getVari());
 		}
 		
+	}
+	
+	@Test
+	void getNextVastustaja() {
+		Vector<Kortti> lyoty = new Vector<Kortti>();
+		lyoty.add(SIN_N0);
+		
+		//pelaajien määrä
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 5, lyoty, null, 0));
+		assertEquals(6, viisas.numberOfPlayers());		
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 0));
+		assertEquals(3, viisas.numberOfPlayers());
+
+		
+		assertEquals(0, viisas.getNextVastustaja());
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(1, viisas.getNextVastustaja());
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		assertEquals(2, viisas.getNextVastustaja());
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+		assertEquals(0, viisas.getNextVastustaja());
+		
+		lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_SV);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(2, viisas.getNextVastustaja());
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+		assertEquals(0, viisas.getNextVastustaja());
+		lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_SV);
+		lyoty.add(PUN_SV);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(1, viisas.getNextVastustaja());
+		
+		lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_OH);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		assertEquals(0, viisas.getNextVastustaja());		
+		lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_OH);
+		lyoty.add(PUN_OH);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(0, viisas.getNextVastustaja());
+		
+		lyoty = new Vector<Kortti>();
+		lyoty.add(PUN_PL);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(2, viisas.getNextVastustaja());
+		
+		viisas.tapahtuma(new Tapahtuma(Teko.VTO, 2, lyoty, null, 0));
+		assertEquals(1, viisas.getNextVastustaja());
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		assertEquals(1, viisas.getNextVastustaja());
+
+		lyoty.clear();
+		lyoty.add(SIN_N0);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		assertEquals(0, viisas.getNextVastustaja());
+		lyoty.clear();
+		lyoty.add(PUN_SV);
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		assertEquals(1, viisas.getNextVastustaja());
 	}
 
 }

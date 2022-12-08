@@ -50,18 +50,15 @@ public class Tapahtuma {
 
     // Tiedottaa pelaajalle tapahtumasta.
     public Tapahtuma(Teko tapahtuma, int pelaaja, Vector<Kortti> lyonti, 
-            Vari vari, int nostot, int kasikoko){
+            Vari vari, int nostot){
 
     	assert(pelaaja>=0);
     	assert(pelaaja<=9);
     	assert(nostot>=0);
     	assert(nostot<=16);
-    	assert(kasikoko>=0);
     	assert(!lyonti.isEmpty() || nostot==3);
     	assert(lyonti.isEmpty() || !lyonti.get(0).isMusta() || tapahtuma==Teko.JAK || vari!=null);
     	
-    	assert(kasikoko<=108);
-
     	this.tapahtuma=tapahtuma;
         this.pelaaja=pelaaja;
         this.lyonti=lyonti;

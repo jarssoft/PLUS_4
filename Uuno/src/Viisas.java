@@ -7,54 +7,78 @@ public class Viisas implements Tekoäly {
     protected Kortti poisto;
     
     protected int pelaajamäärä=0;
+    protected int poistunut=0;
     protected int suunta=1;
     protected int nopeus=1;
     
     private int pelaajaindex=0;
+    private int nextpelaaja=0;
     
     String oikea, vasen;
+    int korttimaara[];    
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
 	public void tapahtuma(Tapahtuma logi){    	
-    	
-    	
     	
         if(!logi.lyonti.isEmpty()){
             this.vari=logi.vari;
             this.poisto=logi.lyonti.lastElement();
         }
         
-        if(pelaajamäärä==0) {
-        	
-            pelaajamäärä=logi.pelaaja+1;
+        if(logi.tapahtuma == Teko.JAK) {
+        
+        	poistunut=0;
+        	pelaajaindex = logi.pelaaja;
+            pelaajamäärä = logi.pelaaja + 1;
+            suunta=1;
+            nopeus=1;
+            korttimaara = new int[pelaajamäärä];
+            for (int i = 0; i < korttimaara.length; i++) {
+            	korttimaara[i] = 7;
+            }
         	
         }else {
         	
-        	pelaajaindex += suunta*nopeus;
-        	pelaajaindex = Math.floorMod(pelaajaindex, pelaajamäärä);
+        	if(logi.pelaaja != nextpelaaja) {        	
+        		System.out.println(logi.pelaaja + " != " + nextpelaaja + "############################");
+        	}
+        	//assert(logi.pelaaja == nextpelaaja);
+        	
+        	pelaajaindex = logi.pelaaja;
+        	//pelaajaindex = getNextVastustaja();
 	
-        }
-        
+        }        
         
         if(!this.poisto.isMusta() && this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
         	suunta *= (int)Math.pow(-1, logi.lyonti.size());
         }
         
-        nopeus=1;
-        if(!this.poisto.isMusta()){
-    		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
-    			nopeus = 1 + logi.lyonti.size();
-    		}
-    		if(this.poisto.getMerkki() == Merkki.PLUS2) {        	
-    			nopeus = 2;
-    		}
-        }else {
-        	if(this.poisto.isPlus4()){
-        		nopeus = 2;
-        	}
+        nopeus = 1;
+        if(!logi.lyonti.isEmpty()){
+	        if(!this.poisto.isMusta()){
+	    		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
+	    			nopeus = 1 + logi.lyonti.size();
+	    		}
+	    		if(this.poisto.getMerkki() == Merkki.PLUS2) {        	
+	    			nopeus = 2;
+	    		}
+	        }else {
+	        	if(this.poisto.isPlus4()){
+	        		nopeus = 2;
+	        	}
+	        }
+        }
+              
+        if(logi.tapahtuma == Teko.VTO) {
+        	korttimaara[pelaajaindex] = 0;
+        	poistunut++;
         }
         
+        if(poistunut<pelaajamäärä) {
+        	nextpelaaja = getNextVastustaja();
+        }
+
     }
     
     int numberOfPlayers() {
@@ -65,8 +89,19 @@ public class Viisas implements Tekoäly {
     	return pelaajaindex;
     }
     
-    int getNextVastustaja() {   	
-    	return Math.floorMod(pelaajaindex + suunta, pelaajamäärä);    	
+    int getNextVastustaja() {
+    	
+    	assert(poistunut<pelaajamäärä);
+    	
+    	//lasketaan tyhjät
+    	int hypyt=0;
+    	for(int i = pelaajaindex + suunta; i != pelaajaindex + suunta * (nopeus + hypyt + 1); i = i + suunta) {
+    		if(korttimaara[Math.floorMod(i, pelaajamäärä)] == 0) {
+    			hypyt++;
+    		}
+    	}
+    	    	
+    	return Math.floorMod(pelaajaindex + suunta * (nopeus + hypyt), pelaajamäärä);    	
     }
     
     

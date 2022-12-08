@@ -62,7 +62,7 @@ public class Peli {
 
             Tilasto.tilastoi(pel, logi);            
 
-            // Kortit menettänyt pelaaja poistuu
+            // Korttinsa menettänyt pelaaja poistuu
 
             if(logi.tapahtuma==Teko.VTO){
                 ki.remove();
@@ -112,7 +112,7 @@ public class Peli {
             pelaajat.add(new Pelaaja(new Tyhmä()));
         }
 
-        for(int t=0;t<10000;t++){
+        for(int t=0;t<1000;t++){
             peli(new LinkedList<Pelaaja>(pelaajat));
         }
         
