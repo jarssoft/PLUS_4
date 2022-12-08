@@ -1,7 +1,7 @@
 import java.util.Vector;
 
 // Ainut osa joka tekee päätöksiä.
-public class Viisas implements Tekoäly {
+public class Viisas extends Tekoäly {
 
     protected Vari vari;
     protected Kortti poisto;
@@ -211,48 +211,9 @@ public class Viisas implements Tekoäly {
         assert(poisto!=null);
         assert(!kasi.isEmpty());      
         
-        Vector<Kortti> paraslyotava = new Vector<Kortti>();
-        int parashyvyys = Integer.MIN_VALUE;
-
-        for (Kortti k : kasi) {
-        	            
-        	if(Peli.voiLyoda(k, this.poisto, this.vari, kasi.size()==1)){
-        		
-            	Vector<Kortti> ehdokaslyotava = new Vector<Kortti>();        	
-            	Vector<Kortti> ehdokasjatettava = new Vector<Kortti>(kasi);    
-            	
-        		ehdokaslyotava.add(k);
-        		ehdokasjatettava.remove(k);
-        		
-                for (Kortti lk : kasi) {
-                    if(!k.equalsP(lk) && Peli.voiLyodaLisäksi(lk, k)){
-                    	ehdokaslyotava.add(lk);
-                    	ehdokasjatettava.remove(lk);
-                    }
-                }
-	        	
-                //kaikki mahdolliset permutaatiot, jotka loppuvat eri korttiin
-                for (int rot = 0; rot < Math.max(1, ehdokaslyotava.size() - 1); rot++) {
-                	
-                	if(rot>0) {
-	                	int alkuperainenkoko=ehdokaslyotava.size();
-	                	Kortti viimeinen = ehdokaslyotava.lastElement();
-	                	ehdokaslyotava.remove(ehdokaslyotava.size()-1);
-	                	ehdokaslyotava.insertElementAt(viimeinen, 1);
-	                	assert(alkuperainenkoko == ehdokaslyotava.size());
-                	}
-                	
-	                int ehdokashyvyys = hyvyys(ehdokaslyotava, ehdokasjatettava);
-		        	
-		        	if(ehdokashyvyys>parashyvyys) {
-		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-		        		parashyvyys=ehdokashyvyys;
-		        	}
-                }
-        	}
-        }
+        Vector<Kortti> lyotava = mahdolliset(kasi, poisto, vari);
         
-        if(!paraslyotava.isEmpty() && paraslyotava.get(0).isMusta()) {
+        if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {
         	vari=Vari.PUNAINEN;
 	    	for(Kortti k: kasi) {
 	    		if(!k.isMusta()) {
@@ -261,7 +222,7 @@ public class Viisas implements Tekoäly {
 	    	}
         }
     	
-        return paraslyotava;
+        return lyotava;
     }
     
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen

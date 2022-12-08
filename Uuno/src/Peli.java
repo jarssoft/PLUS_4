@@ -108,7 +108,8 @@ public class Peli {
 
         LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();      
         pelaajat.add(new Pelaaja(new Viisas()));
-        for(int p=0;p<4;p++){
+        
+        for(int p=0;p<1;p++){
             pelaajat.add(new Pelaaja(new Tyhmä()));
         }
 

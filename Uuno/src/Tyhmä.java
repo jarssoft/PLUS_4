@@ -1,7 +1,7 @@
 import java.util.Vector;
 
-// Ainut osa joka tekee päätöksiä.
-public class Tyhmä implements Tekoäly {
+/** Tekoäly joka toimii satunnaisesti. */
+public class Tyhmä extends Tekoäly {
 
     protected Vari vari;
     protected Kortti poisto;
@@ -45,5 +45,10 @@ public class Tyhmä implements Tekoäly {
 	public Vari getVari(){
         return Vari.KELTAINEN;
     }
+
+	@Override
+	int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) {
+		return (int)(Math.random() * 10000);
+	}
 
 }
