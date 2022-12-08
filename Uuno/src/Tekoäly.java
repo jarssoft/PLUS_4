@@ -19,8 +19,6 @@ public abstract class Tekoäly {
 		
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
         int parashyvyys = Integer.MIN_VALUE;
-
-        System.out.println(kasi);
         
         for (Kortti k : kasi) {
         	
@@ -51,7 +49,6 @@ public abstract class Tekoäly {
                 	}
                 	
 	                int ehdokashyvyys = hyvyys(ehdokaslyotava, ehdokasjatettava);
-	                System.out.println(ehdokaslyotava);
 		        	
 		        	if(ehdokashyvyys>parashyvyys) {
 		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);

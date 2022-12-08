@@ -83,6 +83,28 @@ public class Tunnusluvut {
        return Math.sqrt(standardDeviation/length);
    }
    
+   // Method for getting the maximum value
+   public static int getMax(ArrayList<Integer> inputArray){ 
+     int maxValue = inputArray.get(0); 
+     for(int i: inputArray) {
+       if(i > maxValue){ 
+          maxValue = i; 
+       } 
+     } 
+     return maxValue; 
+   }
+  
+   // Method for getting the minimum value
+   public static int getMin(ArrayList<Integer> inputArray){ 
+     int minValue = inputArray.get(0); 
+     for(int i: inputArray) {
+         if(i < minValue){ 
+        	 minValue = i; 
+         } 
+       } 
+     return minValue; 
+   } 
+   
    public static void main (String[] args) {
       Comparator<Integer> comp = Comparator.naturalOrder();
       Random rnd = new Random();
