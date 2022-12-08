@@ -76,4 +76,4 @@ Jokaisesta pelatusta vuorosta (ei plussa-korttien jälkeisistä nostoista) kirjo
 16	t:LÖI p:0 l:[KEL_OH, VIH_OH] v:null n:2
 17	t:UNO p:0 l:[VIH_N8] v:null n:0
 18	t:VTO p:0 l:[VIH_N3] v:null n:0
-</pre>
+</pre> 
