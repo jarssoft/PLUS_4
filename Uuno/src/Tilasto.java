@@ -52,7 +52,11 @@ public class Tilasto {
 	
 	static int samaVäri=0;
 	
+	static int musta=0;
+	
 	static int samaMerkki=0;
+	
+	static int vastustajanväri=0;
 	
 	static Kortti viim;
 	
@@ -79,19 +83,27 @@ public class Tilasto {
 		//System.out.println(p.getÄly() instanceof Viisas);
 		
 		
-    	if(pelaaja.getÄly() instanceof Viisas) {
+    	if(pelaaja.getÄly() instanceof Tyhmä) {
     		nollanvuorot++;
     		
-    		if(logi.nostot > 0) {
-    			nostot++;
-    		}
-    		
-    		if(!logi.lyonti.isEmpty() && !logi.lyonti.firstElement().isMusta() && !viim.isMusta()) {
-	    		if(logi.lyonti.firstElement().getVari() == viim.getVari()) {
-	    			samaVäri++;
-	    		}
-	    		if(logi.lyonti.firstElement().getMerkki() == viim.getMerkki()) {
-	    			samaMerkki++;
+    		if(viim != null) {
+	    		if(logi.nostot > 0) {
+	    			nostot++;
+	    		}else{    		
+	    			if(logi.lyonti.firstElement().isMusta()) {
+	    				musta++;
+	    			}else {
+	    				if(!viim.isMusta()) {
+				    		if(logi.lyonti.firstElement().getVari() == viim.getVari()) {
+				    			samaVäri++;
+				    		}
+				    		if(logi.lyonti.firstElement().getMerkki() == viim.getMerkki()) {
+				    			samaMerkki++;
+				    		}
+	    	    		}else {
+	    	    			vastustajanväri++;
+	    	    		}
+	    			}
 	    		}
     		}
     				
@@ -103,7 +115,7 @@ public class Tilasto {
     			nollanvuorot_l.add(nollanvuorot);
     			nollapelissa_l.add(vuoro);
     			nollansijoitus_l.add(pelaajiaYht-pelaajia+1);    			
-    			nollanvuorot=0;
+    			//nollanvuorot=0;
     			
 
     			
@@ -133,19 +145,23 @@ public class Tilasto {
     
     public static void yhteenveto() {   
     	System.out.println("------------------------");
-    	System.out.println("Pelitilasto");
+    	System.out.println("Pelitilasto             ");
     	System.out.println("------------------------");
     	System.out.println("Kaikki pelaajat:");
     	System.out.println("  Pelaajia: " + String.valueOf(pelaajiaYht));
     	System.out.println("  Pelien määrä: " + String.valueOf(pelit));
     	System.out.println("  Vuorot per peli: " + formatvalue(vuoro_l));    	
     	System.out.println();
-    	System.out.println("Tekoälyn Viisas -tilasto (pelit keskimäärin):");
-    	System.out.println("  Uunot: " + (double)uunot/pelit);
-    	System.out.println("  Ei voi laittaa mitään -tilanteet: " + (double)nostot/pelit);
-    	System.out.println("  Sama väri (kpl): " + (double)samaVäri/pelit);
-    	System.out.println("  Sama merkki (kpl): " + (double)samaMerkki/pelit);
-    	System.out.println("  Pelatut vuorot: " + formatvalue(nollanvuorot_l));    
+    	System.out.println("Tekoälyn Viisas -tilasto (pelit keskimäärin):");    
     	System.out.println("  Sijoitus: " + formatvalue(nollansijoitus_l));
+    	System.out.println("  Pelatut vuorot per peli: " + (double)nollanvuorot/pelit);
+    	System.out.println("  Uunot per peli: " + (double)uunot/pelit);
+    	System.out.println("  Lyönnit (pelatuista vuoroista): ");    	
+    	System.out.println("    Sama väri: " + String.format("%.2f", (double)samaVäri*100/nollanvuorot)+"%");
+    	System.out.println("    Sama merkki: " + String.format("%.2f", (double)samaMerkki*100/nollanvuorot)+"%");
+    	System.out.println("    Musta: " + String.format("%.2f", (double)musta*100/nollanvuorot)+"%");
+    	System.out.println("    Vastustajan valitsema väri: " + String.format("%.2f", (double)vastustajanväri*100/nollanvuorot)+"%");
+    	System.out.println("    Ei voi laittaa mitään -tilanteet: " + String.format("%.2f", (double)nostot*100/nollanvuorot)+"%");
+    	
     }
 }
