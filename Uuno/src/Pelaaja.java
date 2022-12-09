@@ -47,28 +47,23 @@ public class Pelaaja  {
     	return aly;
     }
 
-    Tapahtuma teeVuoro(){
+    Tapahtuma teeVuoro(boolean jaa){
 
         int nosto = 0;
         Vector<Kortti> lyotava = new Vector<Kortti>();
         Vari vari = null;
         Teko tapahtuma=null;
         
-        if(!Pöytä.pöytä.jaettu()){
+        if(jaa){
         	
+        	nosto++;
         	tapahtuma=Teko.JAK;
             
             // Nostetaan aloituskortti niin kauan kun se ei ole musta
-            Kortti k;
-            do{
-                nosto++;
-                k = Pöytä.pöytä.nosta();
-                lyotava.add(k);                
-            } while(k.isMusta());     
-
+            Kortti k = Pöytä.pöytä.nosta();
+            lyotava.add(k);                
+            
         }else{
-        	
-        	
 
             // Yritetään kolme kertaa, ja nostetaan toisesta kerrasta lähtien.
             for(;; nosto++){  
@@ -103,6 +98,8 @@ public class Pelaaja  {
         }
 
         lyo(lyotava);
+        
+        System.out.println("Pelaaja:"+this.id+ " "+kasi.size());
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
         return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto);

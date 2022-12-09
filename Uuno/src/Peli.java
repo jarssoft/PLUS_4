@@ -31,6 +31,8 @@ public class Peli {
 
     	// Alustetaan
     	
+		System.out.println("------------------------------------------");
+    	boolean jaa=true;
     	Pöytä.pöytä.reset();
         for(Pelaaja p: pelaajat){
             p.nosta(7);
@@ -38,6 +40,7 @@ public class Peli {
         assert(Pöytä.pöytä.size() == 108 - pelaajat.size()*7);
                    
         // Pelaajat vaihtavat paikkoja ennen jokaista peliä
+        
     	Collections.shuffle(pelaajat);
     	int id=0;
         for(Pelaaja p: pelaajat){
@@ -49,18 +52,27 @@ public class Peli {
         while(true){
 
         	Pelaaja pel=ki.next();
+        	Tapahtuma logi;
         	
             // Suoritetaan vuoro
-
-            final Tapahtuma logi = pel.teeVuoro();
-
-            // Tiedotetaan
-
-            for(Pelaaja p: pelaajat){
-                p.tapahtuma(logi);
-            }
-
-            Tilasto.tilastoi(pel, logi);            
+        	do {
+        	
+	            logi = pel.teeVuoro(jaa);
+	
+	            // Tiedotetaan
+	
+	            for(Pelaaja p: pelaajat){
+	                p.tapahtuma(logi);
+	            }
+	
+	            Tilasto.tilastoi(pel, logi);
+	            
+	            //jako on suoritettu, kun ei musta
+	            if(logi.tapahtuma==Teko.JAK && !logi.lyonti.firstElement().isMusta()) {
+	            	jaa=false;
+	            }
+	            
+        	} while(jaa);
 
             // Korttinsa menettänyt pelaaja poistuu
 

@@ -73,7 +73,7 @@ public class Tilasto {
 			vuoro=0;
 			
 			pelaajiaYht=pelaajia=logi.pelaaja+1;
-			System.out.println("------------------------------------------");
+
 			pelit++;
 		}
 
