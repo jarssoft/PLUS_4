@@ -99,7 +99,7 @@ public class Pelaaja  {
 
         lyo(lyotava);
         
-        System.out.println("Pelaaja:"+this.id+ " "+kasi.size());
+        //System.out.println("Pelaaja:"+this.id+ " "+kasi.size());
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
         return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto);

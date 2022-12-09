@@ -83,7 +83,7 @@ public class Tilasto {
 		//System.out.println(p.getÄly() instanceof Viisas);
 		
 		
-    	if(pelaaja.getÄly() instanceof Tyhmä) {
+    	if(pelaaja.getÄly() instanceof Viisas) {
     		nollanvuorot++;
     		
     		if(viim != null) {
