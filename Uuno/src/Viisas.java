@@ -48,34 +48,44 @@ public class Viisas extends Tekoäly {
         	pelaajaindex = logi.pelaaja;
         	//pelaajaindex = getNextVastustaja();
 	
-        }        
+        }
+        
+        korttimaara[pelaajaindex] -= (logi.lyonti.size() - logi.nostot);
+        //System.out.println(pelaajaindex+" "+korttimaara[pelaajaindex]);
         
         if(!this.poisto.isMusta() && this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
         	suunta *= (int)Math.pow(-1, logi.lyonti.size());
         }
         
         nopeus = 1;
-        if(!logi.lyonti.isEmpty()){
-	        if(!this.poisto.isMusta()){
-	    		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
-	    			nopeus = 1 + logi.lyonti.size();
-	    		}
-	    		if(this.poisto.getMerkki() == Merkki.PLUS2) {        	
-	    			nopeus = 2;
-	    		}
-	        }else {
-	        	if(this.poisto.isPlus4()){
-	        		nopeus = 2;
-	        	}
-	        }
-        }
-              
+        
         if(logi.tapahtuma == Teko.VTO) {
+        	assert(korttimaara[pelaajaindex] == 0);
         	korttimaara[pelaajaindex] = 0;
         	poistunut++;
+        }else {
+        	assert(korttimaara[pelaajaindex] > 0);
         }
         
         if(poistunut<pelaajamäärä) {
+        	
+	        if(!logi.lyonti.isEmpty()){
+		        if(!this.poisto.isMusta()){
+		    		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
+		    			nopeus = 1 + logi.lyonti.size();
+		    		}
+		    		if(this.poisto.getMerkki() == Merkki.PLUS2) {  
+		    			korttimaara[getNextVastustaja()] += 2 * logi.lyonti.size();
+		    			nopeus = 2;
+		    		}
+		        }else {
+		        	if(this.poisto.isPlus4()){
+		        		korttimaara[getNextVastustaja()] += 4;
+		        		nopeus = 2;
+		        	}
+		        }
+	        }
+        
         	nextpelaaja = getNextVastustaja();
         }
 
