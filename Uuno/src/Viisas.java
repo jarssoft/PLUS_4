@@ -221,7 +221,7 @@ public class Viisas extends Tekoäly {
         assert(poisto!=null);
         assert(!kasi.isEmpty());      
         
-        Vector<Kortti> lyotava = mahdolliset(kasi, poisto, vari);
+        Vector<Kortti> lyotava = paras(kasi, poisto, vari);
         
         if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {
         	vari=Vari.PUNAINEN;

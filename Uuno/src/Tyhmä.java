@@ -22,22 +22,8 @@ public class Tyhmä extends Tekoäly {
         assert(poisto!=null);
         assert(!kasi.isEmpty());
 
-        Vector<Kortti> lyotava = new Vector<Kortti>();
+        return paras(kasi, poisto, vari);
 
-
-        for (Kortti k : kasi) {
-
-            if(Peli.voiLyoda(k, this.poisto, this.vari, kasi.size()==1)){
-                lyotava.add(k);
-                for (Kortti lk : kasi) {
-                    if(k != lk && Peli.voiLyodaLisäksi(lk, k)){
-                        lyotava.add(lk);
-                    }
-                }
-                break;
-            }
-        }
-        return lyotava;
     }
     
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen

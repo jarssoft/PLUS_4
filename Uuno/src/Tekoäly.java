@@ -15,7 +15,7 @@ public abstract class Tekoäly {
 	abstract int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava);
 	
 	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa.*/
-	public Vector<Kortti> mahdolliset(Vector<Kortti> kasi, Kortti poisto, Vari vari){
+	public Vector<Kortti> paras(Vector<Kortti> kasi, Kortti poisto, Vari vari){
 		
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
         int parashyvyys = Integer.MIN_VALUE;
