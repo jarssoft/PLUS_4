@@ -3,19 +3,24 @@ import java.util.Vector;
 // Ainut osa joka tekee päätöksiä.
 public class Viisas extends Tekoäly {
 
-    protected Vari vari;
-    protected Kortti poisto;
+	private Vari vari;
+	private Kortti poisto;
     
-    protected int pelaajamäärä=0;
-    protected int poistunut=0;
-    protected int suunta=1;
-    protected int nopeus=1;
+    private int pelaajamäärä=0;
+    private int poistunut=0;
+    private int suunta=1;
+    private int nopeus=1;
     
     private int pelaajaindex=0;
     private int nextpelaaja=0;
     
-    String oikea, vasen;
-    int korttimaara[];    
+    // Pelaajien oletettu korttimäärä
+    private int korttimaara[];
+    
+    // Kortti, joka pelaajilta puuttuu
+    private Kortti puuttuva[];
+    
+    private Kortti edellinen;
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
@@ -33,7 +38,10 @@ public class Viisas extends Tekoäly {
             pelaajamäärä = logi.pelaaja + 1;
             suunta=1;
             nopeus=1;
+            
             korttimaara = new int[pelaajamäärä];
+            puuttuva = new Kortti[pelaajamäärä];
+            
             for (int i = 0; i < korttimaara.length; i++) {
             	korttimaara[i] = 7;
             }
@@ -50,8 +58,13 @@ public class Viisas extends Tekoäly {
 	
         }
         
-        korttimaara[pelaajaindex] -= (logi.lyonti.size() - logi.nostot);
-        //System.out.println(pelaajaindex+" "+korttimaara[pelaajaindex]);
+        int muutos = logi.nostot - logi.lyonti.size();
+        korttimaara[pelaajaindex] += muutos;
+        //System.out.println(pelaajaindex+" puuttuu "+puuttuva[pelaajaindex]);
+        
+        if(muutos>0) {
+        	puuttuva[pelaajaindex]=null;
+        }
         
         if(!this.poisto.isMusta() && this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
         	suunta *= (int)Math.pow(-1, logi.lyonti.size());
@@ -75,19 +88,29 @@ public class Viisas extends Tekoäly {
 		    			nopeus = 1 + logi.lyonti.size();
 		    		}
 		    		if(this.poisto.getMerkki() == Merkki.PLUS2) {  
-		    			korttimaara[getNextVastustaja()] += 2 * logi.lyonti.size();
+		    			int nextvastustaja=getNextVastustaja();
+		    			korttimaara[nextvastustaja] += 2 * logi.lyonti.size();
+		    			puuttuva[nextvastustaja]=null;
 		    			nopeus = 2;
 		    		}
 		        }else {
 		        	if(this.poisto.isPlus4()){
-		        		korttimaara[getNextVastustaja()] += 4;
+		        		int nextvastustaja=getNextVastustaja();
+		        		korttimaara[nextvastustaja] += 4;
+		        		puuttuva[nextvastustaja]=null;
 		        		nopeus = 2;
 		        	}
 		        }
+	        }else {
+	        	if(!this.poisto.isMusta()) {
+	        		puuttuva[pelaajaindex]=edellinen;
+	        	}
 	        }
         
         	nextpelaaja = getNextVastustaja();
         }
+        
+        edellinen = poisto;
 
     }
     
@@ -114,10 +137,8 @@ public class Viisas extends Tekoäly {
     	return Math.floorMod(pelaajaindex + suunta * (nopeus + hypyt), pelaajamäärä);    	
     }
     
-    
-    
     /*
-    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava, Vastustaja ohitettava, Vastustaja seuraava) {
+    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava, int seuraavankorttimäärä) {
     
     	//ei anneta vuoroa sille, jolla on vähän kortteja
     	
