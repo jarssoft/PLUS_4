@@ -209,7 +209,7 @@ class ViisasTest {
 	}
 	
 	@Test
-	void getNextVastustaja() {
+	void getNextVastustajaJaKorttimäärä() {
 				
 		// JAK
 		Vector<Kortti> lyoty = new Vector<Kortti>();

@@ -60,11 +60,13 @@ public class Tilasto {
 	
 	static Kortti viim;
 	
+	static int jaot=0;
+	
     public static void tilastoi(Pelaaja pelaaja, Tapahtuma logi) {
     	
     	//assert(vuoro>0 || logi.kasikoko==7);
 
-		if(logi.tapahtuma==Teko.JAK) {
+		if(logi.tapahtuma==Teko.JAK && !(logi.lyonti.firstElement().isMusta())) {
 			
 			if(vuoro>0) {
 				vuoro_l.add(vuoro);
@@ -106,7 +108,11 @@ public class Tilasto {
 	    			}
 	    		}
     		}
-    				
+    		
+    		if(logi.tapahtuma==Teko.JAK && !(logi.lyonti.firstElement().isMusta())) {
+    			jaot++;
+    		}
+    		
     		if(logi.tapahtuma==Teko.UNO) {    	
     			uunot++;
     		}
@@ -154,7 +160,8 @@ public class Tilasto {
     	System.out.println();
     	System.out.println("Tekoälyn Viisas -tilasto (pelit keskimäärin):");    
     	System.out.println("  Sijoitus: " + formatvalue(nollansijoitus_l));
-    	System.out.println("  Pelatut vuorot per peli: " + (double)nollanvuorot/pelit);
+    	System.out.println("  Jaot: " + String.format("%.2f", (double)jaot*100/pelit)+"%");
+    	System.out.println("  Pelatut vuorot per peli: " + (double)nollanvuorot/pelit);    	
     	System.out.println("  Uunot per peli: " + (double)uunot/pelit);
     	System.out.println("  Lyönnit (pelatuista vuoroista): ");    	
     	System.out.println("    Sama väri: " + String.format("%.2f", (double)samaVäri*100/nollanvuorot)+"%");
