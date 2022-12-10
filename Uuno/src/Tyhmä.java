@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.util.Random;
 
 /** Tekoäly joka toimii satunnaisesti. */
 public class Tyhmä extends Tekoäly {
@@ -29,7 +30,7 @@ public class Tyhmä extends Tekoäly {
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen
     @Override
 	public Vari getVari(){
-        return Vari.KELTAINEN;
+        return Vari.values()[new Random().nextInt(Vari.values().length)];
     }
 
 	@Override
