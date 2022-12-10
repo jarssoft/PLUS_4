@@ -26,11 +26,6 @@ class ViisasTest {
 	private final Kortti PUN_PL = Kortti.testiKortti(Vari.PUNAINEN, Merkki.PLUS2);
 	
 	private Viisas viisas = new Viisas();
-	
-	@Test
-	void testTapahtuma() {
-		//fail("Not yet implemented");
-	}
 	    
 	@Test
 	void testGetKortti() {

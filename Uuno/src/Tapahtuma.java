@@ -57,7 +57,9 @@ public class Tapahtuma {
     	assert(nostot>=0);
     	assert(nostot<=16);
     	assert(!lyonti.isEmpty() || nostot==3);
-    	assert(lyonti.isEmpty() || !lyonti.get(0).isMusta() || tapahtuma==Teko.JAK || vari!=null);
+    	assert(lyonti.isEmpty() || lyonti.firstElement().isMusta() 
+    			|| lyonti.firstElement().getMerkki() == lyonti.lastElement().getMerkki());
+    	assert(tapahtuma != Teko.JAK || lyonti.size()==1 && nostot==1);
     	
     	this.tapahtuma=tapahtuma;
         this.pelaaja=pelaaja;
