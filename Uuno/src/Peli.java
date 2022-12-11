@@ -68,6 +68,7 @@ public class Peli {
 	            Tilasto.tilastoi(pel, logi);
 	            
 	            //jako on suoritettu, kun ei musta
+	            
 	            if(logi.tapahtuma==Teko.JAK && !logi.lyonti.firstElement().isMusta()) {
 	            	jaa=false;
 	            }
@@ -101,7 +102,7 @@ public class Peli {
                 }else{
                     if(lyotava.get(0).isPlus4()){
                         Pelaaja spelaaja = ki.next();
-                        spelaaja.nosta(4);                
+                        spelaaja.nosta(4);
                     }
                 }
             }

@@ -35,7 +35,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(SIN_N5);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 0, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 1, lyoty, null, 1));
 		
 		// Maksimoidaan jääviin kortteihin erilaisten värien määrä.
 		
@@ -183,7 +183,7 @@ class ViisasTest {
 		
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(Kortti.testiKortti(Vari.PUNAINEN, Merkki.N5));
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 0, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 0, lyoty, null, 1));
 		
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
@@ -206,13 +206,15 @@ class ViisasTest {
 	@Test
 	void getNextVastustajaJaKorttimäärä() {
 				
+		// Vuoron ennustaminen ///////////////////////////////////////////////////
+		
 		// JAK
 		Vector<Kortti> lyoty = new Vector<Kortti>();
 		lyoty.add(SIN_N0);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 5, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 5, lyoty, null, 1));
 		assertEquals(6, viisas.numberOfPlayers());		
 		viisas = new Viisas();		
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
 		assertEquals(3, viisas.numberOfPlayers());
 		assertEquals(0, viisas.getNextVastustaja());
 		
@@ -241,7 +243,7 @@ class ViisasTest {
 		viisas = new Viisas();
 		lyoty = new Vector<Kortti>();
 		lyoty.add(PUN_OH);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
 		assertEquals(1, viisas.getNextVastustaja());		
 		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
 		assertEquals(0, viisas.getNextVastustaja());		
@@ -261,11 +263,13 @@ class ViisasTest {
 		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, Vari.KELTAINEN, 0));
 		assertEquals(1, viisas.getNextVastustaja());
 		
+		// Pelaajien korttimäärän ennustaminen ///////////////////////////////////////
+		
 		// Voitot
 		viisas = new Viisas();		
 		lyoty = new Vector<Kortti>();
 		lyoty.add(SIN_N0);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
 		assertEquals(0, viisas.getNextVastustaja());
 		lyoty.add(SIN_N0);
 		lyoty.add(SIN_N0);
@@ -285,7 +289,7 @@ class ViisasTest {
 		viisas = new Viisas();		
 		lyoty = new Vector<Kortti>();
 		lyoty.add(PUN_SV);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 0));
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
 		assertEquals(1, viisas.getNextVastustaja());
 		lyoty.add(PUN_SV);
 		lyoty.add(PUN_SV);
@@ -295,6 +299,20 @@ class ViisasTest {
 		lyoty.add(PUN_SV);
 		viisas.tapahtuma(new Tapahtuma(Teko.VTO, 1, lyoty, null, 0));
 		assertEquals(2, viisas.getNextVastustaja());
+		
+		// Vastustajien korttien ennustaminen //////////////////////////////////////
+		
+		// Lyödään vastustajalta puuttuva kortti (SIN_N5)
+		
+		lyoty = new Vector<Kortti>();
+		lyoty.add(SIN_N5);
+		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 1, lyoty, null, 1));
+		lyoty.clear();
+		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 3));
+				
+		testaa( new Kortti[]{KEL_N8, PLUS_4, PUN_N2}, 
+	    		new Kortti[]{PLUS_4});
+		//assertEquals(Vari.SININEN, viisas.getVari());
 	}
 
 }

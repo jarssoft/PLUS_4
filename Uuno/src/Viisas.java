@@ -3,138 +3,29 @@ import java.util.Vector;
 // Ainut osa joka tekee päätöksiä.
 public class Viisas extends Tekoäly {
 
-	private Vari vari;
+	private Vari poistovari;
 	private Kortti poisto;
-    
-    private int pelaajamäärä=0;
-    private int poistunut=0;
-    private int suunta=1;
-    private int nopeus=1;
-    
-    private int pelaajaindex=0;
-    private int nextpelaaja=0;
-    
-    // Pelaajien oletettu korttimäärä
-    private int korttimaara[];
-    
-    // Kortti, joka pelaajilta puuttuu
-    private Kortti puuttuva[];
-    
-    private Kortti edellinen;
+	private Vari lyotavavari;
+	private Tilannekuva kuva = new Tilannekuva();
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
-	public void tapahtuma(Tapahtuma logi){    	
+	public void tapahtuma(Tapahtuma logi){    
     	
         if(!logi.lyonti.isEmpty()){
-            this.vari=logi.vari;
+            this.poistovari=logi.vari;
             this.poisto=logi.lyonti.lastElement();
         }
-        
-        if(logi.tapahtuma == Teko.JAK) {
-        
-        	poistunut=0;
-        	pelaajaindex = logi.pelaaja;
-            pelaajamäärä = logi.pelaaja + 1;
-            suunta=1;
-            nopeus=1;
-            
-            korttimaara = new int[pelaajamäärä];
-            puuttuva = new Kortti[pelaajamäärä];
-            
-            for (int i = 0; i < korttimaara.length; i++) {
-            	korttimaara[i] = 7;
-            }
-        	
-        }else {
-        	
-        	if(logi.pelaaja != nextpelaaja) {        	
-        		System.out.println(logi.pelaaja + " != " + nextpelaaja + "############################");
-        	}
-        	//assert(logi.pelaaja == nextpelaaja);
-        	
-        	pelaajaindex = logi.pelaaja;
-        	//pelaajaindex = getNextVastustaja();
-	
-        }
-        
-        int muutos = logi.nostot - logi.lyonti.size();
-        korttimaara[pelaajaindex] += muutos;
-        //System.out.println(pelaajaindex+" puuttuu "+puuttuva[pelaajaindex]);
-        
-        if(muutos>0) {
-        	puuttuva[pelaajaindex]=null;
-        }
-        
-        if(!this.poisto.isMusta() && this.poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
-        	suunta *= (int)Math.pow(-1, logi.lyonti.size());
-        }
-        
-        nopeus = 1;
-        
-        if(logi.tapahtuma == Teko.VTO) {
-        	assert(korttimaara[pelaajaindex] == 0);
-        	korttimaara[pelaajaindex] = 0;
-        	poistunut++;
-        }else {
-        	assert(korttimaara[pelaajaindex] > 0);
-        }
-        
-        if(poistunut<pelaajamäärä) {
-        	
-	        if(!logi.lyonti.isEmpty()){
-		        if(!this.poisto.isMusta()){
-		    		if(this.poisto.getMerkki() == Merkki.OHITUS) {        	
-		    			nopeus = 1 + logi.lyonti.size();
-		    		}
-		    		if(this.poisto.getMerkki() == Merkki.PLUS2) {  
-		    			int nextvastustaja=getNextVastustaja();
-		    			korttimaara[nextvastustaja] += 2 * logi.lyonti.size();
-		    			puuttuva[nextvastustaja]=null;
-		    			nopeus = 2;
-		    		}
-		        }else {
-		        	if(this.poisto.isPlus4()){
-		        		int nextvastustaja=getNextVastustaja();
-		        		korttimaara[nextvastustaja] += 4;
-		        		puuttuva[nextvastustaja]=null;
-		        		nopeus = 2;
-		        	}
-		        }
-	        }else {
-	        	if(!this.poisto.isMusta()) {
-	        		puuttuva[pelaajaindex]=edellinen;
-	        	}
-	        }
-        
-        	nextpelaaja = getNextVastustaja();
-        }
-        
-        edellinen = poisto;
-
+        kuva.tapahtuma(logi);
     }
     
     int numberOfPlayers() {
-    	return pelaajamäärä;
-    }
-    
-    int getPelaajaIndex() {
-    	return pelaajaindex;
+    	return kuva.numberOfPlayers();
     }
     
     int getNextVastustaja() {
     	
-    	assert(poistunut<pelaajamäärä);
-    	
-    	//lasketaan tyhjät
-    	int hypyt=0;
-    	for(int i = pelaajaindex + suunta; i != pelaajaindex + suunta * (nopeus + hypyt + 1); i = i + suunta) {
-    		if(korttimaara[Math.floorMod(i, pelaajamäärä)] == 0) {
-    			hypyt++;
-    		}
-    	}
-    	    	
-    	return Math.floorMod(pelaajaindex + suunta * (nopeus + hypyt), pelaajamäärä);    	
+    	return kuva.getNextVastustaja(); 	
     }
     
     /*
@@ -242,13 +133,14 @@ public class Viisas extends Tekoäly {
         assert(poisto!=null);
         assert(!kasi.isEmpty());      
         
-        Vector<Kortti> lyotava = paras(kasi, poisto, vari);
+        Vector<Kortti> lyotava = paras(kasi, poisto, poistovari);
         
         if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {
-        	vari=Vari.PUNAINEN;
+        	lyotavavari=Vari.PUNAINEN;
+        	
 	    	for(Kortti k: kasi) {
 	    		if(!k.isMusta()) {
-	    			vari = k.getVari();
+	    			lyotavavari = k.getVari();
 	    		}
 	    	}
         }
@@ -259,7 +151,7 @@ public class Viisas extends Tekoäly {
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen
     @Override
 	public Vari getVari(){
-    	return vari;
+    	return lyotavavari;
     }
 
 }
