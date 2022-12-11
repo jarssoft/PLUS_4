@@ -300,19 +300,55 @@ class ViisasTest {
 		viisas.tapahtuma(new Tapahtuma(Teko.VTO, 1, lyoty, null, 0));
 		assertEquals(2, viisas.getNextVastustaja());
 		
-		// Vastustajien korttien ennustaminen //////////////////////////////////////
+		// Värinvalinta mustan kortin lyödessä vastustajan perustella ////////////
+		{
+			Tilannekuva kuva=new Tilannekuva();
+			lyoty = new Vector<Kortti>();
+			lyoty.add(SIN_N5);
+			kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			assertEquals(3, kuva.numberOfPlayers());
+			assertEquals(0, kuva.getNextVastustaja());
+			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 1));
+			//Pelaaja 1 ilmoittaa OHI-tilanteen.
+			lyoty.clear();
+			kuva.tapahtuma(new Tapahtuma(Teko.OHI, 1, lyoty, null, 3));
+			assertEquals(2, kuva.getNextVastustaja());
+			lyoty.clear();
+			lyoty.add(PLUS_4);
+			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, Vari.SININEN, 0));
+			assertEquals(1, kuva.getNextVastustaja());
+			assertEquals(Vari.SININEN, kuva.getNextPuuttuva().getVari());
+		}		
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N8);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 3));
+			lyoty.clear();
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 3));
+			assertEquals(2, viisas.getNextVastustaja());
+					
+			testaa( new Kortti[]{VIH_N5, PLUS_4, PUN_N2}, 
+		    		new Kortti[]{PLUS_4});
+			
+			assertEquals(2, viisas.getNextVastustaja());
+			assertEquals(Vari.KELTAINEN, viisas.getVari());
+		}
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 1, lyoty, null, 1));
+			lyoty.clear();
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 3));
+			assertEquals(1, viisas.getNextVastustaja());
+
+			testaa( new Kortti[]{VIH_N5, JOKERI, SIN_N5}, 
+		    		new Kortti[]{JOKERI});
+			
+			assertEquals(Vari.KELTAINEN, viisas.getVari());
+		}
 		
-		// Lyödään vastustajalta puuttuva kortti (SIN_N5)
-		
-		lyoty = new Vector<Kortti>();
-		lyoty.add(SIN_N5);
-		viisas.tapahtuma(new Tapahtuma(Teko.JAK, 1, lyoty, null, 1));
-		lyoty.clear();
-		viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 3));
-				
-		testaa( new Kortti[]{KEL_N8, PLUS_4, PUN_N2}, 
-	    		new Kortti[]{PLUS_4});
-		//assertEquals(Vari.SININEN, viisas.getVari());
+
 	}
 
 }

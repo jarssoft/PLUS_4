@@ -66,7 +66,6 @@ public class Tapahtuma {
         this.lyonti=lyonti;
         this.vari=vari;
         this.nostot=nostot;
-
     }
 
     public String toString(){

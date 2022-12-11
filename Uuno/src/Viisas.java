@@ -24,7 +24,6 @@ public class Viisas extends Tekoäly {
     }
     
     int getNextVastustaja() {
-    	
     	return kuva.getNextVastustaja(); 	
     }
     
@@ -42,7 +41,7 @@ public class Viisas extends Tekoäly {
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
     int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) {
-    	
+    	    	
     	// Pienempi käsi on parempi (-0.17)
         
     	int hyvyys = lyotava.size() * -2;
@@ -122,6 +121,8 @@ public class Viisas extends Tekoäly {
 			hyvyys-=10;
 		}
 		
+
+		
 		return hyvyys;
     	
     }
@@ -143,12 +144,25 @@ public class Viisas extends Tekoäly {
 	    			lyotavavari = k.getVari();
 	    		}
 	    	}
+
+	    	// Väri, jota vastustajalla ei ole
+	    	
+	    	Tilannekuva uusikuva = new Tilannekuva(kuva);
+
+			uusikuva.tapahtuma(new Tapahtuma(Teko.LÖI, 
+					kuva.getNextVastustaja(), 
+					lyotava, lyotavavari, 1));
+			
+			if(uusikuva.getNextPuuttuva()!=null) {
+				lyotavavari=uusikuva.getNextPuuttuva().getVari();
+			}
+
         }
     	
         return lyotava;
     }
     
-    // Värivalinta, joka kysytään älyltä mustan kortin jälkeen
+    // Värivalinta, joka kysytään älyltä mustan kortin jälkeen.
     @Override
 	public Vari getVari(){
     	return lyotavavari;
