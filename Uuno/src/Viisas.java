@@ -18,15 +18,7 @@ public class Viisas extends Tekoäly {
         }
         kuva.tapahtuma(logi);
     }
-    
-    int numberOfPlayers() {
-    	return kuva.numberOfPlayers();
-    }
-    
-    int getNextVastustaja() {
-    	return kuva.getNextVastustaja(); 	
-    }
-    
+
     /*
     int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava, int seuraavankorttimäärä) {
     
@@ -40,7 +32,7 @@ public class Viisas extends Tekoäly {
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
-    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) {
+    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) { // Vari vari
     	    	
     	// Pienempi käsi on parempi (-0.17)
         
@@ -120,9 +112,7 @@ public class Viisas extends Tekoäly {
 				&& jatettava.lastElement().isMusta()) {
 			hyvyys-=10;
 		}
-		
 
-		
 		return hyvyys;
     	
     }
@@ -136,25 +126,41 @@ public class Viisas extends Tekoäly {
         
         Vector<Kortti> lyotava = paras(kasi, poisto, poistovari);
         
-        if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {
-        	lyotavavari=Vari.PUNAINEN;
+        if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {        	
         	
-	    	for(Kortti k: kasi) {
-	    		if(!k.isMusta()) {
-	    			lyotavavari = k.getVari();
-	    		}
-	    	}
-
-	    	// Väri, jota vastustajalla ei ole
+	    	// Väri, jota ei ole vastustajalla.
 	    	
 	    	Tilannekuva uusikuva = new Tilannekuva(kuva);
+	    	lyotavavari=null;
 
-			uusikuva.tapahtuma(new Tapahtuma(Teko.LÖI, 
+			uusikuva.tapahtuma(new Tapahtuma(
+					Teko.LÖI, 
 					kuva.getNextVastustaja(), 
 					lyotava, lyotavavari, 1));
 			
 			if(uusikuva.getNextPuuttuva()!=null) {
-				lyotavavari=uusikuva.getNextPuuttuva().getVari();
+				lyotavavari = uusikuva.getNextPuuttuva().getVari();
+			}
+
+				
+			// Väri, joka on itsellä.
+				
+			Vari secondaryVari=lyotavavari;
+	    	for(Kortti k: kasi) {
+	    		if(!k.isMusta()) {
+	    			secondaryVari=k.getVari();
+	    			if(lyotavavari == secondaryVari) {
+	    				break;
+	    			}
+	    		}
+	    	}	
+	    	
+	    	if(secondaryVari!=lyotavavari) {
+	    		lyotavavari=secondaryVari;
+	    	}
+			
+			if(lyotavavari==null) {
+				lyotavavari=Vari.PUNAINEN;
 			}
 
         }

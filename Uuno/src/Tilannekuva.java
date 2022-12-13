@@ -150,7 +150,7 @@ public class Tilannekuva {
     	return Math.floorMod(pelaajaindex + suunta * (nopeus + hypyt), pelaajamäärä);    	
     }
     
-    int getNextVastustajaKorttimaara() {
+    int getNextKorttimaara() {
     	return korttimaara[getNextVastustaja()];
     }
 
