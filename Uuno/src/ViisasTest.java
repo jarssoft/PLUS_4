@@ -125,7 +125,65 @@ class ViisasTest {
 	    testaa( new Kortti[]{KEL_N1, KEL_N5, SIN_N2, SIN_N0, SIN_N6}, 
 	    		Vari.SININEN);
 	    		*/
+	    
+	    // Vältetään antamasta vuoroa sille jolla on uuno-tilanne.
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			lyoty.add(VIH_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+			lyoty.clear();
+			lyoty.add(PUN_N2);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
 
+			testaa( new Kortti[]{PUN_OH, PUN_N2, PUN_N5},
+		    		new Kortti[]{PUN_OH});
+		}
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			lyoty.add(VIH_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+			lyoty.clear();
+			lyoty.add(PUN_N2);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+
+			testaa( new Kortti[]{PUN_N2, PUN_N5, PUN_SV},
+		    		new Kortti[]{PUN_SV});
+		}
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			lyoty.clear();
+			lyoty.add(PUN_N2);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			lyoty.add(VIH_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+
+			testaa( new Kortti[]{PUN_N2, PUN_PL, PUN_OH},
+		    		new Kortti[]{PUN_N2});
+		}
 
 	}
 

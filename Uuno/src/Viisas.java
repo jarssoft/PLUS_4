@@ -36,6 +36,12 @@ public class Viisas extends Tekoäly {
     	    	
     	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
     	
+    	Tilannekuva uusikuva = new Tilannekuva(kuva);
+		uusikuva.tapahtuma(new Tapahtuma(
+				Teko.LÖI, 
+				kuva.getNextVastustaja(), 
+				lyotava, vari, lyotava.size()));
+    	
     	// Pienempi käsi on parempi (-0.17)
         
     	int hyvyys = lyotava.size() * -2;
@@ -114,6 +120,15 @@ public class Viisas extends Tekoäly {
 				&& jatettava.lastElement().isMusta()) {
 			hyvyys-=10;
 		}
+		
+		// Ei haluta antaa vuoroa vastustajalle, jolla on uuno
+		
+		if(uusikuva.getNextKorttimaara()<4) {
+			hyvyys-=1;
+		}
+		if(uusikuva.getNextKorttimaara()<2) {
+			hyvyys-=2;
+		}
 
 		if(viimeinen.isMusta()) {
 			
@@ -131,11 +146,6 @@ public class Viisas extends Tekoäly {
 	    	// Väri, jota ei ole vastustajalla.
 	    	
 	    	boolean loytyyVastustajalta = true;
-	    	Tilannekuva uusikuva = new Tilannekuva(kuva);
-			uusikuva.tapahtuma(new Tapahtuma(
-					Teko.LÖI, 
-					kuva.getNextVastustaja(), 
-					lyotava, vari, 1));
 			
 			if(uusikuva.getNextPuuttuva()!=null) {
 				if(uusikuva.getNextPuuttuva().getVari()==vari)
