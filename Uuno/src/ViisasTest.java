@@ -184,6 +184,58 @@ class ViisasTest {
 			testaa( new Kortti[]{PUN_N2, PUN_PL, PUN_OH},
 		    		new Kortti[]{PUN_N2});
 		}
+		
+		// Annetaan puuttuva kortti
+		
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			lyoty.add(VIH_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+			lyoty.clear();
+			viisas.tapahtuma(new Tapahtuma(Teko.OHI, 0, lyoty, null, 3));
+			lyoty.add(PUN_N2);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+
+			testaa( new Kortti[]{PUN_N5, SIN_N2},
+		    		new Kortti[]{PUN_N5});
+		}
+		
+		{
+			lyoty = new Vector<Kortti>();
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			lyoty.add(VIH_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			lyoty.add(SIN_N5);
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+			lyoty.clear();
+			lyoty.add(PUN_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+			lyoty.clear();
+			viisas.tapahtuma(new Tapahtuma(Teko.OHI, 0, lyoty, null, 3));
+			lyoty.add(KEL_N5);
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+
+			testaa( new Kortti[]{KEL_N1, KEL_N5, KEL_N8},
+		    		new Kortti[]{KEL_N5});
+		}
 
 	}
 

@@ -162,6 +162,19 @@ public class Viisas extends Tekoäly {
 				hyvyys-=1;
 			}
 
+		}else {
+			
+			// Väri tai merkki, jota ei ole vastustajalla.
+			
+			if(uusikuva.getNextPuuttuva()!=null) {
+				if(uusikuva.getNextPuuttuva().getVari()==viimeinen.getVari()) {
+					hyvyys+=2;
+				}
+				if(uusikuva.getNextPuuttuva().getMerkki()==viimeinen.getMerkki()) {
+					hyvyys+=2;
+				}
+			}
+			
 		}
 		
 		return hyvyys;
