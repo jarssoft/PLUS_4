@@ -12,12 +12,13 @@ public abstract class Tekoäly {
 	abstract Vari getVari();
 	
 	/** Palauttaa kokonaisluvun vaihtoehdon hyvyydestä. */
-	abstract int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava);
+	abstract int hyvyys(Vector<Kortti> lyotava, Vari vari, Vector<Kortti> jatettava);
 	
 	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa.*/
-	public Vector<Kortti> paras(Vector<Kortti> kasi, Kortti poisto, Vari vari){
+	public Lyonti paras(Vector<Kortti> kasi, Kortti poisto, Vari vari){
 		
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
+        Vari parasvari = null;
         int parashyvyys = Integer.MIN_VALUE;
         
         for (Kortti k : kasi) {
@@ -48,17 +49,31 @@ public abstract class Tekoäly {
 	                	assert(alkuperainenkoko == ehdokaslyotava.size());
                 	}
                 	
-	                int ehdokashyvyys = hyvyys(ehdokaslyotava, ehdokasjatettava);
-		        	
-		        	if(ehdokashyvyys>parashyvyys) {
-		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-		        		parashyvyys=ehdokashyvyys;
-		        	}
+                	int ehdokashyvyys=Integer.MIN_VALUE;
+                	
+                	if(ehdokaslyotava.firstElement().isMusta()) {
+                		for(Vari v : Vari.values()) {
+                			ehdokashyvyys = hyvyys(ehdokaslyotava, v, ehdokasjatettava);
+        		        	if(ehdokashyvyys>parashyvyys) {        		        		
+        		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
+        		        		parasvari=v;
+        		        		parashyvyys=ehdokashyvyys;
+        		        	}
+                		}
+                	}else {
+                		ehdokashyvyys = hyvyys(ehdokaslyotava, null, ehdokasjatettava);
+    		        	if(ehdokashyvyys>parashyvyys) {
+    		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
+    		        		parasvari=vari;
+    		        		parashyvyys=ehdokashyvyys;    		        		
+    		        	}
+                	}
+
                 }
         	}
         }
-        
-        return paraslyotava;
+
+        return new Lyonti(paraslyotava, parasvari);
         
 	}
 

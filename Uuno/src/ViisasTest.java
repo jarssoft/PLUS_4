@@ -195,9 +195,10 @@ class ViisasTest {
 		{
 		    Kortti[] kasi    = {PLUS_4, SIN_N6};
 			viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi)));
+			System.out.flush();
 			assertEquals(Vari.SININEN, viisas.getVari());
 		}
-		
+
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
 		{

@@ -32,8 +32,10 @@ public class Viisas extends Tekoäly {
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
-    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava) { // Vari vari
+    int hyvyys(Vector<Kortti> lyotava, Vari vari, Vector<Kortti> jatettava) {
     	    	
+    	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
+    	
     	// Pienempi käsi on parempi (-0.17)
         
     	int hyvyys = lyotava.size() * -2;
@@ -113,6 +115,45 @@ public class Viisas extends Tekoäly {
 			hyvyys-=10;
 		}
 
+		if(viimeinen.isMusta()) {
+			
+			// Väri, joka on itsellä.
+			
+			boolean loytyyItselta = false;
+	    	for(Kortti k: jatettava) {
+	    		if(!k.isMusta()) {
+	    			if(vari == k.getVari()) {
+	    				loytyyItselta = true;
+	    			}
+	    		}
+	    	}	
+	    	
+	    	// Väri, jota ei ole vastustajalla.
+	    	
+	    	boolean loytyyVastustajalta = true;
+	    	Tilannekuva uusikuva = new Tilannekuva(kuva);
+			uusikuva.tapahtuma(new Tapahtuma(
+					Teko.LÖI, 
+					kuva.getNextVastustaja(), 
+					lyotava, vari, 1));
+			
+			if(uusikuva.getNextPuuttuva()!=null) {
+				if(uusikuva.getNextPuuttuva().getVari()==vari)
+					loytyyVastustajalta=false;
+			}
+			
+			//System.out.println("Itse:"+loytyyItselta+", Vastus:"+loytyyVastustajalta);
+			
+			if(loytyyItselta) {
+				if(!loytyyVastustajalta) {
+					hyvyys+=1;
+				}
+			}else {
+				hyvyys-=1;
+			}
+
+		}
+		
 		return hyvyys;
     	
     }
@@ -124,8 +165,9 @@ public class Viisas extends Tekoäly {
         assert(poisto!=null);
         assert(!kasi.isEmpty());      
         
-        Vector<Kortti> lyotava = paras(kasi, poisto, poistovari);
+        Lyonti lyotava = paras(kasi, poisto, poistovari);
         
+        /*
         if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {        	
         	
 	    	// Väri, jota ei ole vastustajalla.
@@ -164,8 +206,11 @@ public class Viisas extends Tekoäly {
 			}
 
         }
+        */
+        
+        lyotavavari = lyotava.getVari();
     	
-        return lyotava;
+        return lyotava.getKortit();
     }
     
     // Värivalinta, joka kysytään älyltä mustan kortin jälkeen.
