@@ -37,6 +37,7 @@ public class Viisas extends Tekoäly {
     	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
     	
     	Tilannekuva uusikuva = new Tilannekuva(kuva);
+    	    	
 		uusikuva.tapahtuma(new Tapahtuma(
 				Teko.LÖI, 
 				kuva.getNextVastustaja(), 
@@ -129,7 +130,30 @@ public class Viisas extends Tekoäly {
 		if(uusikuva.getNextKorttimaara()<2) {
 			hyvyys-=2;
 		}
-
+		
+		// Annetaan plussa-kortti vastustajalle jolla on uuno
+		
+		if((!viimeinen.isMusta() && viimeinen.getMerkki() == Merkki.PLUS2) ||
+					viimeinen.isPlus4()) {			
+	    	
+			// Selvitetään, mikä vastustaja saisi plussat
+			Tilannekuva normikuva = new Tilannekuva(kuva);			
+	    	Kortti SIN_N0 = Kortti.testiKortti(Vari.SININEN, Merkki.N0);
+	    	Vector<Kortti> lyoty = new Vector<Kortti>();
+			lyoty.add(SIN_N0);
+	    	normikuva.tapahtuma(new Tapahtuma(
+					Teko.LÖI, 
+					kuva.getNextVastustaja(), 
+					lyoty, null, 1));
+	    	
+			if(normikuva.getNextKorttimaara()<4) {
+				hyvyys+=1;
+			}
+			if(normikuva.getNextKorttimaara()<2) {
+				hyvyys+=2;
+			}
+		}
+		
 		if(viimeinen.isMusta()) {
 			
 			// Väri, joka on itsellä.
@@ -146,7 +170,7 @@ public class Viisas extends Tekoäly {
 	    	// Väri, jota ei ole vastustajalla.
 	    	
 	    	boolean loytyyVastustajalta = true;
-			
+
 			if(uusikuva.getNextPuuttuva()!=null) {
 				if(uusikuva.getNextPuuttuva().getVari()==vari)
 					loytyyVastustajalta=false;
@@ -164,7 +188,7 @@ public class Viisas extends Tekoäly {
 
 		}else {
 			
-			// Väri tai merkki, jota ei ole vastustajalla.
+			// Väri tai, jota ei ole vastustajalla.
 			
 			if(uusikuva.getNextPuuttuva()!=null) {
 				if(uusikuva.getNextPuuttuva().getVari()==viimeinen.getVari()) {
@@ -174,6 +198,9 @@ public class Viisas extends Tekoäly {
 					hyvyys+=2;
 				}
 			}
+			
+
+
 			
 		}
 		
