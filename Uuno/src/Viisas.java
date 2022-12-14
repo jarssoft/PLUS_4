@@ -5,7 +5,6 @@ public class Viisas extends Tekoäly {
 
 	private Vari poistovari;
 	private Kortti poisto;
-	private Vari lyotavavari;
 	private Tilannekuva kuva = new Tilannekuva();
 
     // Tiedottaa pelaajalle tapahtumasta.
@@ -18,17 +17,6 @@ public class Viisas extends Tekoäly {
         }
         kuva.tapahtuma(logi);
     }
-
-    /*
-    int hyvyys(Vector<Kortti> lyotava, Vector<Kortti> jatettava, int seuraavankorttimäärä) {
-    
-    	//ei anneta vuoroa sille, jolla on vähän kortteja
-    	
-    	//pyritään antamaan puuttuva kortti
-    	  
-    	//annetaan plussakortti, jos vähän kortteja
-    	 
-    }*/
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
@@ -198,10 +186,7 @@ public class Viisas extends Tekoäly {
 					hyvyys+=2;
 				}
 			}
-			
 
-
-			
 		}
 		
 		return hyvyys;
@@ -210,63 +195,12 @@ public class Viisas extends Tekoäly {
     
     // Pyytää tekoälyä tekemään valinnan.
     @Override
-	public Vector<Kortti> getKortti(Vector<Kortti> kasi){
+	public Lyonti getKortti(Vector<Kortti> kasi){
     
         assert(poisto!=null);
         assert(!kasi.isEmpty());      
-        
-        Lyonti lyotava = paras(kasi, poisto, poistovari);
-        
-        /*
-        if(!lyotava.isEmpty() && lyotava.get(0).isMusta()) {        	
-        	
-	    	// Väri, jota ei ole vastustajalla.
-	    	
-	    	Tilannekuva uusikuva = new Tilannekuva(kuva);
-	    	lyotavavari=null;
-
-			uusikuva.tapahtuma(new Tapahtuma(
-					Teko.LÖI, 
-					kuva.getNextVastustaja(), 
-					lyotava, lyotavavari, 1));
-			
-			if(uusikuva.getNextPuuttuva()!=null) {
-				lyotavavari = uusikuva.getNextPuuttuva().getVari();
-			}
-
-				
-			// Väri, joka on itsellä.
-				
-			Vari secondaryVari=lyotavavari;
-	    	for(Kortti k: kasi) {
-	    		if(!k.isMusta()) {
-	    			secondaryVari=k.getVari();
-	    			if(lyotavavari == secondaryVari) {
-	    				break;
-	    			}
-	    		}
-	    	}	
-	    	
-	    	if(secondaryVari!=lyotavavari) {
-	    		lyotavavari=secondaryVari;
-	    	}
-			
-			if(lyotavavari==null) {
-				lyotavavari=Vari.PUNAINEN;
-			}
-
-        }
-        */
-        
-        lyotavavari = lyotava.getVari();
     	
-        return lyotava.getKortit();
-    }
-    
-    // Värivalinta, joka kysytään älyltä mustan kortin jälkeen.
-    @Override
-	public Vari getVari(){
-    	return lyotavavari;
+        return paras(kasi, poisto, poistovari);
     }
 
 }

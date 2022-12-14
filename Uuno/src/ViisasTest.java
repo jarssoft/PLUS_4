@@ -283,6 +283,12 @@ class ViisasTest {
 
 	void testaa(Kortti[] kasi, Kortti[] odotettu) {		
     			
+		testaa(kasi, odotettu, (Vari)null);
+		
+	}
+	
+	void testaa(Kortti[] kasi, Kortti[] odotettu, Vari vari) {		
+		
 		Vector<Kortti> odotettuV = new Vector<Kortti>(Arrays.asList(odotettu));		
 		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
 		for(Kortti o: odotettuV) {
@@ -291,22 +297,23 @@ class ViisasTest {
 		
 		for(int t=0;t<2;t++)
 		{
-    		Collections.reverse(kasiV);    	
-	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
-	    	assertEquals(odotettuV.toString(), lyotavaV.toString());
+    		Collections.reverse(kasiV);
+    		Lyonti lyonti = viisas.getKortti(kasiV);
+	    	assertEquals(odotettuV.toString(), lyonti.getKortit().toString());
+	    	if(vari!=null) {
+	    		assertEquals(vari.toString(), lyonti.getVari().toString());
+	    	}
 		}
 		
 	}
-	
 	void testaa(Kortti[] kasi, Vari vari) {		
 				
 		Vector<Kortti> kasiV = new Vector<Kortti>(Arrays.asList(kasi));
 		
 		for(int t=0;t<2;t++)
 		{
-    		Collections.reverse(kasiV);    	
-	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);    	
-	    	assertEquals(vari, lyotavaV.lastElement().getVari());
+    		Collections.reverse(kasiV);    	    	
+	    	assertEquals(vari, viisas.getKortti(kasiV).getKortit().lastElement().getVari());
 		}
 		
 	}
@@ -327,7 +334,7 @@ class ViisasTest {
 		{
 			Collections.reverse(kasiV);
 			
-	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV);   
+	    	Vector<Kortti> lyotavaV = viisas.getKortti(kasiV).getKortit();   
 	    	//assertEquals(odotettu1V.toString(), lyotavaV.toString());
 	    	assertTrue(lyotavaV.toString().equals(odotettu1V.toString()) 
 	    			|| lyotavaV.toString().equals(odotettu2V.toString()) );
@@ -345,10 +352,8 @@ class ViisasTest {
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään.
 		{
-		    Kortti[] kasi    = {PLUS_4, SIN_N6};
-			viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi)));
-			System.out.flush();
-			assertEquals(Vari.SININEN, viisas.getVari());
+		    Kortti[] kasi    = {PLUS_4, SIN_N6};			
+			assertEquals(Vari.SININEN, viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi))).getVari());
 		}
 
 		// Valitaan väri, joka on ylinen käsikorttien kanssa
@@ -356,7 +361,7 @@ class ViisasTest {
 		{
 		    Kortti[] kasi    = {JOKERI, KEL_N5};
 			viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi)));
-			assertEquals(Vari.KELTAINEN, viisas.getVari());
+			assertEquals(Vari.KELTAINEN, viisas.getKortti(new Vector<Kortti>(Arrays.asList(kasi))).getVari());
 		}
 	    
 	    // Valitaan väri joka on itsellä, mutta ei vastustajalla
@@ -368,9 +373,9 @@ class ViisasTest {
 			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 3));
 
 			testaa( new Kortti[]{SIN_N5, VIH_N5, KEL_N5, JOKERI}, 
-		    		new Kortti[]{JOKERI});
+		    		new Kortti[]{JOKERI}, Vari.KELTAINEN);
 			
-			assertEquals(Vari.KELTAINEN, viisas.getVari());
+			//assertEquals(Vari.KELTAINEN, viisas.getVari());
 		}
 		
 	}

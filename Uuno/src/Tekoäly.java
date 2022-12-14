@@ -6,10 +6,7 @@ public abstract class Tekoäly {
 	abstract void tapahtuma(Tapahtuma logi);
 
 	/** Pyytää tekoälyä tekemään valinnan. */
-	abstract Vector<Kortti> getKortti(Vector<Kortti> kasi);
-
-	/** Värivalinta, joka kysytään älyltä mustan kortin jälkeen. */
-	abstract Vari getVari();
+	abstract Lyonti getKortti(Vector<Kortti> kasi);
 	
 	/** Palauttaa kokonaisluvun vaihtoehdon hyvyydestä. */
 	abstract int hyvyys(Vector<Kortti> lyotava, Vari vari, Vector<Kortti> jatettava);

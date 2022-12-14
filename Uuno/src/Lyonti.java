@@ -1,5 +1,7 @@
 import java.util.Vector;
 
+/** Pelaajan tekemä korttien laittaminen poistopakkaan. 
+ *  Lyöntiin lasketaan mustien korttien yhteydessä ilmoitettu väri.*/ 
 public class Lyonti {
 
 	private Vector<Kortti> lyoty = new Vector<Kortti>();

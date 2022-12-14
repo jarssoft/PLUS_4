@@ -50,8 +50,7 @@ public class Pelaaja  {
     Tapahtuma teeVuoro(boolean jaa){
 
         int nosto = 0;
-        Vector<Kortti> lyotava = new Vector<Kortti>();
-        Vari vari = null;
+        Lyonti lyotava = null;
         Teko tapahtuma=null;
         
         if(jaa){
@@ -61,7 +60,9 @@ public class Pelaaja  {
             
             // Nostetaan aloituskortti niin kauan kun se ei ole musta
             Kortti k = Pöytä.pöytä.nosta();
-            lyotava.add(k);                
+            Vector<Kortti> kortit = new Vector<Kortti>();
+            kortit.add(k);            
+            lyotava=new Lyonti(kortit, null);                
             
         }else{
 
@@ -74,11 +75,9 @@ public class Pelaaja  {
 
                 // Jos löytyy lyötävä, siirretään se pöytään
                 lyotava = aly.getKortti(kasi);
-                if(!lyotava.isEmpty()){
-                    kasi.removeAll(lyotava);
-                    if(lyotava.get(0).isMusta()){
-                        vari = aly.getVari();
-                    }
+                if(!lyotava.getKortit().isEmpty()){
+                    kasi.removeAll(lyotava.getKortit());
+
                     if(kasi.size()==1) {
                     	tapahtuma=Teko.UNO;
                     }else if(kasi.size()==0){
@@ -97,12 +96,12 @@ public class Pelaaja  {
             }
         }
 
-        lyo(lyotava);
+        lyo(lyotava.getKortit());
         
         //System.out.println("Pelaaja:"+this.id+ " "+kasi.size());
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
-        return new Tapahtuma(tapahtuma, id, lyotava, vari, nosto);
+        return new Tapahtuma(tapahtuma, id, lyotava.getKortit(), lyotava.getVari(), nosto);
     }
 
 }
