@@ -4,7 +4,7 @@ import java.util.Vector;
  *  Lyöntiin lasketaan mustien korttien yhteydessä ilmoitettu väri.*/ 
 public class Lyonti {
 
-	private Vector<Kortti> lyoty = new Vector<Kortti>();
+	private Vector<Kortti> kortit = new Vector<Kortti>();
 	private Vari vari = null;
 
 	public Lyonti(Vector<Kortti> lyoty, Vari vari) {
@@ -13,11 +13,11 @@ public class Lyonti {
 	}
 
 	public Vector<Kortti> getKortit() {
-		return lyoty;
+		return kortit;
 	}
 
 	public void setLyoty(Vector<Kortti> lyoty) {
-		this.lyoty = lyoty;
+		this.kortit = lyoty;
 	}
 
 	public Vari getVari() {
@@ -27,5 +27,12 @@ public class Lyonti {
 	public void setVari(Vari vari) {
 		this.vari = vari;
 	}
-
+	
+	public boolean isMusta() {
+		return kortit.firstElement().isMusta();
+	}
+	
+	public boolean isEmpty() {
+		return kortit.isEmpty();
+	}
 }

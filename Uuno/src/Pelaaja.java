@@ -62,7 +62,7 @@ public class Pelaaja  {
             Kortti k = Pöytä.pöytä.nosta();
             Vector<Kortti> kortit = new Vector<Kortti>();
             kortit.add(k);            
-            lyotava=new Lyonti(kortit, null);                
+            lyotava = new Lyonti(kortit, null);                
             
         }else{
 
@@ -75,7 +75,7 @@ public class Pelaaja  {
 
                 // Jos löytyy lyötävä, siirretään se pöytään
                 lyotava = aly.getKortti(kasi);
-                if(!lyotava.getKortit().isEmpty()){
+                if(!lyotava.isEmpty()){
                     kasi.removeAll(lyotava.getKortit());
 
                     if(kasi.size()==1) {

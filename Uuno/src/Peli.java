@@ -6,32 +6,33 @@ public class Peli {
 
     // Palauttaa true, jos kortin %lyotava voi laittaa, kun poistopinossa 
     // on %poisto, ja sanottu väri on %vari.
-    public static boolean voiLyoda(final Kortti lyotava, final Lyonti poisto, boolean uuno) {
+    public static boolean voiLyoda(final Kortti lyotava, final Lyonti edellinen, boolean uuno) {
         if(lyotava.isMusta()){
             return !uuno;
         }
-        if(poisto.getKortit().lastElement().isMusta()){
-            return lyotava.getVari() == poisto.getVari();
+        if(edellinen.getKortit().lastElement().isMusta()){
+            return lyotava.getVari() == edellinen.getVari();
         }
-        return lyotava.getVari()==poisto.getKortit().lastElement().getVari()  
-                || lyotava.getMerkki()==poisto.getKortit().lastElement().getMerkki();
+        return lyotava.getVari()==edellinen.getKortit().lastElement().getVari()  
+                || lyotava.getMerkki()==edellinen.getKortit().lastElement().getMerkki();
     }
     
     // Palauttaa true, jos saman pelaajan lyömän kortin %poisto päälle voi laittaa vielä kortin %lyotava.
-    public static boolean voiLyodaLisäksi(final Kortti lyotava, final Kortti poisto) {
-        if(lyotava.isMusta() || poisto.isMusta()){
+    public static boolean voiLyodaLisäksi(final Kortti lyotava, final Kortti edellinen) {
+        if(lyotava.isMusta() || edellinen.isMusta()){
             return false;
         }
-        return lyotava.getMerkki()==poisto.getMerkki();
+        return lyotava.getMerkki()==edellinen.getMerkki();
     }
 
     // Pelisilmukka perustuu linkitetyn listan iteraattoriin.
     // Se huolehtii pelaajien välisestä vuorottelusta ja tiedottamisesta.
     public static void peli(LinkedList<Pelaaja> pelaajat) {
 
-    	// Alustetaan
+    	System.out.println("------------------------------------------");
     	
-		System.out.println("------------------------------------------");
+    	// Alustetaan
+    			
     	boolean jaa=true;
     	Pöytä.pöytä.reset();
         for(Pelaaja p: pelaajat){

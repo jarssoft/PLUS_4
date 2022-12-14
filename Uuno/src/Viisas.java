@@ -49,7 +49,7 @@ public class Viisas extends Tekoäly {
 		
 		// Yritetään aina vaihtaa väriä (-0.01, 0), (0, -0.3)
 
-		if(!viimeinen.isMusta() && !poisto.getKortit().lastElement().isMusta()) {
+		if(!viimeinen.isMusta() && !poisto.isMusta()) {
     		if(viimeinen.getVari().toString() != poisto.getKortit().lastElement().getVari().toString()) {
     			hyvyys+=1;
     		}
@@ -93,7 +93,7 @@ public class Viisas extends Tekoäly {
 		// Säästetään mustia tosipaikan varalle
 		
 		if(jatettava.size()>=3
-				&& lyonti.getKortit().firstElement().isMusta()) {
+				&& lyonti.isMusta()) {
 			hyvyys-=1;
 		}
 		
