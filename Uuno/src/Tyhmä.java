@@ -4,15 +4,13 @@ import java.util.Vector;
 public class Tyhmä extends Tekoäly {
 
     protected Vari vari;
-    protected Kortti poisto;
-    protected Vari lyotavaVari;
+	private Lyonti poisto;
 
     // Tiedottaa pelaajalle tapahtumasta.
     @Override
 	public void tapahtuma(Tapahtuma logi){
         if(!logi.lyonti.isEmpty()){
-            this.vari=logi.vari;
-            this.poisto=logi.lyonti.lastElement();
+        	poisto=logi.getLyonti();
         }
     }
 
@@ -20,10 +18,10 @@ public class Tyhmä extends Tekoäly {
     @Override
 	public Lyonti getKortti(Vector<Kortti> kasi){
     
-        assert(poisto!=null);
+        assert(poisto.getKortit().lastElement()!=null);
         assert(!kasi.isEmpty());
 
-        return paras(kasi, poisto, vari);        
+        return paras(kasi, poisto);        
     }
     
 	@Override

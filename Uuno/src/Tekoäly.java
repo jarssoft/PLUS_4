@@ -12,7 +12,7 @@ public abstract class Tekoäly {
 	abstract int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava);
 	
 	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa.*/
-	public Lyonti paras(Vector<Kortti> kasi, Kortti poisto, Vari vari){
+	public Lyonti paras(Vector<Kortti> kasi, Lyonti poisto){
 		
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
         Vari parasvari = null;
@@ -20,7 +20,7 @@ public abstract class Tekoäly {
         
         for (Kortti k : kasi) {
         	
-        	if(Peli.voiLyoda(k, poisto, vari, kasi.size()==1)){
+        	if(Peli.voiLyoda(k, poisto, kasi.size()==1)){
         		
             	Vector<Kortti> ehdokaslyotava = new Vector<Kortti>();        	
             	Vector<Kortti> ehdokasjatettava = new Vector<Kortti>(kasi);    
@@ -61,7 +61,7 @@ public abstract class Tekoäly {
                 		ehdokashyvyys = hyvyys(new Lyonti(ehdokaslyotava, null), ehdokasjatettava);
     		        	if(ehdokashyvyys>parashyvyys) {
     		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-    		        		parasvari=vari;
+    		        		parasvari=null;
     		        		parashyvyys=ehdokashyvyys;    		        		
     		        	}
                 	}

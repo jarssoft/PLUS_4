@@ -84,4 +84,8 @@ public class Tapahtuma {
        return("t:" + tapahtuma + " p:" + pelaaja + " l:" + lyonti
                  + " v:" + vari + " n:" + nostot);
     }
+    
+    public Lyonti getLyonti() {
+    	return new Lyonti(lyonti, vari);
+    }
 }

@@ -3,8 +3,9 @@ import java.util.Vector;
 // Ainut osa joka tekee päätöksiä.
 public class Viisas extends Tekoäly {
 
-	private Vari poistovari;
-	private Kortti poisto;
+	//Edellinen lyönti
+	private Lyonti poisto;
+	
 	private Tilannekuva kuva = new Tilannekuva();
 
     // Tiedottaa pelaajalle tapahtumasta.
@@ -12,8 +13,7 @@ public class Viisas extends Tekoäly {
 	public void tapahtuma(Tapahtuma logi){    
     	
         if(!logi.lyonti.isEmpty()){
-            this.poistovari=logi.vari;
-            this.poisto=logi.lyonti.lastElement();
+        	poisto=logi.getLyonti();
         }
         kuva.tapahtuma(logi);
     }
@@ -49,8 +49,8 @@ public class Viisas extends Tekoäly {
 		
 		// Yritetään aina vaihtaa väriä (-0.01, 0), (0, -0.3)
 
-		if(!viimeinen.isMusta() && !poisto.isMusta()) {
-    		if(viimeinen.getVari().toString() != this.poisto.getVari().toString()) {
+		if(!viimeinen.isMusta() && !poisto.getKortit().lastElement().isMusta()) {
+    		if(viimeinen.getVari().toString() != poisto.getKortit().lastElement().getVari().toString()) {
     			hyvyys+=1;
     		}
 		}
@@ -125,13 +125,10 @@ public class Viisas extends Tekoäly {
 	    	
 			// Selvitetään, mikä vastustaja saisi plussat
 			Tilannekuva normikuva = new Tilannekuva(kuva);			
-	    	Kortti SIN_N0 = Kortti.testiKortti(Vari.SININEN, Merkki.N0);
-	    	Vector<Kortti> lyoty = new Vector<Kortti>();
-			lyoty.add(SIN_N0);
 	    	normikuva.tapahtuma(new Tapahtuma(
 					Teko.LÖI, 
 					kuva.getNextVastustaja(), 
-					lyoty, null, 1));
+					new Kortti[] {Kortti.testiKortti(Vari.SININEN, Merkki.N0)}, 1));
 	    	
 			if(normikuva.getNextKorttimaara()<4) {
 				hyvyys+=1;
@@ -196,10 +193,10 @@ public class Viisas extends Tekoäly {
     @Override
 	public Lyonti getKortti(Vector<Kortti> kasi){
     
-        assert(poisto!=null);
+        assert(poisto.getKortit().lastElement()!=null);
         assert(!kasi.isEmpty());      
     	
-        return paras(kasi, poisto, poistovari);
+        return paras(kasi, poisto);
     }
 
 }
