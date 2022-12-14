@@ -30,7 +30,7 @@ public class Viisas extends Tekoäly {
 				kuva.getNextVastustaja(), 
 				lyonti, lyonti.getKortit().size()));
     	
-    	// Pienempi käsi on parempi (-0.17)
+    	// Lyödään mahdollisimman vähän kortteja (-0.17)
         
     	int hyvyys = lyonti.getKortit().size() * -2;
     	
@@ -47,7 +47,7 @@ public class Viisas extends Tekoäly {
             }
 		}
 		
-		// Yritetään aina vaihtaa väriä (-0.01, 0), (0, -0.3)
+		// Yritetään vaihtaa väriä (-0.01, 0), (0, -0.3)
 
 		if(!viimeinen.isMusta() && !poisto.isMusta()) {
     		if(viimeinen.getVari().toString() != poisto.getKortit().lastElement().getVari().toString()) {
@@ -55,7 +55,7 @@ public class Viisas extends Tekoäly {
     		}
 		}
 		
-		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri. (+0.06, +4), (+0.03, +3)
+		// Jos käteen jää yli kaksi korttia, yritetään poistaa yleisin väri (+0.06, +4), (+0.03, +3)
 		/*
 		if(jatettava.size()>2) {        			
 			//ratkaistaan yleisimmän värin korttimäärä
@@ -79,7 +79,7 @@ public class Viisas extends Tekoäly {
 		}
 		
 		
-		// Jätetään viimeiseksi kaksi samanväristä (0, +1) (0, 0)
+		// Jätetään viimeiseksi käteen kaksi samanväristä (0, +1) (0, 0)
 		
 		if(jatettava.size()==2) {
 			if(!jatettava.get(0).isMusta() && !jatettava.get(1).isMusta()) {
@@ -90,7 +90,7 @@ public class Viisas extends Tekoäly {
 		}
 		*/
 		
-		// Säästetään mustia tosipaikan varalle
+		// Säästetään mustia pahan tilanteen varalle
 		
 		if(jatettava.size()>=3
 				&& lyonti.isMusta()) {
@@ -109,7 +109,7 @@ public class Viisas extends Tekoäly {
 			hyvyys-=10;
 		}
 		
-		// Ei haluta antaa vuoroa vastustajalle, jolla on uuno
+		// Ei anneta vuoroa vastustajalle, jolla on uuno
 		
 		if(uusikuva.getNextKorttimaara()<4) {
 			hyvyys-=1;
@@ -140,7 +140,7 @@ public class Viisas extends Tekoäly {
 		
 		if(viimeinen.isMusta()) {
 			
-			// Väri, joka on itsellä.
+			// Valitaan väri, joka on itsellä
 			
 			boolean loytyyItselta = false;
 	    	for(Kortti k: jatettava) {
@@ -151,7 +151,7 @@ public class Viisas extends Tekoäly {
 	    		}
 	    	}	
 	    	
-	    	// Väri, jota ei ole vastustajalla.
+	    	// Valitaan väri, jota ei ole vastustajalla
 	    	
 	    	boolean loytyyVastustajalta = true;
 
@@ -172,7 +172,7 @@ public class Viisas extends Tekoäly {
 
 		}else {
 			
-			// Väri tai, jota ei ole vastustajalla.
+			// Väri tai merkki, jota ei ole vastustajalla.
 			
 			if(uusikuva.getNextPuuttuva()!=null) {
 				if(uusikuva.getNextPuuttuva().getVari()==viimeinen.getVari()) {

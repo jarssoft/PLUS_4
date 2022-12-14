@@ -3,7 +3,6 @@ import java.util.Vector;
 /** Tekoäly joka toimii satunnaisesti. */
 public class Tyhmä extends Tekoäly {
 
-    protected Vari vari;
 	private Lyonti poisto;
 
     // Tiedottaa pelaajalle tapahtumasta.

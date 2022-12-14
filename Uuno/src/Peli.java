@@ -120,12 +120,11 @@ public class Peli {
     
     public static void main(String[] args) {
 
-        LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();      
-        pelaajat.add(new Pelaaja(new Viisas()));
+        LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();
         
-        for(int p=0;p<1;p++){
-            pelaajat.add(new Pelaaja(new Tyhmä()));
-        }
+        pelaajat.add(new Pelaaja(new Viisas()));
+        pelaajat.add(new Pelaaja(new Käyttäjä()));
+
 
         for(int t=0;t<10000;t++){
             peli(new LinkedList<Pelaaja>(pelaajat));

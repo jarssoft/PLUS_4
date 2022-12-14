@@ -11,7 +11,7 @@ public abstract class Tekoäly {
 	/** Palauttaa kokonaisluvun vaihtoehdon hyvyydestä. */
 	abstract int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava);
 	
-	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa.*/
+	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa. */
 	public Lyonti paras(Vector<Kortti> kasi, Lyonti poisto){
 		
         Vector<Kortti> paraslyotava = new Vector<Kortti>();
