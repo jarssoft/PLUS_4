@@ -70,7 +70,7 @@ public class Peli {
 	            
 	            //jako on suoritettu, kun ei musta
 	            
-	            if(logi.tapahtuma==Teko.JAK && !logi.lyonti.firstElement().isMusta()) {
+	            if(logi.tapahtuma==Teko.JAK && !logi.lyonti.isMusta()) {
 	            	jaa=false;
 	            }
 	            
@@ -88,7 +88,7 @@ public class Peli {
             // Käsitellään erikoiskortit
                 
             if(!logi.lyonti.isEmpty()){
-                Vector<Kortti> lyotava=logi.lyonti;
+                Vector<Kortti> lyotava=logi.lyonti.getKortit();
                 if(!lyotava.get(0).isMusta()){
                     if(lyotava.get(0).getMerkki()==Merkki.OHITUS){
                         ki.ohitus(lyotava.size());

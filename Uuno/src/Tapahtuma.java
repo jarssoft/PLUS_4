@@ -45,8 +45,9 @@ public class Tapahtuma {
 
 	final Teko tapahtuma;
     final int pelaaja;
-    final Vector<Kortti> lyonti;
-    final Vari vari;
+    //final Vector<Kortti> lyonti;
+    //final Vari vari;
+    final Lyonti lyonti;
     final int nostot;
 
     public Tapahtuma(Teko tapahtuma, int pelaaja, Kortti[] kortit, int nostot) {
@@ -75,17 +76,16 @@ public class Tapahtuma {
     	
     	this.tapahtuma=tapahtuma;
         this.pelaaja=pelaaja;
-        this.lyonti=lyonti;
-        this.vari=vari;
+        this.lyonti=new Lyonti(lyonti, vari);
         this.nostot=nostot;
     }
 
     public String toString(){
-       return("t:" + tapahtuma + " p:" + pelaaja + " l:" + lyonti
-                 + " v:" + vari + " n:" + nostot);
+       return("t:" + tapahtuma + " p:" + pelaaja + " l:" + lyonti.getKortit()
+                 + " v:" + lyonti.getVari() + " n:" + nostot);
     }
     
     public Lyonti getLyonti() {
-    	return new Lyonti(lyonti, vari);
+    	return lyonti;
     }
 }

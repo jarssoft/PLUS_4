@@ -66,7 +66,7 @@ public class Tilasto {
     	
     	//assert(vuoro>0 || logi.kasikoko==7);
 
-		if(logi.tapahtuma==Teko.JAK && !(logi.lyonti.firstElement().isMusta())) {
+		if(logi.tapahtuma==Teko.JAK && !(logi.lyonti.getKortit().firstElement().isMusta())) {
 			
 			if(vuoro>0) {
 				vuoro_l.add(vuoro);
@@ -92,14 +92,14 @@ public class Tilasto {
 	    		if(logi.nostot > 0) {
 	    			nostot++;
 	    		}else{    		
-	    			if(logi.lyonti.firstElement().isMusta()) {
+	    			if(logi.getLyonti().isMusta()) {
 	    				musta++;
 	    			}else {
 	    				if(!viim.isMusta()) {
-				    		if(logi.lyonti.firstElement().getVari() == viim.getVari()) {
+				    		if(logi.lyonti.getKortit().firstElement().getVari() == viim.getVari()) {
 				    			samaVäri++;
 				    		}
-				    		if(logi.lyonti.firstElement().getMerkki() == viim.getMerkki()) {
+				    		if(logi.getLyonti().getMerkki() == viim.getMerkki()) {
 				    			samaMerkki++;
 				    		}
 	    	    		}else {
@@ -109,7 +109,7 @@ public class Tilasto {
 	    		}
     		}
     		
-    		if(logi.tapahtuma==Teko.JAK && !(logi.lyonti.firstElement().isMusta())) {
+    		if(logi.tapahtuma==Teko.JAK && !(logi.getLyonti().isMusta())) {
     			jaot++;
     		}
     		
@@ -133,7 +133,7 @@ public class Tilasto {
     	}
 		
     	if(!logi.lyonti.isEmpty()) {
-    		viim  = logi.lyonti.lastElement();
+    		viim  = logi.lyonti.getKortit().lastElement();
     	}
     	
     	if(logi.tapahtuma==Teko.VTO) {

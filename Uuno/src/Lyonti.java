@@ -35,4 +35,8 @@ public class Lyonti {
 	public boolean isEmpty() {
 		return kortit.isEmpty();
 	}
+
+	public Merkki getMerkki() {
+		return kortit.firstElement().getMerkki();
+	}
 }

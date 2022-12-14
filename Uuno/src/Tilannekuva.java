@@ -47,7 +47,7 @@ public class Tilannekuva {
 		Kortti poisto = null; 
 		
         if(!logi.lyonti.isEmpty()){
-            poisto = logi.lyonti.lastElement(); 
+            poisto = logi.lyonti.getKortit().lastElement(); 
         }
         
         if(logi.tapahtuma == Teko.JAK) {
@@ -73,7 +73,7 @@ public class Tilannekuva {
 	
         }
         
-        int muutos = logi.nostot - logi.lyonti.size();
+        int muutos = logi.nostot - logi.lyonti.getKortit().size();
         korttimaara[pelaajaindex] += muutos;
         //System.out.println(pelaajaindex+" puuttuu "+puuttuva[pelaajaindex]);
         
@@ -82,7 +82,7 @@ public class Tilannekuva {
         }
         
         if(poisto!= null && !poisto.isMusta() && poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
-        	suunta *= (int)Math.pow(-1, logi.lyonti.size());
+        	suunta *= (int)Math.pow(-1, logi.lyonti.getKortit().size());
         }
         
         nopeus = 1;
@@ -100,11 +100,11 @@ public class Tilannekuva {
 	        if(!logi.lyonti.isEmpty()){
 		        if(!poisto.isMusta()){
 		    		if(poisto.getMerkki() == Merkki.OHITUS) {        	
-		    			nopeus = 1 + logi.lyonti.size();
+		    			nopeus = 1 + logi.lyonti.getKortit().size();
 		    		}
 		    		if(poisto.getMerkki() == Merkki.PLUS2) {  
 		    			int nextvastustaja=getNextVastustaja();
-		    			korttimaara[nextvastustaja] += 2 * logi.lyonti.size();
+		    			korttimaara[nextvastustaja] += 2 * logi.lyonti.getKortit().size();
 		    			puuttuva[nextvastustaja]=null;
 		    			nopeus = 2;
 		    		}
