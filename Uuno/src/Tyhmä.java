@@ -24,11 +24,10 @@ public class Tyhmä extends Tekoäly {
         assert(!kasi.isEmpty());
 
         return paras(kasi, poisto, vari);        
-        
     }
     
 	@Override
-	int hyvyys(Vector<Kortti> lyotava, Vari vari, Vector<Kortti> jatettava) {
+	int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
 		return (int)(Math.random() * 10000);
 	}
 

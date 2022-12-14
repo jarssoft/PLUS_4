@@ -1,7 +1,4 @@
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Vector;
-
 import org.junit.jupiter.api.Test;
 
 class TilannekuvaTest {
@@ -29,93 +26,59 @@ class TilannekuvaTest {
 	void testGetNextVastustaja() {
 		
 		// JAK
-		Vector<Kortti> lyoty = new Vector<Kortti>();
 		Tilannekuva kuva=new Tilannekuva();
-		lyoty.add(SIN_N0);
-		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 5, lyoty, null, 1));
+		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 5, new Kortti[] {SIN_N0}, 1));
 		assertEquals(6, kuva.numberOfPlayers());		
 		kuva = new Tilannekuva();		
-		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, new Kortti[] {SIN_N0}, 1));
 		assertEquals(3, kuva.numberOfPlayers());
 		assertEquals(0, kuva.getNextVastustaja());
 		
 		// LÖI
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {SIN_N0}, 0));
 		assertEquals(1, kuva.getNextVastustaja());
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, new Kortti[] {SIN_N0}, 0));
 		assertEquals(2, kuva.getNextVastustaja());
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, new Kortti[] {SIN_N0}, 0));
 		assertEquals(0, kuva.getNextVastustaja());
 		
 		// Suunnanvaihtokortti
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_SV);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {PUN_SV}, 0));
 		assertEquals(2, kuva.getNextVastustaja());
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, new Kortti[] {PUN_SV}, 0));
 		assertEquals(0, kuva.getNextVastustaja());
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {PUN_SV, PUN_SV}, 0));
 		assertEquals(1, kuva.getNextVastustaja());
 		
 		// Ohituskortti
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_OH);
-		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, new Kortti[] {PUN_OH}, 1));
 		assertEquals(1, kuva.getNextVastustaja());		
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, new Kortti[] {PUN_OH}, 0));
 		assertEquals(0, kuva.getNextVastustaja());		
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_OH);
-		lyoty.add(PUN_OH);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {PUN_OH, PUN_OH}, 0));
 		assertEquals(0, kuva.getNextVastustaja());
 		
 		// Plussa
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_PL);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {PUN_PL}, 0));
 		assertEquals(2, kuva.getNextVastustaja());
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PLUS_4);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, Vari.KELTAINEN, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, new Kortti[] {PLUS_4}, Vari.KELTAINEN, 0));
 		assertEquals(1, kuva.getNextVastustaja());
 		
 		// Pelaajien korttien loppumisen ennustaminen ///////////////////////////////////////
 		
 		// Voitot		
-		lyoty = new Vector<Kortti>();
-		lyoty.add(SIN_N0);
-		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, new Kortti[] {SIN_N0}, 1));
 		assertEquals(0, kuva.getNextVastustaja());
-		lyoty.add(SIN_N0);
-		lyoty.add(SIN_N0);
-		lyoty.add(SIN_N0);
-		lyoty.add(SIN_N0);
-		lyoty.add(SIN_N0);
-		lyoty.add(SIN_N0);
-		kuva.tapahtuma(new Tapahtuma(Teko.VTO, 0, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.VTO, 0, new Kortti[] {SIN_N0,SIN_N0,SIN_N0,SIN_N0,SIN_N0,SIN_N0,SIN_N0}, 0));
 		assertEquals(1, kuva.getNextVastustaja());
-		lyoty = new Vector<Kortti>();
-		lyoty.add(SIN_N0);
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, null, 0));
-		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, new Kortti[] {SIN_N0}, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, new Kortti[] {SIN_N0}, 0));
 		assertEquals(1, kuva.getNextVastustaja());
 				
 		// Voitot + Suunnanvaihto	
-		lyoty = new Vector<Kortti>();
-		lyoty.add(PUN_SV);
-		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+		kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, new Kortti[] {PUN_SV}, 1));
 		assertEquals(1, kuva.getNextVastustaja());
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		lyoty.add(PUN_SV);
-		kuva.tapahtuma(new Tapahtuma(Teko.VTO, 1, lyoty, null, 0));
+		kuva.tapahtuma(new Tapahtuma(Teko.VTO, 1, new Kortti[] {PUN_SV,PUN_SV,PUN_SV,PUN_SV,PUN_SV,PUN_SV,PUN_SV}, 0));
 		assertEquals(2, kuva.getNextVastustaja());
 	}
 	
@@ -123,39 +86,26 @@ class TilannekuvaTest {
 	void testGetNextPuuttuva() {
 		// Mustan kortin lyödessä valitaa väri jota vastustajalla ei ole.
 		{
-			Vector<Kortti> lyoty = new Vector<Kortti>();
 			Tilannekuva kuva=new Tilannekuva();
-			lyoty = new Vector<Kortti>();
-			lyoty.add(SIN_N5);
-			kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, lyoty, null, 1));
+			kuva.tapahtuma(new Tapahtuma(Teko.JAK, 2, new Kortti[] {SIN_N5}, 1));
 			assertEquals(3, kuva.numberOfPlayers());
 			assertEquals(0, kuva.getNextVastustaja());
-			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, lyoty, null, 1));
+			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {SIN_N5}, 1));
 			//Pelaaja 1 ilmoittaa OHI-tilanteen.
-			lyoty.clear();
-			kuva.tapahtuma(new Tapahtuma(Teko.OHI, 1, lyoty, null, 3));
+			kuva.tapahtuma(new Tapahtuma(Teko.OHI, 1, new Kortti[] {}, 3));
 			assertEquals(2, kuva.getNextVastustaja());
-			lyoty.clear();
-			lyoty.add(PLUS_4);
-			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, lyoty, Vari.SININEN, 0));
+			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 2, new Kortti[] {PLUS_4}, Vari.SININEN, 0));
 			assertEquals(1, kuva.getNextVastustaja());
 			assertEquals(Vari.SININEN, kuva.getNextPuuttuva().getVari());
 		}
 		{
-			Vector<Kortti> lyoty = new Vector<Kortti>();
 			Tilannekuva kuva=new Tilannekuva();
-			lyoty = new Vector<Kortti>();
-			lyoty.add(PUN_N2);
-			kuva.tapahtuma(new Tapahtuma(Teko.JAK, 1, lyoty, null, 1));
-			lyoty.clear();
-			kuva.tapahtuma(new Tapahtuma(Teko.OHI, 0, lyoty, null, 3));
-			lyoty.add(JOKERI);
-			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, lyoty, Vari.SININEN, 0));
+			kuva.tapahtuma(new Tapahtuma(Teko.JAK, 1, new Kortti[] {PUN_N2}, 1));
+			kuva.tapahtuma(new Tapahtuma(Teko.OHI, 0, new Kortti[] {}, 3));
+			kuva.tapahtuma(new Tapahtuma(Teko.LÖI, 1, new Kortti[] {JOKERI}, Vari.SININEN, 0));
 			assertEquals(0, kuva.getNextVastustaja());
 			assertEquals(Vari.PUNAINEN, kuva.getNextPuuttuva().getVari());
 		}
-
 	}
-
 	
 }

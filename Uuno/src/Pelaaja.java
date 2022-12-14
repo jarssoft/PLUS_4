@@ -101,7 +101,7 @@ public class Pelaaja  {
         //System.out.println("Pelaaja:"+this.id+ " "+kasi.size());
 
         // Kirjataan tapahtuma (liittyy läheisesti pelaajaan)
-        return new Tapahtuma(tapahtuma, id, lyotava.getKortit(), lyotava.getVari(), nosto);
+        return new Tapahtuma(tapahtuma, id, lyotava, nosto);
     }
 
 }

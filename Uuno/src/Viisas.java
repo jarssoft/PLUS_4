@@ -20,24 +20,23 @@ public class Viisas extends Tekoäly {
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
-    int hyvyys(Vector<Kortti> lyotava, Vari vari, Vector<Kortti> jatettava) {
+    int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
     	    	
     	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
     	
     	Tilannekuva uusikuva = new Tilannekuva(kuva);
     	    	
-		uusikuva.tapahtuma(new Tapahtuma(
-				Teko.LÖI, 
+		uusikuva.tapahtuma(new Tapahtuma(Teko.LÖI, 
 				kuva.getNextVastustaja(), 
-				lyotava, vari, lyotava.size()));
+				lyonti, lyonti.getKortit().size()));
     	
     	// Pienempi käsi on parempi (-0.17)
         
-    	int hyvyys = lyotava.size() * -2;
+    	int hyvyys = lyonti.getKortit().size() * -2;
     	
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään (-0.01, -1)
     	
-		Kortti viimeinen = lyotava.lastElement();
+		Kortti viimeinen = lyonti.getKortit().lastElement();
 		if(!viimeinen.isMusta()) {
             for (Kortti jk : jatettava) {
             	if(!jk.isMusta()) {
@@ -94,7 +93,7 @@ public class Viisas extends Tekoäly {
 		// Säästetään mustia tosipaikan varalle
 		
 		if(jatettava.size()>=3
-				&& lyotava.firstElement().isMusta()) {
+				&& lyonti.getKortit().firstElement().isMusta()) {
 			hyvyys-=1;
 		}
 		
@@ -149,7 +148,7 @@ public class Viisas extends Tekoäly {
 			boolean loytyyItselta = false;
 	    	for(Kortti k: jatettava) {
 	    		if(!k.isMusta()) {
-	    			if(vari == k.getVari()) {
+	    			if(lyonti.getVari() == k.getVari()) {
 	    				loytyyItselta = true;
 	    			}
 	    		}
@@ -160,7 +159,7 @@ public class Viisas extends Tekoäly {
 	    	boolean loytyyVastustajalta = true;
 
 			if(uusikuva.getNextPuuttuva()!=null) {
-				if(uusikuva.getNextPuuttuva().getVari()==vari)
+				if(uusikuva.getNextPuuttuva().getVari()==lyonti.getVari())
 					loytyyVastustajalta=false;
 			}
 			

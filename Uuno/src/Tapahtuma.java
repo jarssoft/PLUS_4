@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Vector;
 
 enum Teko {
@@ -48,6 +49,17 @@ public class Tapahtuma {
     final Vari vari;
     final int nostot;
 
+    public Tapahtuma(Teko tapahtuma, int pelaaja, Kortti[] kortit, int nostot) {
+    	this(tapahtuma, pelaaja, kortit, null, nostot);
+    }
+    public Tapahtuma(Teko tapahtuma, int pelaaja, Kortti[] kortit, Vari vari, int nostot) {
+		this(tapahtuma, pelaaja, new Vector<Kortti>(Arrays.asList(kortit)), vari, nostot);
+    }
+    
+    public Tapahtuma(Teko tapahtuma, int pelaaja, Lyonti lyonti, int nostot) {
+		this(tapahtuma, pelaaja, lyonti.getKortit(), lyonti.getVari(), nostot);
+    }
+    
     // Tiedottaa pelaajalle tapahtumasta.
     public Tapahtuma(Teko tapahtuma, int pelaaja, Vector<Kortti> lyonti, 
             Vari vari, int nostot){
