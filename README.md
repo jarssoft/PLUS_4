@@ -1,14 +1,23 @@
 # PLUS_4
 Uno-korttipeli-simulaattori.
 
-## Tekoäly
+## Pelaajat ja tekoäly
 
-Simulaattorissa on kaksi tekoälyä:
+Simulaattorin pelaajat periytyvät Tekoäly-luokasta:
 
 - Tyhmä, joka toimii satunnaisuuden varassa.
 - Viisas, joka toimii kovakoodattujen ehtojen avulla. Tekoäly on testattu esimerkkiaineistolla, joka on syötetty JUnit:iin.
+- Käyttäjä-luokka on tekstipohjainen rajapinta ihmispelaajalle.
 
 Tällä hetkellä Viisas voittaa peleistä noin 2/3, kun se pelaa kaksistaan Tyhmää vastaan.
+
+## Kääntäminen
+
+<pre>
+cd Uuno/src
+javac Peli.java
+java Peli
+</pre>
 
 ## Statistiikka
 

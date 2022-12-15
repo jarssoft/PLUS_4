@@ -7,8 +7,12 @@ public class Lyonti {
 	private Vector<Kortti> kortit = new Vector<Kortti>();
 	private Vari vari = null;
 
-	public Lyonti(Vector<Kortti> lyoty, Vari vari) {
-		this.setLyoty(lyoty);
+	public Lyonti(Vector<Kortti> kortit, Vari vari) {
+		
+		//Korttien pitää olla samaa merkkiä
+		assert(kortit.size()<2 || kortit.firstElement().getMerkki() == kortit.lastElement().getMerkki());
+		
+		this.setLyoty(kortit);
 		this.setVari(vari);
 	}
 
@@ -21,9 +25,18 @@ public class Lyonti {
 	}
 
 	public Vari getVari() {
-		return vari;
+		assert(!isEmpty());
+		if(vari!=null) {
+			return vari;
+		}else {
+			return kortit.lastElement().getVari(); 
+		}
 	}
 
+	public Vari getValittuVari() {
+		return vari;
+	}
+	
 	public void setVari(Vari vari) {
 		this.vari = vari;
 	}

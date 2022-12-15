@@ -1,6 +1,7 @@
 import java.util.Vector;
 import java.util.Scanner;  // Import the Scanner class
 
+/** Ihmispelaajan rajapinta. */
 public class Käyttäjä extends Tekoäly {
 
 	private Lyonti poisto;
@@ -8,7 +9,7 @@ public class Käyttäjä extends Tekoäly {
 	
 	private Vector<Lyonti> vaihtoehdot = new Vector<Lyonti>();
 	
-    // Tiedottaa pelaajalle tapahtumasta.
+    /** Tiedottaa pelaajalle tapahtumasta. */
     @Override
 	public void tapahtuma(Tapahtuma logi){
         if(!logi.lyonti.isEmpty()){

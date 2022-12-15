@@ -1,28 +1,27 @@
-import java.util.Vector;
 import java.util.Collections;
 import java.util.LinkedList;
 
 public class Peli {
 
     // Palauttaa true, jos kortin %lyotava voi laittaa, kun poistopinossa 
-    // on %poisto, ja sanottu väri on %vari.
+    // on lyonti %edellinen.
     public static boolean voiLyoda(final Kortti lyotava, final Lyonti edellinen, boolean uuno) {
         if(lyotava.isMusta()){
             return !uuno;
         }
-        if(edellinen.getKortit().lastElement().isMusta()){
+        if(edellinen.isMusta()){
             return lyotava.getVari() == edellinen.getVari();
         }
-        return lyotava.getVari()==edellinen.getKortit().lastElement().getVari()  
-                || lyotava.getMerkki()==edellinen.getKortit().lastElement().getMerkki();
+        return lyotava.getVari()==edellinen.getVari()  
+                || lyotava.getMerkki()==edellinen.getMerkki();
     }
     
     // Palauttaa true, jos saman pelaajan lyömän kortin %poisto päälle voi laittaa vielä kortin %lyotava.
-    public static boolean voiLyodaLisäksi(final Kortti lyotava, final Kortti edellinen) {
-        if(lyotava.isMusta() || edellinen.isMusta()){
+    public static boolean voiLyodaLisäksi(final Kortti lyotava, final Kortti poisto) {
+        if(lyotava.isMusta() || poisto.isMusta()){
             return false;
         }
-        return lyotava.getMerkki()==edellinen.getMerkki();
+        return lyotava.getMerkki()==poisto.getMerkki();
     }
 
     // Pelisilmukka perustuu linkitetyn listan iteraattoriin.
@@ -88,20 +87,20 @@ public class Peli {
             // Käsitellään erikoiskortit
                 
             if(!logi.lyonti.isEmpty()){
-                Vector<Kortti> lyotava=logi.lyonti.getKortit();
-                if(!lyotava.get(0).isMusta()){
-                    if(lyotava.get(0).getMerkki()==Merkki.OHITUS){
-                        ki.ohitus(lyotava.size());
+                Lyonti lyotava=logi.lyonti;
+                if(!lyotava.isMusta()){
+                    if(lyotava.getMerkki()==Merkki.OHITUS){
+                        ki.ohitus(lyotava.getKortit().size());
                     }
-                    if(lyotava.get(0).getMerkki()==Merkki.SUUNNANVAIHTO){
-                        ki.suunnanvaihto(lyotava.size());
+                    if(lyotava.getMerkki()==Merkki.SUUNNANVAIHTO){
+                        ki.suunnanvaihto(lyotava.getKortit().size());
                     }
-                    if(lyotava.get(0).getMerkki()==Merkki.PLUS2){
+                    if(lyotava.getMerkki()==Merkki.PLUS2){
                         Pelaaja spelaaja = ki.next();
-                        spelaaja.nosta(lyotava.size()*2);
+                        spelaaja.nosta(lyotava.getKortit().size()*2);
                     }
                 }else{
-                    if(lyotava.get(0).isPlus4()){
+                    if(lyotava.getKortit().get(0).isPlus4()){
                         Pelaaja spelaaja = ki.next();
                         spelaaja.nosta(4);
                     }
@@ -120,11 +119,10 @@ public class Peli {
     
     public static void main(String[] args) {
 
-        LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();
-        
+        LinkedList<Pelaaja> pelaajat = new LinkedList<Pelaaja>();        
         pelaajat.add(new Pelaaja(new Viisas()));
-        pelaajat.add(new Pelaaja(new Käyttäjä()));
-
+        pelaajat.add(new Pelaaja(new Tyhmä()));
+        //pelaajat.add(new Pelaaja(new Käyttäjä()));
 
         for(int t=0;t<10000;t++){
             peli(new LinkedList<Pelaaja>(pelaajat));
