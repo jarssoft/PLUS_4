@@ -50,7 +50,7 @@ public class Käyttäjä extends Tekoäly {
 	}
 
 	@Override
-	int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
+	protected int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
 		
 		System.out.println("      "+(numero++)+": "+lyonti.getKortit()+" "+lyonti.getVari());
 		vaihtoehdot.add(lyonti);

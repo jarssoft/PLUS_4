@@ -9,10 +9,10 @@ public abstract class Tekoäly {
 	abstract Lyonti getKortti(Vector<Kortti> kasi);
 	
 	/** Palauttaa kokonaisluvun vaihtoehdon hyvyydestä. */
-	abstract int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava);
+	abstract protected int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava);
 	
 	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa. */
-	public Lyonti paras(Vector<Kortti> kasi, Lyonti poisto){
+	protected Lyonti paras(Vector<Kortti> kasi, Lyonti poisto){
 		
         Lyonti paraslyonti = new Lyonti(new Vector<Kortti>(),null);
         int parashyvyys = Integer.MIN_VALUE;

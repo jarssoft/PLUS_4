@@ -24,7 +24,7 @@ public class Tyhmä extends Tekoäly {
     }
     
 	@Override
-	int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
+	protected int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
 		return (int)(Math.random() * 10000);
 	}
 

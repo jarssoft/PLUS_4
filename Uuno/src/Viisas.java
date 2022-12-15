@@ -6,6 +6,7 @@ public class Viisas extends Tekoäly {
 	//Edellinen lyönti
 	private Lyonti poisto;
 	
+	//Pelitilanne pelaajan näkökulmasta
 	private Tilannekuva kuva = new Tilannekuva();
 
     // Tiedottaa pelaajalle tapahtumasta.
@@ -20,7 +21,7 @@ public class Viisas extends Tekoäly {
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
-    int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava) {
+    protected int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava) {
     	    	
     	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
     	
