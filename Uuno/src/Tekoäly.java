@@ -9,13 +9,12 @@ public abstract class Tekoäly {
 	abstract Lyonti getKortti(Vector<Kortti> kasi);
 	
 	/** Palauttaa kokonaisluvun vaihtoehdon hyvyydestä. */
-	abstract int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava);
+	abstract int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava);
 	
 	/** Kutsuu kaikkia mahdollisia lyötäviä hyvyys() -funktiossa. */
 	public Lyonti paras(Vector<Kortti> kasi, Lyonti poisto){
 		
-        Vector<Kortti> paraslyotava = new Vector<Kortti>();
-        Vari parasvari = null;
+        Lyonti paraslyonti = new Lyonti(new Vector<Kortti>(),null);
         int parashyvyys = Integer.MIN_VALUE;
         
         for (Kortti k : kasi) {
@@ -46,31 +45,28 @@ public abstract class Tekoäly {
 	                	assert(alkuperainenkoko == ehdokaslyotava.size());
                 	}
                 	
-                	int ehdokashyvyys=Integer.MIN_VALUE;
-                	
                 	if(ehdokaslyotava.firstElement().isMusta()) {
                 		for(Vari v : Vari.values()) {
-                			ehdokashyvyys = hyvyys(new Lyonti(ehdokaslyotava, v), ehdokasjatettava);
+                			Lyonti ehdokas = new Lyonti(ehdokaslyotava, v);
+                			int ehdokashyvyys = hyvyys(ehdokas, ehdokasjatettava);
         		        	if(ehdokashyvyys>parashyvyys) {        		        		
-        		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-        		        		parasvari=v;
+        		        		paraslyonti = ehdokas;
         		        		parashyvyys=ehdokashyvyys;
         		        	}
                 		}
                 	}else {
-                		ehdokashyvyys = hyvyys(new Lyonti(ehdokaslyotava, null), ehdokasjatettava);
+                		Lyonti ehdokas = new Lyonti(new Vector<Kortti>(ehdokaslyotava), null);
+                		int ehdokashyvyys = hyvyys(ehdokas, ehdokasjatettava);
     		        	if(ehdokashyvyys>parashyvyys) {
-    		        		paraslyotava=new Vector<Kortti>(ehdokaslyotava);
-    		        		parasvari=null;
+    		        		paraslyonti = ehdokas;
     		        		parashyvyys=ehdokashyvyys;    		        		
     		        	}
                 	}
-
                 }
         	}
         }
 
-        return new Lyonti(paraslyotava, parasvari);
+        return paraslyonti;
         
 	}
 

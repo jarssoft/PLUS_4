@@ -20,7 +20,7 @@ public class Viisas extends Tekoäly {
     
     /** Palauttaa lyötävien ja jätettävien korttien yhdistelmän hyvyyden,
      *  kun pelitilanteesta ei tiedetä mitään muuta. */
-    int hyvyys(Lyonti lyonti, Vector<Kortti> jatettava) {
+    int hyvyys(final Lyonti lyonti, final Vector<Kortti> jatettava) {
     	    	
     	//System.out.println("Lyötävä: "+lyotava+", Vari: "+vari+", Jatettava: "+jatettava);
     	
@@ -28,19 +28,19 @@ public class Viisas extends Tekoäly {
     	    	
 		uusikuva.tapahtuma(new Tapahtuma(Teko.LÖI, 
 				kuva.getNextVastustaja(), 
-				lyonti, lyonti.getKortit().size()));
+				lyonti, lyonti.size()));
     	
     	// Lyödään mahdollisimman vähän kortteja (-0.17)
         
-    	int hyvyys = lyonti.getKortit().size() * -2;
+    	int hyvyys = lyonti.size() * -2;
     	
 		// Jätetään viimeiseksi kortti, joka sopii käteen jäävään (-0.01, -1)
     	
-		Kortti viimeinen = lyonti.getKortit().lastElement();
-		if(!viimeinen.isMusta()) {
+		
+		if(!lyonti.isMusta()) {
             for (Kortti jk : jatettava) {
             	if(!jk.isMusta()) {
-                    if(viimeinen.getVari() == jk.getVari()){
+                    if(lyonti.getVari() == jk.getVari()){
                     	hyvyys+=1;
                     }
             	}
@@ -49,8 +49,8 @@ public class Viisas extends Tekoäly {
 		
 		// Yritetään vaihtaa väriä (-0.01, 0), (0, -0.3)
 
-		if(!viimeinen.isMusta() && !poisto.isMusta()) {
-    		if(viimeinen.getVari().toString() != poisto.getKortit().lastElement().getVari().toString()) {
+		if(!lyonti.isMusta() && !poisto.isMusta()) {
+    		if(lyonti.getVari().toString() != poisto.getVari().toString()) {
     			hyvyys+=1;
     		}
 		}
@@ -92,8 +92,7 @@ public class Viisas extends Tekoäly {
 		
 		// Säästetään mustia pahan tilanteen varalle
 		
-		if(jatettava.size()>=3
-				&& lyonti.isMusta()) {
+		if(jatettava.size()>=3 && lyonti.isMusta()) {
 			hyvyys-=1;
 		}
 		
@@ -120,10 +119,11 @@ public class Viisas extends Tekoäly {
 		
 		// Annetaan plussa-kortti vastustajalle jolla on uuno
 		
-		if((!viimeinen.isMusta() && viimeinen.getMerkki() == Merkki.PLUS2) ||
-					viimeinen.isPlus4()) {			
+		if((!lyonti.isMusta() && lyonti.getMerkki() == Merkki.PLUS2) ||
+				lyonti.isPlus4()) {			
 	    	
 			// Selvitetään, mikä vastustaja saisi plussat
+			
 			Tilannekuva normikuva = new Tilannekuva(kuva);			
 	    	normikuva.tapahtuma(new Tapahtuma(
 					Teko.LÖI, 
@@ -138,7 +138,7 @@ public class Viisas extends Tekoäly {
 			}
 		}
 		
-		if(viimeinen.isMusta()) {
+		if(lyonti.isMusta()) {
 			
 			// Valitaan väri, joka on itsellä
 			
@@ -175,10 +175,11 @@ public class Viisas extends Tekoäly {
 			// Väri tai merkki, jota ei ole vastustajalla.
 			
 			if(uusikuva.getNextPuuttuva()!=null) {
-				if(uusikuva.getNextPuuttuva().getVari()==viimeinen.getVari()) {
+				if(uusikuva.getNextPuuttuva().getVari()==lyonti.getVari()) {
 					hyvyys+=2;
 				}
-				if(uusikuva.getNextPuuttuva().getMerkki()==viimeinen.getMerkki()) {
+				if(!uusikuva.getNextPuuttuva().isMusta() 
+						&& uusikuva.getNextPuuttuva().getMerkki()==lyonti.getMerkki()) {
 					hyvyys+=2;
 				}
 			}
@@ -193,7 +194,6 @@ public class Viisas extends Tekoäly {
     @Override
 	public Lyonti getKortti(Vector<Kortti> kasi){
     
-        assert(poisto.getKortit().lastElement()!=null);
         assert(!kasi.isEmpty());      
     	
         return paras(kasi, poisto);

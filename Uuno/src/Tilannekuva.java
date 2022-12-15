@@ -1,7 +1,7 @@
 /** Tekoälyn kuva pelin tapahtumista. */
 public class Tilannekuva {
 	
-    private Kortti edellinen;
+    private Lyonti edellinen=null;
 	    
     private int suunta=1;
     private int nopeus=1;
@@ -13,11 +13,12 @@ public class Tilannekuva {
     private int pelaajamäärä=0;
     private int poistunut=0;
     
-    /** Pelaajien korttien määrä. */
+    /** Pidetään kirjaa pelaajien korttien määrästä. */
     private int korttimaara[];
         
-    /** Kortti, joka pelaajilta puuttuu. */
-    private Kortti puuttuva[];
+    /** Lyönti, jonka päälle pelaaja ei voinut laittaa mitään. 
+     * 	Tämän avulla voidaan päätellä, mitä kortteja vastustajilta puuttuu. */
+    private Lyonti puuttuva[];
     
     public Tilannekuva() {}
     
@@ -32,7 +33,7 @@ public class Tilannekuva {
     	this.pelaajamäärä = tk.pelaajamäärä;
     	this.poistunut = tk.poistunut;
     	this.korttimaara = new int[this.pelaajamäärä];
-        this.puuttuva = new Kortti[this.pelaajamäärä];
+        this.puuttuva = new Lyonti[this.pelaajamäärä];
     	
         for (int i = 0; i < korttimaara.length; i++) {
         	this.korttimaara[i] = tk.korttimaara[i];
@@ -44,11 +45,7 @@ public class Tilannekuva {
     /** Muuttaa kuvaa tapahtuman mukaan. */
 	public void tapahtuma(Tapahtuma logi){    	
 
-		Kortti poisto = null; 
-		
-        if(!logi.lyonti.isEmpty()){
-            poisto = logi.lyonti.getKortit().lastElement(); 
-        }
+		Lyonti poisto = logi.lyonti; 
         
         if(logi.tapahtuma == Teko.JAK) {
         
@@ -59,7 +56,7 @@ public class Tilannekuva {
             nopeus=1;
             
             korttimaara = new int[pelaajamäärä];
-            puuttuva = new Kortti[pelaajamäärä];
+            puuttuva = new Lyonti[pelaajamäärä];
             
             for (int i = 0; i < korttimaara.length; i++) {
             	korttimaara[i] = 7;
@@ -81,7 +78,7 @@ public class Tilannekuva {
         	puuttuva[pelaajaindex]=null;
         }
         
-        if(poisto!= null && !poisto.isMusta() && poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
+        if(!poisto.isEmpty() && !poisto.isMusta() && poisto.getMerkki() == Merkki.SUUNNANVAIHTO) {        	
         	suunta *= (int)Math.pow(-1, logi.lyonti.getKortit().size());
         }
         
@@ -109,7 +106,7 @@ public class Tilannekuva {
 		    			nopeus = 2;
 		    		}
 		        }else {
-		        	if(poisto.isPlus4()){
+		        	if(poisto.getKortit().lastElement().isPlus4()){
 		        		int nextvastustaja=getNextVastustaja();
 		        		korttimaara[nextvastustaja] += 4;
 		        		puuttuva[nextvastustaja]=null;
@@ -117,13 +114,13 @@ public class Tilannekuva {
 		        	}
 		        }
 	        }else {
-	        	if(edellinen!= null && !edellinen.isMusta()) {
-		        	System.out.println("puuttuu "+edellinen);
+	        	if(!edellinen.isEmpty()) {
 		        	puuttuva[pelaajaindex]=edellinen;
 	        	}
 	        }        
         	nextpelaaja = getNextVastustaja();
         }        
+
         edellinen = poisto;
         
     }
@@ -154,7 +151,7 @@ public class Tilannekuva {
     	return korttimaara[getNextVastustaja()];
     }
 
-	public Kortti getNextPuuttuva() {
+	public Lyonti getNextPuuttuva() {
 		return puuttuva[getNextVastustaja()];
 	}
 }

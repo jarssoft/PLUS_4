@@ -288,6 +288,18 @@ class ViisasTest {
 			
 			//assertEquals(Vari.KELTAINEN, viisas.getVari());
 		}
+		{
+
+			viisas.tapahtuma(new Tapahtuma(Teko.JAK, 1, new Kortti[] {KEL_N5}, 1));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {KEL_N5}, 1));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 1, new Kortti[] {JOKERI}, Vari.VIHREA, 1));
+			viisas.tapahtuma(new Tapahtuma(Teko.LÖI, 0, new Kortti[] {}, 3));
+
+			testaa( new Kortti[]{SIN_N5, VIH_N5, KEL_N5, JOKERI}, 
+		    		new Kortti[]{JOKERI}, Vari.VIHREA);
+			
+			//assertEquals(Vari.KELTAINEN, viisas.getVari());
+		}
 	}
 
 }

@@ -12,8 +12,8 @@ public class Peli {
         if(edellinen.isMusta()){
             return lyotava.getVari() == edellinen.getVari();
         }
-        return lyotava.getVari()==edellinen.getVari()  
-                || lyotava.getMerkki()==edellinen.getMerkki();
+        return lyotava.getVari() == edellinen.getVari()  
+                || lyotava.getMerkki() == edellinen.getMerkki();
     }
     
     // Palauttaa true, jos saman pelaajan lyömän kortin %poisto päälle voi laittaa vielä kortin %lyotava.
@@ -90,17 +90,17 @@ public class Peli {
                 Lyonti lyotava=logi.lyonti;
                 if(!lyotava.isMusta()){
                     if(lyotava.getMerkki()==Merkki.OHITUS){
-                        ki.ohitus(lyotava.getKortit().size());
+                        ki.ohitus(lyotava.size());
                     }
                     if(lyotava.getMerkki()==Merkki.SUUNNANVAIHTO){
-                        ki.suunnanvaihto(lyotava.getKortit().size());
+                        ki.suunnanvaihto(lyotava.size());
                     }
                     if(lyotava.getMerkki()==Merkki.PLUS2){
                         Pelaaja spelaaja = ki.next();
-                        spelaaja.nosta(lyotava.getKortit().size()*2);
+                        spelaaja.nosta(lyotava.size()*2);
                     }
                 }else{
-                    if(lyotava.getKortit().get(0).isPlus4()){
+                    if(lyotava.isPlus4()){
                         Pelaaja spelaaja = ki.next();
                         spelaaja.nosta(4);
                     }
